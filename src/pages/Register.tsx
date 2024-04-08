@@ -62,7 +62,7 @@ export default function Register() {
             else
                 sessionStorage.setItem("token", result.data.rows[0]);
 
-            navigate("/app/courses");
+            navigate("/");
         }
         
         // Register failed
