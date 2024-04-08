@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/Popover"
 
 // Hooks and utils
+import { useEffect, useState } from "react"
 import useAuth from "@/hooks/useAuth"
 import getInitials from "@/utils/getInitials"
 import { cn } from "@/lib/utils"
@@ -38,7 +39,7 @@ export default function Sidebar({ className }: SidebarProps) {
       // Logout the user
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
-      // TODO: Redirect to https://omnistudy.io
+      // TODO: Redirect to https://omnistudy.io in production
       window.location.href = "/";
     }
 
@@ -48,9 +49,9 @@ export default function Sidebar({ className }: SidebarProps) {
 
         {/* Sidebar logo */}
         <a href="/">
-            <div className="flex items-center p-6 h-16 border-b border-[#34354A]">
+            <div className="flex items-center px-4 py-6 h-16 border-b border-[#34354A]">
               <img src={Logo} alt="" className="w-8 h-8" />
-              <h2 className="text-[#00adb5] ml-2 text-xl font-['Reem_Kufi_Fun']">OmniStudy</h2>
+              <h2 className="text-[#00adb5] ml-2 text-2xl font-['Reem_Kufi_Fun']">OmniStudy</h2>
             </div>
         </a>
 
@@ -96,7 +97,7 @@ export default function Sidebar({ className }: SidebarProps) {
                             <Badge className="bg-[#00adb5] hover:bg-[#00adb5]">2</Badge>
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-fit px-1 py-0">
+                    <PopoverContent className="w-fit px-2 py-0">
                         <div className="flex flex-col w-fit">
                             <div className="border-b py-2 flex flex-col">
                                 <span className="text-xs text-stone-400">Mon Apr 8, 1:43pm</span>
@@ -152,10 +153,22 @@ export default function Sidebar({ className }: SidebarProps) {
 
 // Represents a link in the sidebar
 function SidebarLink(props: { icon: any; href: string; title: string }) {
+
+    const [active, setActive] = useState(false);
+
+    useEffect(() => {
+      console.log(window.location.pathname);
+      console.log(props.href);
+      if(window.location.pathname == props.href) {
+        setActive(true);
+        console.log("Active");
+      }
+    }, []);
+
     return (
         <li className="mb-2">
             <a href={props.href}>
-                <Button className="flex items-center justify-start text-md w-full text-left text-white bg-[#1F202F] pl-2 gap-x-3 tracking-wider">
+                <Button className={`${active ? "bg-[#00adb5] hover:bg-[#00adb5]/80" : "bg-[#1F202F]"} flex items-center justify-start text-md w-full text-left text-white pl-2 gap-x-3 tracking-wider`}>
                     {props.icon}
                     <span>{props.title}</span>
                 </Button>

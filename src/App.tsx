@@ -7,6 +7,8 @@ import {
 } from "./pages";
 import Sidebar from "@/layouts/Sidebar";
 
+import Settings from './pages/Settings';
+
 function App() {
     return (
         <div id="app">
@@ -26,9 +28,10 @@ function MainRouter() {
         <div className="flex">
             <Sidebar className="basis-1/6 min-w-[250px]" />
 
-            <div className="p-8 w-full h-full">
+            <div className="w-full h-full">
                 <Routes>
                     <Route path="/" element={<h1>Home</h1>} />
+                    <Route path="/settings" element={<Settings/>} />
                 </Routes>
             </div>
         </div>
