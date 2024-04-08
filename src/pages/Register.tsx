@@ -45,34 +45,34 @@ export default function Register() {
     async function register() {      
         console.log("Registering...");
         // Attempt register      
-        const result = await axios.post("http://localhost:8080/users", {
+        axios.post("http://localhost:8080/auth/register", {
             firstName: firstName,
             lastName: lastName,
             email: email,
             username: username,
             password: password
-        });
+        }).then((result) => {
+            // Register successful
+            if(result.data.ok) {
+                if(rememberMe)
+                    localStorage.setItem("token", result.data.rows[0]);
+                else
+                    sessionStorage.setItem("token", result.data.rows[0]);
 
-        console.log(result.data);
-
-        // Register successful
-        if(result.data.ok) {
-            if(rememberMe)
-                localStorage.setItem("token", result.data.rows[0]);
-            else
-                sessionStorage.setItem("token", result.data.rows[0]);
-
-            navigate("/");
-        }
-        
-        // Register failed
-        else {
-            if(result.data.code === 409) {
-                result.data.message.includes("email") ? setErrorMessage("❌ Emaill address taken. Please login instead.") : setErrorMessage("❌ Username taken.");
-                setErrorType(result.data.message);
+                navigate("/");
             }
-            setShowErrorMessage(true);
-        }
+
+            // Register failed
+            else {
+                if(result.data.code === 409) {
+                    result.data.message.includes("email") ? setErrorMessage("❌ Emaill address taken. Please <a href='/login' style='text-decoration:underline'>login</a> instead.") : setErrorMessage("❌ Username taken.");
+                    setErrorType(result.data.message);
+                }
+                setShowErrorMessage(true);
+            }
+        }).catch((err) => {
+            console.error(err); 
+        });
     };
 
     return (
@@ -163,7 +163,10 @@ export default function Register() {
                                 </label> : null}
                                 {/* Email error message */}
                                 {showErrorMessage && errorType === "email" ?
-                                    <span className="text-red-500 text-sm">{errorMessage}</span>
+                                    <span 
+                                        className="text-red-500 text-sm"
+                                        dangerouslySetInnerHTML={{ __html: errorMessage }}
+                                    />
                                 : null}
                             </div>
                             {/* Username input */}
@@ -186,7 +189,10 @@ export default function Register() {
                                 </label> : null}
                                 {/* Username error message */}
                                 {showErrorMessage && errorType === "username" ?
-                                    <span className="text-red-500 text-sm">{errorMessage}</span>
+                                    <span 
+                                        className="text-red-500 text-sm"
+                                        dangerouslySetInnerHTML={{ __html: errorMessage }}
+                                    />
                                 : null}
                             </div>
 
