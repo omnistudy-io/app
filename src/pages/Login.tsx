@@ -7,6 +7,9 @@ import axios from 'axios';
 import Logo from "../assets/Logo.png";
 import AuthArt from "../assets/AuthArt.png";
 
+// Hooks and utils
+import { usePost } from "@/hooks/useApi";
+
 export default function Login() {
 
     // Email form value handling
@@ -29,7 +32,7 @@ export default function Login() {
     
     async function login() {      
         // Attempt login      
-        const result = await axios.post("http://localhost:8080/auth/login", {
+        const result = await axios.post("http://localhost:3001/auth/login", {
             email: username,
             password: password
         });

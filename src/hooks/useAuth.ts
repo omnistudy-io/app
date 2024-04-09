@@ -14,7 +14,7 @@ export default function useAuth() {
         const token = localToken || sessionToken;
 
         if (token) {
-            axios.get("http://localhost:8080/auth/validate/" + token).then((res) => {
+            axios.get("http://localhost:3001/auth/validate/" + token).then((res) => {
                 setLoading(false);
                 setUser(res.data.user);
             }).catch((err) => {

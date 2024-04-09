@@ -157,12 +157,8 @@ function SidebarLink(props: { icon: any; href: string; title: string }) {
     const [active, setActive] = useState(false);
 
     useEffect(() => {
-      console.log(window.location.pathname);
-      console.log(props.href);
-      if(window.location.pathname == props.href) {
+      if(window.location.pathname == props.href)
         setActive(true);
-        console.log("Active");
-      }
     }, []);
 
     return (

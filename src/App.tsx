@@ -7,7 +7,8 @@ import {
 } from "./pages";
 import Sidebar from "@/layouts/Sidebar";
 
-import Settings from './pages/Settings';
+import Dashboard from "@/pages/Dashboard";
+import Settings from '@/pages/Settings';
 
 function App() {
     return (
@@ -30,7 +31,7 @@ function MainRouter() {
 
             <div className="w-full h-full">
                 <Routes>
-                    <Route path="/" element={<h1>Home</h1>} />
+                    <Route path="/" element={<Dashboard/>} />
                     <Route path="/settings" element={<Settings/>} />
                 </Routes>
             </div>

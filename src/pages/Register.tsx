@@ -45,7 +45,7 @@ export default function Register() {
     async function register() {      
         console.log("Registering...");
         // Attempt register      
-        axios.post("http://localhost:8080/auth/register", {
+        axios.post("http://localhost:3001/auth/register", {
             firstName: firstName,
             lastName: lastName,
             email: email,
