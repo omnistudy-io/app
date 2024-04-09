@@ -27,7 +27,7 @@ function App() {
 function MainRouter() {
     return(
         <div className="flex">
-            <Sidebar className="basis-1/6 min-w-[250px]" />
+            <Sidebar className="" />
 
             <div className="w-full h-full">
                 <Routes>

@@ -44,7 +44,7 @@ export default function Sidebar({ className }: SidebarProps) {
     }
 
   return (
-    <div className={cn("flex h-screen bg-[#2D2F48] w-full", className)}>
+    <div className={cn("flex h-screen bg-[#2D2F48] w-full basis-1/6 min-w-[225px] max-w-[325px]", className)}>
       <aside className="flex flex-col bg-[#1F202F] w-full">
 
         {/* Sidebar logo */}
