@@ -25,7 +25,7 @@ function App() {
 
 function MainRouter() {
   return (
-    <div className="flex h-auto">
+    <div className="flex h-screen">
       <Sidebar className="" />
 
       <div className="w-full h-full p-4 bg-[#1f202f] overflow-hidden">

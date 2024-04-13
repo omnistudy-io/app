@@ -1,45 +1,53 @@
+import { useState } from "react";
 import { Card } from "../ui/Card";
 
 const assignments = [
   {
     name: "Final Exam",
     class: "CSci 4061",
-    status: false,
     dueDate: "May 01",
   },
   {
     name: "Lab 08",
     class: "CSci 4061",
-    status: true,
     dueDate: "April 02",
   },
   {
     name: "Lab 08",
     class: "CSci 4061",
-    status: true,
     dueDate: "April 02",
   },
   {
     name: "Lab 08",
     class: "CSci 4061",
-    status: true,
     dueDate: "April 02",
   },
   {
     name: "Lab 08",
     class: "CSci 4061",
-    status: true,
     dueDate: "April 02",
   },
   {
     name: "Lab 08",
     class: "CSci 4061",
-    status: true,
     dueDate: "April 02",
   },
 ];
 
 export default function AssignmentDisplay() {
+  const [assignmentStatus, setAssignmentStatus] = useState(
+    assignments.map(() => false)
+  );
+
+  // Handler to toggle status of a specific assignment
+  const handleAssignmentStatus = (index: number) => {
+    setAssignmentStatus((prevStatus) => {
+      const newStatus = [...prevStatus];
+      newStatus[index] = !newStatus[index];
+      return newStatus;
+    });
+  };
+
   return (
     <Card className="basis-3/5 p-4 bg-[#f5f5f5] h-full">
       <div className="mb-4">
@@ -62,17 +70,17 @@ export default function AssignmentDisplay() {
             <div className="flex items-center">
               <span>{assignment.class}</span>
             </div>
-            {assignment.status ? (
-              <div className="flex items-center">
-                <span className="py-1 px-4 bg-[#00adb520] rounded">Done</span>
-              </div>
-            ) : (
-              <div className="flex items-center">
-                <span className="py-1 px-4 bg-[#86868620] rounded">
-                  In Progress
-                </span>
-              </div>
-            )}
+            <div className="flex items-center">
+              {/* Use assignmentStatus[index] to determine the status */}
+              <span
+                onClick={() => handleAssignmentStatus(index)}
+                className={`py-1 px-4 rounded cursor-pointer hover:shadow ${
+                  assignmentStatus[index] ? "bg-[#00adb520]" : "bg-[#86868620]"
+                }`}
+              >
+                {assignmentStatus[index] ? "Done" : "In Progress"}
+              </span>
+            </div>
             <div className="flex items-center justify-end">
               <span>{assignment.dueDate}</span>
             </div>

@@ -1,16 +1,17 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Button } from "./Button";
 
 export const DashboardContainer = (props: DashboardContainerProps) => {
   return (
     <div
-      className={` h-full bg-[#fff] rounded-xl border border-solid border-[#86868675] ${
+      className={` h-full bg-[#fff] rounded-xl border border-solid border-[#86868675] overflow-scroll ${
         props.className || ""
       }`}
     >
-      <div>
-        <div>
-          <h1 className="text-xl font-bold p-4 mb-4 border-b border-solid border-[#34354a] flex items-center gap-x-3">
+      <div className="w-full overflow-hidden">
+        <div className="border-b border-solid border-[#34354a] p-4 mb-4">
+          <h1 className="text-xl font-bold flex items-center gap-x-3">
             {props.headerIcon}
             {props.header}
           </h1>
@@ -20,7 +21,7 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
-            className="py-2.5 px-8 rounded-lg bg-[#00adb5] text-white shadow-lg"
+            className="py-2.5 px-6 rounded-md bg-[#00adb5] text-white shadow-lg"
             onClick={props.callToAction}
           >
             {props.callToActionText}
