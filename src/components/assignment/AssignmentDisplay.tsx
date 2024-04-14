@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card } from "../ui/Card";
+import { useGet } from "@/hooks/useApi";
 
 const assignments = [
   {
@@ -39,6 +40,8 @@ export default function AssignmentDisplay() {
     assignments.map(() => false)
   );
 
+  // const { data, loading, error } = useGet("/user/assignments");
+
   // Handler to toggle status of a specific assignment
   const handleAssignmentStatus = (index: number) => {
     setAssignmentStatus((prevStatus) => {
@@ -47,6 +50,14 @@ export default function AssignmentDisplay() {
       return newStatus;
     });
   };
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
   return (
     <Card className="basis-3/5 p-4 bg-[#f5f5f5] h-full">

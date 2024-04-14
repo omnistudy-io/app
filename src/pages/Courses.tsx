@@ -1,8 +1,11 @@
+import { useState } from "react";
+
 import AssignmentDisplay from "@/components/assignment/AssignmentDisplay";
 import CourseCard from "@/components/courses/CourseCard";
 import Grades from "@/components/Grades";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { GraduationCap as CoursesIcon } from "lucide-react";
+import CoursesModal from "@/components/courses/CoursesModal";
 
 const courses = [
   {
@@ -36,17 +39,18 @@ const courses = [
 ];
 
 export default function Courses() {
-  const action = () => {
-    console.log("action");
-  };
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <DashboardContainer
       header="Courses"
       headerIcon={<CoursesIcon />}
-      callToAction={action}
+      callToAction={() => {
+        setShowForm(!showForm);
+      }}
       callToActionText="Add New Course"
     >
+      <CoursesModal show={showForm} setShow={setShowForm} />
       <section className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-4">
           {courses.map((course, index) => (
