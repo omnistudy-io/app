@@ -11,10 +11,10 @@ export default function CourseCard(props: CourseCardProps) {
           <span className="block text-md font-bold">
             {props.course.courseNumber}: {props.course.name}
           </span>
-          <span className="block text-sm text-stone-400">
+          <span className="block text-sm text-[#868686]">
             {props.course.professor}
           </span>
-          <span className="block text-sm text-stone-400">
+          <span className="block text-sm text-[#868686]">
             {props.course.startDate} - {props.course.endDate}
           </span>
         </div>
