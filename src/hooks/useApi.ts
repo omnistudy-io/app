@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+// The base URL for the API
+const base = "http://localhost:3001";
+
 /**
  * Make a GET request to the API
  * 
@@ -13,15 +16,22 @@ function useGet(path: string, headers: object = {}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        axios.get(`http://localhost:3001${path}`, { headers: headers }).then((res) => {
+    console.log("Making GET request to: ", `${base}${path}`);
+
+    // useEffect(() => {
+
+        console.log("inside use effect");
+
+        axios.get(`${base}${path}`, { headers: headers }).then((res) => {
+            console.log("res.data");
+            console.log(res.data);
             setData(res.data);
             setLoading(false);
         }).catch((err) => {
             setError(err); 
             setLoading(false);
         });
-    }, []);
+    // }, []);
 
     return { data, loading, error };
 }
@@ -40,7 +50,7 @@ function usePost(path: string, headers: object = {}, body: object = {}) {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        axios.post(`http://localhost:3001${path}`, body, { headers: headers }).then((res) => {
+        axios.post(`${base}${path}`, body, { headers: headers }).then((res) => {
             setData(res.data);
             setLoading(false);
         }).catch((err) => {
@@ -67,7 +77,7 @@ function usePut(path: string, headers: object = {}, body: object = {}) {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        axios.put(`http://localhost:3001${path}`, body, { headers: headers }).then((res) => {
+        axios.put(`${base}${path}`, body, { headers: headers }).then((res) => {
             setData(res.data);
             setLoading(false);
         }).catch((err) => {
@@ -93,7 +103,7 @@ function useDelete(path: string, headers: object = {}, body: object = {}) {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        axios.delete(`http://localhost:3001${path}`, { headers: headers }).then((res) => {
+        axios.delete(`${base}${path}`, { headers: headers }).then((res) => {
             setData(res.data);
             setLoading(false);
         }).catch((err) => {
