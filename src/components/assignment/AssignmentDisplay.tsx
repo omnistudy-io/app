@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Card } from "../ui/Card";
 import { useGet } from "@/hooks/useApi";
+import formatDate from "@/utils/formatDate";
+import { AssignmentSchema } from "@/schema";
 
 const assignments = [
   {
@@ -51,6 +53,8 @@ export default function AssignmentDisplay() {
     });
   };
 
+  const { data, loading, error } = useGet("/users/6/assignments");
+
   // if (loading) {
   //   return <div>Loading...</div>;
   // }
@@ -73,13 +77,13 @@ export default function AssignmentDisplay() {
         </div>
       </div>
       <div className="flex flex-col gap-2 text-left">
-        {assignments.map((assignment, index) => (
+        {data?.assignments.map((assignment: AssignmentSchema & { courseTitle: string}, index: number) => (
           <div className="grid grid-cols-4 text-sm" key={index}>
             <div className="flex items-center">
-              <span>{assignment.name}</span>
+              <span>{assignment.title}</span>
             </div>
             <div className="flex items-center">
-              <span>{assignment.class}</span>
+              <span>{assignment.courseTitle}</span>
             </div>
             <div className="flex items-center">
               {/* Use assignmentStatus[index] to determine the status */}
@@ -93,7 +97,7 @@ export default function AssignmentDisplay() {
               </span>
             </div>
             <div className="flex items-center justify-end">
-              <span>{assignment.dueDate}</span>
+              <span>{formatDate(assignment.due_at)}</span>
             </div>
           </div>
         ))}

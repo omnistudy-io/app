@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
 
+import { Toaster } from "@/components/ui/Toaster";
+
 import { Routes, Route } from "react-router-dom";
 import { Login, Register } from "./pages";
 import Sidebar from "@/layouts/Sidebar";
@@ -34,6 +36,7 @@ function MainRouter() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
+        <Toaster />
       </div>
     </div>
   );
