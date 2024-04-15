@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import * as Dialog from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
 
 export default function CoursesModal(props: CoursesModalProps) {
   const [courseNumber, setCourseNumber] = useState("");
@@ -38,9 +39,9 @@ export default function CoursesModal(props: CoursesModalProps) {
       <Dialog.Portal>
         <Dialog.Overlay
           onClick={() => props.setShow(false)}
-          className="bg-[#00000090] data-[state=open]:animate-overlayShow fixed inset-0"
+          className="bg-[#00000090] data-[state=open]:animate-overlayShow data-[state=closed]:animate-overlayHide fixed inset-0"
         />
-        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[600px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Dialog.Content className="data-[state=open]:animate-contentShow data-[state=closed]:animate-contentHide fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[600px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
           <div className="flex justify-between items-center mb-6 px-1 pb-2 border-b border-[#34354a]">
             <Dialog.Title className=" m-0 text-[17px] font-medium">
               Edit profile
@@ -49,7 +50,7 @@ export default function CoursesModal(props: CoursesModalProps) {
               className="text-black hover:text-[#00adb5] transition-all duration-300 ease-in-out"
               onClick={() => props.setShow(false)}
             >
-              X
+              <X />
             </button>
           </div>
           <fieldset className="flex flex-col gap-y-4">
@@ -58,7 +59,7 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Course Number:</label>
                 <input
                   type="text"
-                  className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
                   placeholder="CSci 2021"
                   onChange={(e) => setCourseNumber(e.target.value)}
                 />
@@ -67,7 +68,7 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Course Title:</label>
                 <input
                   type="text"
-                  className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
                   placeholder="Machine Architecture and Organization"
                   onChange={(e) => setCourseTitle(e.target.value)}
                 />
@@ -80,7 +81,7 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Professor:</label>
                 <input
                   type="text"
-                  className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
                   placeholder="Antonia Zhai"
                   onChange={(e) => setProfessor(e.target.value)}
                 />
@@ -89,7 +90,7 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Room Number:</label>
                 <input
                   type="text"
-                  className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
                   placeholder="Smith 331"
                   onChange={(e) => setRoomNumber(e.target.value)}
                 />

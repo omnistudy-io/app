@@ -69,19 +69,32 @@ module.exports = {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        overlayHide: {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
         contentShow: {
           from: {
             opacity: "0",
-            transform: "translate(-50%, -48%) scale(0.96)",
+            transform: "translate(-50%, -100%) scale(0.96)",
           },
           to: { opacity: "1", transform: "translate(-50%, -50%) scale(1)" },
+        },
+        contentHide: {
+          from: {
+            opacity: "1",
+            transform: "translate(-50%, -50%) scale(0.96)",
+          },
+          to: { opacity: "0", transform: "translate(-50%, -10%) scale(0.96)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        overlayShow: "overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
-        contentShow: "contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        overlayShow: "overlayShow 500ms cubic-bezier(0.16, 1, 0.3, 1)",
+        overlayHide: "overlayShow 250ms cubic-bezier(0.16, 1, 0.3, 1)",
+        contentShow: "contentShow 500ms cubic-bezier(0.16, 1, 0.3, 1)",
+        contentHide: "contentHide 250ms cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },

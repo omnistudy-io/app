@@ -40,7 +40,7 @@ export default function AssignmentDisplay() {
     assignments.map(() => false)
   );
 
-  // const { data, loading, error } = useGet("/user/assignments");
+  // const { data, loading, error } = useGet("/courses/assignments");
 
   // Handler to toggle status of a specific assignment
   const handleAssignmentStatus = (index: number) => {
