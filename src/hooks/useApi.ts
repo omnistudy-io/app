@@ -16,22 +16,15 @@ function useGet(path: string, headers: object = {}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    console.log("Making GET request to: ", `${base}${path}`);
-
-    // useEffect(() => {
-
-        console.log("inside use effect");
-
+    useEffect(() => {
         axios.get(`${base}${path}`, { headers: headers }).then((res) => {
-            console.log("res.data");
-            console.log(res.data);
             setData(res.data);
             setLoading(false);
         }).catch((err) => {
             setError(err); 
             setLoading(false);
         });
-    // }, []);
+    }, []);
 
     return { data, loading, error };
 }
