@@ -120,6 +120,9 @@ export default function Sidebar({ className }: SidebarProps) {
                         Assignment 'Zybooks 11' is overdue.
                       </span>
                     </div>
+                    <div className="py-1 border-t cursor-pointer">
+                      <span className="text-[#00adb5] hover:underline">See all</span>
+                    </div>
                   </div>
                 </PopoverContent>
               </Popover>

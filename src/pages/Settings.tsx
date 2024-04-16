@@ -15,6 +15,7 @@ export default function Settings() {
           <TabsList className="mb-6 bg-[#34354a] text-[#fff] gap-x-2">
             <TabsTrigger value="general">General</TabsTrigger>
             <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="plan">Plan</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
           </TabsList>
