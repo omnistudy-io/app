@@ -10,6 +10,7 @@ import Sidebar from "@/layouts/Sidebar";
 import Dashboard from "@/pages/Dashboard";
 import Settings from "@/pages/Settings";
 import Courses from "./pages/Courses";
+import Assignments from "./pages/Assignments";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function MainRouter() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/assignments" element={<Assignments />} />
         </Routes>
         <Toaster />
       </div>
