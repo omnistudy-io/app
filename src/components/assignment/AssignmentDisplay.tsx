@@ -53,7 +53,7 @@ export default function AssignmentDisplay() {
     });
   };
 
-  const { data, loading, error } = useGet("/users/6/assignments");
+  const { data, loading, error } = useGet("/users/2/assignments");
 
   // if (loading) {
   //   return <div>Loading...</div>;
@@ -77,30 +77,37 @@ export default function AssignmentDisplay() {
         </div>
       </div>
       <div className="flex flex-col gap-2 text-left">
-        {data?.assignments.map((assignment: AssignmentSchema & { courseTitle: string}, index: number) => (
-          <div className="grid grid-cols-4 text-sm" key={index}>
-            <div className="flex items-center">
-              <span>{assignment.title}</span>
+        {data?.assignments.map(
+          (
+            assignment: AssignmentSchema & { courseTitle: string },
+            index: number
+          ) => (
+            <div className="grid grid-cols-4 text-sm" key={index}>
+              <div className="flex items-center">
+                <span>{assignment.title}</span>
+              </div>
+              <div className="flex items-center">
+                <span>{assignment.courseTitle}</span>
+              </div>
+              <div className="flex items-center">
+                {/* Use assignmentStatus[index] to determine the status */}
+                <span
+                  onClick={() => handleAssignmentStatus(index)}
+                  className={`py-1 px-4 rounded cursor-pointer hover:shadow ${
+                    assignmentStatus[index]
+                      ? "bg-[#00adb520]"
+                      : "bg-[#86868620]"
+                  }`}
+                >
+                  {assignmentStatus[index] ? "Done" : "In Progress"}
+                </span>
+              </div>
+              <div className="flex items-center justify-end">
+                <span>{formatDate(assignment.due_at)}</span>
+              </div>
             </div>
-            <div className="flex items-center">
-              <span>{assignment.courseTitle}</span>
-            </div>
-            <div className="flex items-center">
-              {/* Use assignmentStatus[index] to determine the status */}
-              <span
-                onClick={() => handleAssignmentStatus(index)}
-                className={`py-1 px-4 rounded cursor-pointer hover:shadow ${
-                  assignmentStatus[index] ? "bg-[#00adb520]" : "bg-[#86868620]"
-                }`}
-              >
-                {assignmentStatus[index] ? "Done" : "In Progress"}
-              </span>
-            </div>
-            <div className="flex items-center justify-end">
-              <span>{formatDate(assignment.due_at)}</span>
-            </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
     </Card>
   );

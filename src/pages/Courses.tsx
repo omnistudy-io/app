@@ -44,7 +44,7 @@ export default function Courses() {
   const [showForm, setShowForm] = useState(false);
 
   const { toast } = useToast();
-  const { data, loading, error } = useGet("/users/6/courses");
+  const { data, loading, error } = useGet("/users/2/courses");
 
   return (
     <DashboardContainer
@@ -58,11 +58,18 @@ export default function Courses() {
       <CoursesModal show={showForm} setShow={setShowForm} />
       <section className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-4">
-          {data?.courses.map((course: any, index: number) => (
-            <CourseCard course={course} key={index} />
-          ))}
+          {data?.courses.length > 0 ? (
+            data?.courses.map((course: any, index: number) => (
+              <CourseCard course={course} key={index} />
+            ))
+          ) : (
+            <div>You have no courses</div>
+          )}
         </div>
-        <div className="flex gap-4" onClick={() => toast({ title: "Hey", description: "Wassup" })}>
+        <div
+          className="flex gap-4"
+          onClick={() => toast({ title: "Hey", description: "Wassup" })}
+        >
           <AssignmentDisplay />
           <Grades />
         </div>

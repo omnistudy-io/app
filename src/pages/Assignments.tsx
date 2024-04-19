@@ -9,17 +9,16 @@ export default function Assignments() {
 
   return (
     <DashboardContainer
-        header="Assignments"
-        headerIcon={<AssignmentsIcon />}
-        callToAction={() => {
-            setShowForm(!showForm);
-        }}
-        callToActionText="Add New Assignment"
+      header="Assignments"
+      headerIcon={<AssignmentsIcon />}
+      callToAction={() => {
+        setShowForm(!showForm);
+      }}
+      callToActionText="Add New Assignment"
     >
       <AssignmentModal show={showForm} setShow={setShowForm} />
       <section className="flex flex-col gap-4">
-        <div className="grid grid-cols-4 gap-4">
-        </div>
+        <div className="grid grid-cols-4 gap-4"></div>
         <div className="flex gap-4">
           <AssignmentTable />
         </div>

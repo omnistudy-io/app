@@ -31,7 +31,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function Sidebar({ className }: SidebarProps) {
   // Get the user
-  // const { user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   // Logout function
   function logout() {
@@ -121,7 +121,9 @@ export default function Sidebar({ className }: SidebarProps) {
                       </span>
                     </div>
                     <div className="py-1 border-t cursor-pointer">
-                      <span className="text-[#00adb5] hover:underline">See all</span>
+                      <span className="text-[#00adb5] hover:underline">
+                        See all
+                      </span>
                     </div>
                   </div>
                 </PopoverContent>
@@ -143,14 +145,14 @@ export default function Sidebar({ className }: SidebarProps) {
                 alt="Anita Cruz"
                 src="/placeholder.svg?height=32&width=32"
               />
-              {/* <AvatarFallback>{getInitials(user.name)}</AvatarFallback> */}
+              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
               <span className="text-sm text-white">
-                {/* {loading ? "..." : user.name} */}
+                {loading ? "..." : user.name}
               </span>
               <span className="text-xs text-gray-400">
-                {/* {loading ? "..." : user.email} */}
+                {loading ? "..." : user.email}
               </span>
             </div>
           </div>
