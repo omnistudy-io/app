@@ -34,7 +34,7 @@ const grades = [
 ];
 
 export default function Grades() {
-  // const {data, loading, error} = useGet("/courses")
+  const { data, loading, error } = useGet("/users/2/courses");
 
   return (
     <Card className="basis-2/5 h-full bg-[#f5f5f5] p-4 flex flex-col gap-4">
@@ -42,18 +42,20 @@ export default function Grades() {
         <a href="">Grades</a>
       </h3>
       <div className="flex flex-col gap-4">
-        {grades.map((grade, index) => (
+        {data?.courses.map((course: any, index: number) => (
           <div key={index} className="flex justify-between gap-1">
             <div className="flex items-end gap-1">
-              <div className="h-10 w-10 bg-[#1f202f] rounded-lg"></div>
+              <div className=" h-10 w-10 bg-[#1f202f] rounded-lg"></div>
               <div className="text-sm">
-                <span className="block">{grade.name}</span>
-                <span>{grade.professor}</span>
+                <span className="block">{course.title}</span>
+                <span className="text-[#868686]">{course.professor}</span>
               </div>
             </div>
             <div className=" flex flex-col items-end">
-              <span className="block">{grade.grade}</span>
-              <span className="text-sm text-[#00adb5]">{grade.percent}</span>
+              <span className="block">A</span>
+              <span className="text-sm text-[#00adb5]">
+                95.42 <b>%</b>
+              </span>
             </div>
           </div>
         ))}
