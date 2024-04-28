@@ -21,7 +21,7 @@ export function DatePicker() {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            " justify-start text-left font-normal text-sm border bg-stone-100 rounded-md outline-none hover:bg-[#34354a] p-2 shadow-none h-auto",
+            " justify-start text-left font-normal text-sm border bg-stone-100 rounded-md outline-none hover:bg-[#34354a] p-2 shadow-none h-auto text-black hover:text-white",
             !date && "text-muted-foreground"
           )}
         >

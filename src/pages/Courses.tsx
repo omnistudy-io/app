@@ -68,9 +68,9 @@ export default function Courses() {
         </div>
         <div
           className="flex gap-4"
-          onClick={() => toast({ title: "Hey", description: "Wassup" })}
+          // onClick={() => toast({ title: "Hey", description: "Wassup" })}
         >
-          <AssignmentDisplay />
+          <AssignmentDisplay className="basis-3/5" />
           <Grades />
         </div>
       </section>

@@ -4,30 +4,20 @@ const plans = [
   {
     name: "Free",
     price: 0,
-    features: ["Feature 1", "Feature 2", "Feature 3"],
+    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
     description: "Access to basic features",
-    featuredHighlight: "Everything that our free plan includes...",
   },
   {
     name: "OmniStudy Plan",
     price: 10,
     features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
     description: "Our most popular plan",
-    featuredHighlight: "Everything that our free plan plus...",
   },
   {
     name: "Advanced Plan",
     price: 20,
-    features: [
-      "Feature 1",
-      "Feature 2",
-      "Feature 3",
-      "Feature 4",
-      "Feature 5",
-      "Feature 6",
-    ],
+    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
     description: "Access to advanced features",
-    featuredHighlight: "Everything we offer at Omnistudy",
   },
 ];
 
@@ -44,7 +34,7 @@ export default function Plan() {
           Pick a plan that suits your needs.
         </p>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex gap-4">
         {plans.map((plan, index) => (
           <PlanCard key={index} plan={plan} />
         ))}
