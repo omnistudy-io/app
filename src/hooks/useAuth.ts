@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
+// The base URL for the API
+const base = process.env.API_URL || "http://localhost:3001"
+
 export default function useAuth() {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState({
         name: "",
-        email: ""
+        email: "",
+        id: 0
     });
 
     useEffect(() => {
@@ -14,25 +18,29 @@ export default function useAuth() {
         const token = localToken || sessionToken;
 
         if (token) {
-            axios.get("http://localhost:3001/auth/validate/" + token).then((res) => {
+            axios.post(`${base}/auth/token`, {
+                token: token
+            }).then((res) => {
                 setLoading(false);
-                setUser(res.data.user);
+                setUser(res.data.data);
             }).catch((err) => {
                 setLoading(false);
                 setUser({
                     name: "",
-                    email: ""
+                    email: "",
+                    id: 0
                 });
-                window.location.href = "/login";
+                // window.location.href = "/login";
             });
         }
         else {
             setLoading(false);
             setUser({
                 name: "",
-                email: ""
+                email: "",
+                id: 0
             });
-            window.location.href = "/login";
+            // window.location.href = "/login";
         }
     }, []);
 

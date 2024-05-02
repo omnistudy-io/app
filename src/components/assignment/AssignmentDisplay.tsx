@@ -53,7 +53,7 @@ export default function AssignmentDisplay() {
     });
   };
 
-  const { data, loading, error } = useGet("/users/6/assignments");
+  const { data, loading, error } = useGet("/users/{userId}/assignments");
 
   // if (loading) {
   //   return <div>Loading...</div>;

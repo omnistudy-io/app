@@ -102,11 +102,11 @@ export default function CoursesModal(props: CoursesModalProps) {
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">Start Date:</label>
                 {/* <Datepicker
-                            options={datepickerOptions}
-                            onChange={(date) => { setStartDate(date) }}
-                            show={showStartDate}
-                            setShow={setShowStartDate}
-                        /> */}
+                    options={datepickerOptions}
+                    onChange={(date) => { setStartDate(date) }}
+                    show={showStartDate}
+                    setShow={setShowStartDate}
+                /> */}
               </div>
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">End Date:</label>

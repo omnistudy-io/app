@@ -221,7 +221,7 @@ export default function Register() {
                                     type="password"
                                     className="peer block min-h-[auto] w-full rounded border-2 border-stone-300 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-stone-400 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                     id="exampleFormControlInput33"
-                                    placeholder="Password"
+                                    placeholder="Confirm Password"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     onBlur={(e) => {
                                         setShowConfirmPasswordText(confirmPassword === "")

@@ -9,42 +9,11 @@ import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { GraduationCap as CoursesIcon } from "lucide-react";
 import CoursesModal from "@/components/courses/CoursesModal";
 
-// const courses = [
-//   {
-//     name: "Object Oriented",
-//     courseNumber: 240,
-//     professor: "Scott Yilek",
-//     startDate: "Feb 26, 2024",
-//     endDate: "Aug 18, 2024",
-//   },
-//   {
-//     name: "Object Oriented",
-//     courseNumber: 240,
-//     professor: "Scott Yilek",
-//     startDate: "Feb 26, 2024",
-//     endDate: "Aug 18, 2024",
-//   },
-//   {
-//     name: "Object Oriented",
-//     courseNumber: 240,
-//     professor: "Scott Yilek",
-//     startDate: "Feb 26, 2024",
-//     endDate: "Aug 18, 2024",
-//   },
-//   {
-//     name: "Object Oriented",
-//     courseNumber: 240,
-//     professor: "Scott Yilek",
-//     startDate: "Feb 26, 2024",
-//     endDate: "Aug 18, 2024",
-//   },
-// ];
-
 export default function Courses() {
   const [showForm, setShowForm] = useState(false);
 
   const { toast } = useToast();
-  const { data, loading, error } = useGet("/users/6/courses");
+  const { data } = useGet("/users/{userId}/courses");
 
   return (
     <DashboardContainer

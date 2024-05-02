@@ -3,6 +3,8 @@ export interface PlanSchema {
     level: number;
     name: string;
     price: number;
+    description: string;
+    features: []
 }
 
 export interface PlansRows extends Array<PlanSchema> {};

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import useAuth from "./useAuth";
 
 // The base URL for the API
-const base = "http://localhost:3001";
+const base = process.env.API_URL || "http://localhost:3001";
 
 /**
  * Make a GET request to the API
@@ -16,15 +17,24 @@ function useGet(path: string, headers: object = {}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    // Get the current user
+    const { user } = useAuth();
+
     useEffect(() => {
-        axios.get(`${base}${path}`, { headers: headers }).then((res) => {
-            setData(res.data);
-            setLoading(false);
-        }).catch((err) => {
-            setError(err); 
-            setLoading(false);
-        });
-    }, []);
+        // Wait until user is found to complete request
+        if(user && user.id > 0) {
+            // Replace userId placeholder with real user id
+            path = path.replaceAll("{userId}", `${user.id}`);
+            // Make the request
+            axios.get(`${base}${path}`, { headers: headers }).then((res) => {
+                setData(res.data);
+                setLoading(false);
+            }).catch((err) => {
+                setError(err); 
+                setLoading(false);
+            });
+        }
+    }, [user]);
 
     return { data, loading, error };
 }
@@ -80,6 +90,16 @@ function usePut(path: string, headers: object = {}, body: object = {}) {
     }, []);
 
     return { data, loading, error };
+}
+
+export async function put(path: string, headers: object = {}, body: object = {}) {
+    await new Promise(async (resolve, _) => {
+        await axios.put(`${base}${path}`, body, { headers: headers }).then((res) => {
+            resolve({ ok: true, data: res.data });
+        }).catch((err) => {
+            resolve({ ok: false, err: err });
+        });
+    });
 }
 
 /**
