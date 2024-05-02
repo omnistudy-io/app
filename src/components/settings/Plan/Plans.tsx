@@ -2,6 +2,27 @@ import PlanCard from "./PlanCard";
 import { useGet } from "@/hooks/useApi";
 import { PlanSchema } from "@/schema";
 
+const plans = [
+  {
+    name: "Free",
+    price: 0,
+    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
+    description: "Access to basic features",
+  },
+  {
+    name: "OmniStudy Plan",
+    price: 10,
+    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
+    description: "Our most popular plan",
+  },
+  {
+    name: "Advanced Plan",
+    price: 20,
+    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
+    description: "Access to advanced features",
+  },
+];
+
 export default function Plan() {
 
     // Get all plans

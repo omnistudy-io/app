@@ -1,39 +1,95 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { usePost } from "@/hooks/useApi";
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { DatePicker } from "../ui/DatePicker";
 
 export default function CoursesModal(props: CoursesModalProps) {
+  const [courseSubject, setCourseSubject] = useState("");
   const [courseNumber, setCourseNumber] = useState("");
   const [courseTitle, setCourseTitle] = useState("");
   const [professor, setProfessor] = useState("");
+  const [building, setBuilding] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
 
   // Keep track of start date and datepicker visibility
   const [startDate, setStartDate] = useState(new Date());
-  const [showStartDate, setShowStartDate] = useState(false);
 
   // Keep track of end date and datepicker visibility
   const [endDate, setEndDate] = useState(new Date());
-  const [showEndDate, setShowEndDate] = useState(false);
 
   const [showScheduleDropdown, setShowScheduleDropdown] = useState(false);
   const [scheduleEvents, setScheduleEvents] = useState<Array<any>>([]);
 
-  // return props.show ? (
-  //   <div className="flex justify-center items-center gap-4">
-  //     *Shadcn Dialog here
-  //     <button
-  //       className="py-1 px-4 bg-[#00adb5] text-white rounded-md shadow-lg"
-  //       onClick={() => {
-  //         props.setShow(false);
-  //       }}
-  //     >
-  //       Close
-  //     </button>
-  //   </div>
-  // ) : null;
+  // const { data, loading, error } = usePost(
+  //   "/courses",
+  //   {},
+  //   {
+  //     course: {
+  //       user_id: 2,
+  //       title: courseTitle,
+  //       subject: courseSubject,
+  //       number: courseNumber,
+  //       professor: professor,
+  //       room: roomNumber,
+  //       building: building,
+  //       color: "",
+  //       thumbnail_url: "",
+  //       start_date: "2024-04-01",
+  //       end_date: "2024-04-30",
+  //     },
+  //     eventDefs: [
+  //       {
+  //         name: "Lecture",
+  //         rule: "repeat",
+  //         days: [false, false, true, false, true, false, false], // [Sunday , ... , Saturday]
+  //         date: "",
+  //         startTime: "14:30",
+  //         endTime: "15:45",
+  //       },
+  //     ],
+  //   }
+  // );
+
+  const handleCourseSubjectChange = (value: any) => {
+    const parts = value.split(" ");
+
+    if (parts.length >= 2) {
+      setCourseNumber(parts[1]);
+      setCourseSubject(parts[0]);
+    } else {
+      setCourseNumber("");
+      setCourseSubject(value);
+    }
+  };
+
+  const handleRoomNumberChange = (value: any) => {
+    const parts = value.split(" ");
+
+    if (parts.length > 2) {
+      // If the value was something like "Owens Science 435" building would be set to "Owens Science"
+      setBuilding(parts.slice(0, 1).join(" "));
+      setRoomNumber(parts[2]);
+    } else if (parts.length === 2) {
+      setBuilding(parts[0]);
+      setRoomNumber(parts[1]);
+    } else {
+      setBuilding("");
+      setRoomNumber(value);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!courseNumber || !courseTitle || !professor || !roomNumber) {
+      alert("Please fill out all fields");
+      return;
+    }
+
+    props.setShow(false);
+  };
+
   return (
     <Dialog.Root open={props.show}>
       <Dialog.Portal>
@@ -59,16 +115,16 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Course Number:</label>
                 <input
                   type="text"
-                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
                   placeholder="CSci 2021"
-                  onChange={(e) => setCourseNumber(e.target.value)}
+                  onChange={(e) => handleCourseSubjectChange(e.target.value)}
                 />
               </div>
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">Course Title:</label>
                 <input
                   type="text"
-                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
                   placeholder="Machine Architecture and Organization"
                   onChange={(e) => setCourseTitle(e.target.value)}
                 />
@@ -81,7 +137,7 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Professor:</label>
                 <input
                   type="text"
-                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
                   placeholder="Antonia Zhai"
                   onChange={(e) => setProfessor(e.target.value)}
                 />
@@ -90,9 +146,9 @@ export default function CoursesModal(props: CoursesModalProps) {
                 <label className="text-sm ml-1">Room Number:</label>
                 <input
                   type="text"
-                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-3"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
                   placeholder="Smith 331"
-                  onChange={(e) => setRoomNumber(e.target.value)}
+                  onChange={(e) => handleRoomNumberChange(e.target.value)}
                 />
               </div>
             </div>
@@ -101,21 +157,11 @@ export default function CoursesModal(props: CoursesModalProps) {
             <div className="flex w-full gap-x-4 justify-center">
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">Start Date:</label>
-                {/* <Datepicker
-                    options={datepickerOptions}
-                    onChange={(date) => { setStartDate(date) }}
-                    show={showStartDate}
-                    setShow={setShowStartDate}
-                /> */}
+                <DatePicker />
               </div>
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">End Date:</label>
-                {/* <Datepicker
-                            options={datepickerOptions}
-                            onChange={(date) => { setEndDate(date) }}
-                            show={showEndDate}
-                            setShow={setShowEndDate}
-                        /> */}
+                <DatePicker />
               </div>
             </div>
 
@@ -183,7 +229,7 @@ export default function CoursesModal(props: CoursesModalProps) {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.95 }}
               className="py-1.5 px-4 bg-[#00adb5] text-white rounded-md"
-              onClick={() => props.setShow(false)}
+              onClick={handleSubmit}
             >
               Save changes
             </motion.button>
