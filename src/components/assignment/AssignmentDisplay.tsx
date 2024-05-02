@@ -8,7 +8,7 @@ import { toast } from "@/hooks/useToast";
 import { Link } from "react-router-dom";
 
 export default function AssignmentDisplay(props: AssignmentDisplayProps) {
-  const { data, loading, error } = useGet("/users/2/assignments");
+  const { data, loading, error } = useGet("/users/{userId}/assignments");
 
   const [assignmentStatus, setAssignmentStatus] = useState<any[]>([]);
 
@@ -25,8 +25,6 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
       return newStatus;
     });
   };
-
-  const { data, loading, error } = useGet("/users/{userId}/assignments");
 
   // if (loading) {
   //   return <div>Loading...</div>;
