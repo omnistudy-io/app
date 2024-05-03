@@ -8,10 +8,7 @@ import { toast } from "@/hooks/useToast";
 import { Link } from "react-router-dom";
 
 export default function AssignmentDisplay(props: AssignmentDisplayProps) {
-
-
-  const { data, loading, error } = useGet("/users/{userId}/assignments");
-
+  // const { data, loading, error } = useGet("/users/{userId}/assignments");
 
   const [assignmentStatus, setAssignmentStatus] = useState<any[]>([]);
 
@@ -31,8 +28,8 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
       newStatus[index] = !newStatus[index];
       return newStatus;
     });
-  }
-    
+  };
+
   return (
     <Card className={`${props.className} p-4 bg-[#f5f5f5] h-full`}>
       <div className="mb-4">
