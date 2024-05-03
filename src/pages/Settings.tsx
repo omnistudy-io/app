@@ -7,9 +7,9 @@ import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 
 import { Settings as SettingsIcon } from "lucide-react";
-import { useGet } from "@/hooks/useApi";
 
 export default function Settings() {
+
   return (
     <DashboardContainer
       subHeader="Settings"
