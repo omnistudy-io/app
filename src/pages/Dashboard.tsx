@@ -13,7 +13,8 @@ export default function Dashboard() {
 
   return (
     <DashboardContainer
-      header="Dashboard"
+      subHeader="Dashboard"
+      header="Your Dashboard"
       headerIcon={<DashboardIcon />}
       callToAction={action}
       callToActionText="Dashboard"

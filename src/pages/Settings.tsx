@@ -11,7 +11,11 @@ import { useGet } from "@/hooks/useApi";
 
 export default function Settings() {
   return (
-    <DashboardContainer header="Settings" headerIcon={<SettingsIcon />}>
+    <DashboardContainer
+      subHeader="Settings"
+      header="Your Settings"
+      headerIcon={<SettingsIcon />}
+    >
       <div>
         <Tabs defaultValue="profile" className="max-w-[60%]">
           <TabsList className="mb-6 bg-[#34354a] text-[#fff] gap-x-2">

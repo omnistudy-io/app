@@ -12,11 +12,11 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
         <div className="border-b border-solid border-[#34354a] p-4 mb-4">
           <h1 className="text-xl font-bold flex items-center gap-x-3">
             {props.headerIcon}
-            {props.header}
+            {props.subHeader}
           </h1>
         </div>
         <div className="flex w-full justify-between pb-0 p-4">
-          <h2 className="text-4xl">Your {props.header}</h2>
+          <h2 className="text-4xl">{props.header}</h2>
           {props.callToAction && (
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -40,7 +40,8 @@ type DashboardContainerProps = {
   className?: string;
   children: ReactNode;
   header: ReactNode;
-  headerIcon: ReactNode;
+  subHeader: ReactNode;
+  headerIcon?: ReactNode;
   callToAction?: any;
   callToActionText?: string;
   link?: string;
