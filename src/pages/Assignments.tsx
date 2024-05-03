@@ -14,7 +14,8 @@ export default function Assignments() {
 
   return (
     <DashboardContainer
-      header="Assignments"
+      subHeader="Assignments"
+      header="Your Assignments"
       headerIcon={<AssignmentsIcon />}
       callToAction={() => {
         setShowForm(!showForm);
@@ -32,7 +33,7 @@ export default function Assignments() {
           </Card>
           <Card className="px-4 py-6 bg-[#f5f5f5] flex items-center justify-between basis-1/2">
             <h3 className="text-2xl">Overdue Assignments</h3>
-            <span className="text-4xl">1</span>
+            <span className="text-4xl">2</span>
           </Card>
         </div>
         {/* <AssignmentTable /> */}
