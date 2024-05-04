@@ -1,37 +1,21 @@
 import PlanCard from "./PlanCard";
 import { useGet } from "@/hooks/useApi";
-import { PlanSchema } from "@/schema";
+import { PlanSchema, UserPlanSchema } from "@/schema";
 
-const plans = [
-  {
-    name: "Free",
-    price: 0,
-    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
-    description: "Access to basic features",
-  },
-  {
-    name: "OmniStudy Plan",
-    price: 10,
-    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
-    description: "Our most popular plan",
-  },
-  {
-    name: "Advanced Plan",
-    price: 20,
-    features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
-    description: "Access to advanced features",
-  },
-];
+import { useState, useEffect } from "react";
+import get from "@/utils/get";
 
 export default function Plan() {
 
     // Get all plans
-    const { data: pData, loading: pLoading, error: pError } = useGet("/plans");
-    const plans = pData?.plans;
-
+    const [plans, setPlans] = useState<PlanSchema[] | null>(null);
     // Get the user's plan
-    const { data: upData, loading: upLoading, error: upError } = useGet("/users/1/plan");
-    const userPlan = upData?.user_plan;
+    const [userPlan, setUserPlan] = useState<UserPlanSchema | null>(null);
+
+    useEffect(() => {
+        get(setPlans, "plans", "/plans");
+        get(setUserPlan, "user_plan", "/users/1/plan");
+    });
 
     return (
         <div className="flex flex-col gap-y-4">
@@ -42,8 +26,8 @@ export default function Plan() {
                 </p>
             </div>
             <div className="flex flex-col gap-4">
-                {plans?.map((plan: PlanSchema, index: number) => (
-                    <PlanCard key={index} plan={plan} userPlan={userPlan} />
+                {userPlan && plans?.map((plan: PlanSchema, index: number) => (
+                  <PlanCard key={index} plan={plan} userPlan={userPlan} />
                 ))}
             </div>
         </div>

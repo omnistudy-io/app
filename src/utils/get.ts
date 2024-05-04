@@ -11,11 +11,11 @@ const base = "http://localhost:3001";
  * @param headers Optional headers to send with the request
  * @returns 
  */
-export default function get(update: Function, path: string, headers: object = {}) {
+export default function get(update: Function, field: string, path: string, headers: object = {}) {
     return new Promise((resolve, _) => {
         axios.get(`${base}${path}`, { headers: headers }).then((res) => {
             resolve(res.data);
-            update(res.data);
+            update(field === "" ? res.data : res.data[field]);
         }).catch((err) => {
             resolve(err);
         });

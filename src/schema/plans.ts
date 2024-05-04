@@ -4,7 +4,13 @@ export interface PlanSchema {
     name: string;
     price: number;
     description: string;
-    features: []
+    features: PlanFeature[]
+}
+
+interface PlanFeature {
+    id: number;
+    description: string;
+    included: boolean;
 }
 
 export interface PlansRows extends Array<PlanSchema> {};
