@@ -55,6 +55,17 @@ export default function General() {
             </Switch.Root>
           </div>
         </Card>
+
+        {/* Add version here */}
+        <div>
+          <h3 className="text-lg font-bold mt-4">Version</h3>
+          <p className="text-sm text-[#868686]">
+            Version 0.2.0
+          </p>
+          <p className="text-sm text-[#868686]">
+            OmniStudy © 2024
+          </p>
+        </div>
       </div>
     </div>
   );

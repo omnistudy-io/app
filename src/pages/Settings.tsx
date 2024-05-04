@@ -17,7 +17,7 @@ export default function Settings() {
       headerIcon={<SettingsIcon />}
     >
       <div>
-        <Tabs defaultValue="profile" className="max-w-[60%]">
+        <Tabs defaultValue="general" className="max-w-[60%]">
           <TabsList className="mb-6 bg-[#34354a] text-[#fff] gap-x-2">
             <TabsTrigger value="general">General</TabsTrigger>
             <TabsTrigger value="account">Account</TabsTrigger>
