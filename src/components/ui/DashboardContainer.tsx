@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./DropDownMenu";
+import { ChevronDownIcon } from "lucide-react";
 
 export const DashboardContainer = (props: DashboardContainerProps) => {
   return (
@@ -30,9 +31,10 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.95 }}
-                    className="py-2 px-6 rounded-md bg-[#00adb5] text-white shadow-lg"
+                    className="py-2 px-4 rounded-md bg-[#00adb5] text-white shadow-lg flex flex-row items-center gap-x-2"
                   >
                     {props.callToActionText}
+                    <ChevronDownIcon size={20} />
                   </motion.button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
