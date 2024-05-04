@@ -3,24 +3,31 @@ import ExamDisplay from "@/components/exams/ExamDisplay";
 import { Card } from "@/components/ui/Card";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Progress } from "@/components/ui/Progress";
-import { useGet } from "@/hooks/useApi";
 import { useParams } from "react-router-dom";
+import { GraduationCap as CoursesIcon } from "lucide-react";
+
+import { useState, useEffect } from "react";
+import get from "@/utils/get";
+import { CourseSchema } from "@/schema";
 
 export default function Course() {
   const { id } = useParams();
 
-  const { data } = useGet(`/courses/${id}`);
+  const [course, setCourse] = useState<CourseSchema | null>(null);
+
+  useEffect(() => {
+    get(setCourse, "course", `/courses/${id}`);
+  });
 
   const day = new Date().toLocaleDateString();
   const time = new Date().getTime();
-  const endDate = new Date(data?.rows[0].end_date).getTime();
-
-  console.log(time, endDate);
+  const endDate = new Date(course ? course.end_date : "").getTime();
 
   return (
     <DashboardContainer
-      subHeader={`${data?.rows[0].subject} ${data?.rows[0].number}:`}
-      header={data?.rows[0].title}
+      headerIcon={<CoursesIcon />}
+      subHeader={`Courses`}
+      header={`${course?.subject} ${course?.number}: ${course?.title}`}
     >
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-4">
@@ -50,8 +57,8 @@ export default function Course() {
                 </h4>
                 <div>
                   <span>
-                    10:00 AM - 11:00 AM &#x2022; {data?.rows[0].building} -{" "}
-                    {data?.rows[0].room}
+                    10:00 AM - 11:00 AM &#x2022; {course?.building} -{" "}
+                    {course?.room}
                   </span>
                 </div>
               </div>
@@ -61,8 +68,8 @@ export default function Course() {
                 </h4>
                 <div>
                   <span>
-                    1:00 PM - 4:00 PM &#x2022; {data?.rows[0].building} -{" "}
-                    {data?.rows[0].room}
+                    1:00 PM - 4:00 PM &#x2022; {course?.building} -{" "}
+                    {course?.room}
                   </span>
                 </div>
               </div>
@@ -79,16 +86,16 @@ export default function Course() {
               </p>
               <div className="flex gap-2">
                 <img
-                  src={data?.rows[0].thumbnail_url}
+                  src={course?.thumbnail_url}
                   alt="Course thumbnail"
                   loading="lazy"
                   className="h-[50px] object-cover rounded-full"
                   width="50px"
                 />
                 <div className="flex flex-col justify-center">
-                  <span className="text-sm">{data?.rows[0].professor}</span>
+                  <span className="text-sm">{course?.professor}</span>
                   <span className="text-xs">
-                    {data?.rows[0].building} - {data?.rows[0].room}
+                    {course?.building} - {course?.room}
                   </span>
                 </div>
               </div>
