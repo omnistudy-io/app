@@ -25,6 +25,7 @@ export default function StudySets() {
 
     return (
         <DashboardContainer
+            subHeader={"Study Sets"}
             header="Study Sets"
             headerIcon={<StudySetsIcon />}
             callToAction={() => {
