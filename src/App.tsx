@@ -14,6 +14,7 @@ import Assignments from "./pages/Assignments";
 import StudySets from "./pages/StudySets";
 import StudySet from "./pages/StudySet";
 import Course from "./pages/Course";
+import Documents from "./pages/Documents";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function MainRouter() {
           <Route path="/assignments" element={<Assignments />} />
           <Route path="/study-sets" element={<StudySets />}></Route>
           <Route path="/study-sets/:id" element={<StudySet />}></Route>
+          <Route path="/documents" element={<Documents />}></Route>
         </Routes>
         <Toaster />
       </div>

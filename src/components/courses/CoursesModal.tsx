@@ -23,36 +23,6 @@ export default function CoursesModal(props: CoursesModalProps) {
   const [showScheduleDropdown, setShowScheduleDropdown] = useState(false);
   const [scheduleEvents, setScheduleEvents] = useState<Array<any>>([]);
 
-  // const { data, loading, error } = usePost(
-  //   "/courses",
-  //   {},
-  //   {
-  //     course: {
-  //       user_id: 2,
-  //       title: courseTitle,
-  //       subject: courseSubject,
-  //       number: courseNumber,
-  //       professor: professor,
-  //       room: roomNumber,
-  //       building: building,
-  //       color: "",
-  //       thumbnail_url: "",
-  //       start_date: "2024-04-01",
-  //       end_date: "2024-04-30",
-  //     },
-  //     eventDefs: [
-  //       {
-  //         name: "Lecture",
-  //         rule: "repeat",
-  //         days: [false, false, true, false, true, false, false], // [Sunday , ... , Saturday]
-  //         date: "",
-  //         startTime: "14:30",
-  //         endTime: "15:45",
-  //       },
-  //     ],
-  //   }
-  // );
-
   const handleCourseSubjectChange = (value: any) => {
     const parts = value.split(" ");
 
