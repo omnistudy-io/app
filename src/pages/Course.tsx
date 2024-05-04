@@ -3,13 +3,10 @@ import ExamDisplay from "@/components/exams/ExamDisplay";
 import { Card } from "@/components/ui/Card";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Progress } from "@/components/ui/Progress";
-<<<<<<< HEAD
-=======
 import { useGet } from "@/hooks/useApi";
 import { FlaskConical, Laptop } from "lucide-react";
->>>>>>> 931af36 (added single assignment page and dropdown button option)
 import { useParams } from "react-router-dom";
-import { GraduationCap as CoursesIcon } from "lucide-react";
+// import { GraduationCap as CoursesIcon } from "lucide-react";
 
 import { useState, useEffect } from "react";
 import get from "@/utils/get";
@@ -30,15 +27,9 @@ export default function Course() {
 
   return (
     <DashboardContainer
-<<<<<<< HEAD
-      headerIcon={<CoursesIcon />}
-      subHeader={`Courses`}
-      header={`${course?.subject} ${course?.number}: ${course?.title}`}
-=======
       dropDown={false}
-      subHeader={`${data?.rows[0].subject} ${data?.rows[0].number}:`}
-      header={data?.rows[0].title}
->>>>>>> 931af36 (added single assignment page and dropdown button option)
+      subHeader={`${course?.subject} ${course?.number}:`}
+      header={course?.title}
     >
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-4">

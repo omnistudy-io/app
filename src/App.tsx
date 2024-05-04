@@ -14,11 +14,8 @@ import Assignments from "./pages/Assignments";
 import StudySets from "./pages/StudySets";
 import StudySet from "./pages/StudySet";
 import Course from "./pages/Course";
-<<<<<<< HEAD
-import Documents from "./pages/Documents";
-=======
 import Assignment from "./pages/Assignment";
->>>>>>> 931af36 (added single assignment page and dropdown button option)
+import Documents from "./pages/Documents";
 
 function App() {
   return (
