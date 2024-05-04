@@ -8,9 +8,13 @@ import { toast } from "@/hooks/useToast";
 import { Link } from "react-router-dom";
 
 export default function AssignmentDisplay(props: AssignmentDisplayProps) {
-  const { data, loading, error } = useGet("/users/{userId}/assignments");
+  // const { data, loading, error } = useGet("/users/{userId}/assignments");
 
   const [assignmentStatus, setAssignmentStatus] = useState<any[]>([]);
+
+  const endpoint = props.endpoint || "/users/{userId}/assignments";
+
+  const { data } = useGet(endpoint);
 
   useEffect(() => {
     if (data) {
@@ -25,14 +29,6 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
       return newStatus;
     });
   };
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
 
   return (
     <Card className={`${props.className} p-4 bg-[#f5f5f5] h-full`}>
@@ -108,4 +104,5 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
 
 type AssignmentDisplayProps = {
   className?: string;
+  endpoint?: string;
 };

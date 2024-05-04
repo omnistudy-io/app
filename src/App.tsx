@@ -13,6 +13,7 @@ import Courses from "./pages/Courses";
 import Assignments from "./pages/Assignments";
 import StudySets from "./pages/StudySets";
 import StudySet from "./pages/StudySet";
+import Course from "./pages/Course";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function MainRouter() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/:id" element={<Course />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/assignments" element={<Assignments />} />
           <Route path="/study-sets" element={<StudySets />}></Route>

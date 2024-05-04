@@ -8,6 +8,7 @@ import Grades from "@/components/Grades";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { GraduationCap as CoursesIcon } from "lucide-react";
 import CoursesModal from "@/components/courses/CoursesModal";
+import ExamDisplay from "@/components/exams/ExamDisplay";
 
 export default function Courses() {
   const [showForm, setShowForm] = useState(false);
@@ -17,7 +18,8 @@ export default function Courses() {
 
   return (
     <DashboardContainer
-      header="Courses"
+      subHeader="Courses"
+      header="Your Courses"
       headerIcon={<CoursesIcon />}
       callToAction={() => {
         setShowForm(!showForm);
@@ -40,7 +42,8 @@ export default function Courses() {
           // onClick={() => toast({ title: "Hey", description: "Wassup" })}
         >
           <AssignmentDisplay className="basis-3/5" />
-          <Grades />
+          {/* <Grades /> */}
+          <ExamDisplay className="basis-2/5" />
         </div>
       </section>
     </DashboardContainer>
