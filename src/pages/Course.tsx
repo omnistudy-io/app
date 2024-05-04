@@ -3,6 +3,11 @@ import ExamDisplay from "@/components/exams/ExamDisplay";
 import { Card } from "@/components/ui/Card";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Progress } from "@/components/ui/Progress";
+<<<<<<< HEAD
+=======
+import { useGet } from "@/hooks/useApi";
+import { FlaskConical, Laptop } from "lucide-react";
+>>>>>>> 931af36 (added single assignment page and dropdown button option)
 import { useParams } from "react-router-dom";
 import { GraduationCap as CoursesIcon } from "lucide-react";
 
@@ -25,9 +30,15 @@ export default function Course() {
 
   return (
     <DashboardContainer
+<<<<<<< HEAD
       headerIcon={<CoursesIcon />}
       subHeader={`Courses`}
       header={`${course?.subject} ${course?.number}: ${course?.title}`}
+=======
+      dropDown={false}
+      subHeader={`${data?.rows[0].subject} ${data?.rows[0].number}:`}
+      header={data?.rows[0].title}
+>>>>>>> 931af36 (added single assignment page and dropdown button option)
     >
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-4">
@@ -53,7 +64,8 @@ export default function Course() {
             <div className="flex flex-col gap-2">
               <div className="bg-[#fff] p-4 border rounded-md">
                 <h4 className="font-bold flex gap-2 items-center">
-                  Class <span className="text-sm font-normal">(1hr)</span>
+                  <Laptop size={20} strokeWidth={2.5} /> Class{" "}
+                  <span className="text-sm font-normal">(1hr)</span>
                 </h4>
                 <div>
                   <span>
@@ -64,7 +76,8 @@ export default function Course() {
               </div>
               <div className="bg-[#fff] p-4 border rounded-md">
                 <h4 className="font-bold flex gap-2 items-center">
-                  Lab <span className="text-sm font-normal">(3hr)</span>
+                  <FlaskConical size={20} strokeWidth={2.5} /> Lab{" "}
+                  <span className="text-sm font-normal">(3hr)</span>
                 </h4>
                 <div>
                   <span>

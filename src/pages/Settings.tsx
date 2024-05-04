@@ -9,12 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { Settings as SettingsIcon } from "lucide-react";
 
 export default function Settings() {
-
   return (
     <DashboardContainer
       subHeader="Settings"
       header="Your Settings"
       headerIcon={<SettingsIcon />}
+      dropDown={false}
     >
       <div>
         <Tabs defaultValue="general" className="max-w-[60%]">

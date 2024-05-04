@@ -14,7 +14,11 @@ import Assignments from "./pages/Assignments";
 import StudySets from "./pages/StudySets";
 import StudySet from "./pages/StudySet";
 import Course from "./pages/Course";
+<<<<<<< HEAD
 import Documents from "./pages/Documents";
+=======
+import Assignment from "./pages/Assignment";
+>>>>>>> 931af36 (added single assignment page and dropdown button option)
 
 function App() {
   return (
@@ -40,6 +44,7 @@ function MainRouter() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:id" element={<Course />} />
+          <Route path="/assignments/:id" element={<Assignment />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/assignments" element={<Assignments />} />
           <Route path="/study-sets" element={<StudySets />}></Route>

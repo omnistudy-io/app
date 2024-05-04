@@ -18,6 +18,7 @@ export default function Dashboard() {
       headerIcon={<DashboardIcon />}
       callToAction={action}
       callToActionText="Dashboard"
+      dropDown={false}
     >
       <h1>Dashboard</h1>
       {/* <p>Welcome back, {!loading ? data.user.name : null}</p> */}

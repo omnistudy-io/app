@@ -25,6 +25,7 @@ export default function Courses() {
         setShowForm(!showForm);
       }}
       callToActionText="Add New Course"
+      dropDown={false}
     >
       <CoursesModal show={showForm} setShow={setShowForm} />
       <section className="flex flex-col gap-4">

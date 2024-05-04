@@ -21,6 +21,7 @@ export default function Assignments() {
         setShowForm(!showForm);
       }}
       callToActionText="Add New Assignment"
+      dropDown={false}
     >
       <AssignmentModal show={showForm} setShow={setShowForm} />
       <section className="flex flex-col gap-4">
