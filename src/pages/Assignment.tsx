@@ -89,14 +89,13 @@ export default function Assignment() {
         <Card className="flex flex-col bg-[#f5f5f5] p-4">
           <h3 className="text-2xl mb-2">Helpful Videos</h3>
           <div className="flex flex-row gap-x-6">
-            {videos != null && videos.videos.map((video: any, index: number) => {
+            {videos != null ? videos.videos.map((video: any, index: number) => {
               return <iframe 
                 src={`https://youtube.com/embed/${video.id}`}
                 className="w-[500px] h-[200px] rounded-lg"
                 allowFullScreen={true}
               />
-            })}
-            {videos == null && 
+            }) : 
               <>
                 <Skeleton className="w-[500px] h-[200px] rounded-lg" />
                 <Skeleton className="w-[500px] h-[200px] rounded-lg" />
