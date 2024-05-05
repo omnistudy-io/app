@@ -10,11 +10,13 @@ import Sidebar from "@/layouts/Sidebar";
 import Dashboard from "@/pages/Dashboard";
 import Settings from "@/pages/Settings";
 import Courses from "./pages/Courses";
+import Course from "./pages/Course";
 import Assignments from "./pages/Assignments";
+import Assignment from "./pages/Assignment";
+import Exams from "./pages/Exams";
+import Exam from "./pages/Exam";
 import StudySets from "./pages/StudySets";
 import StudySet from "./pages/StudySet";
-import Course from "./pages/Course";
-import Assignment from "./pages/Assignment";
 import Documents from "./pages/Documents";
 
 function App() {
@@ -39,14 +41,28 @@ function MainRouter() {
       <div className="w-full h-full p-4 bg-[#1f202f] overflow-hidden">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+
+          {/* Courses routes */}
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:id" element={<Course />} />
-          <Route path="/assignments/:id" element={<Assignment />} />
-          <Route path="/settings" element={<Settings />} />
+
+          {/* Assignments routes */}
           <Route path="/assignments" element={<Assignments />} />
+          <Route path="/assignments/:id" element={<Assignment />} />
+
+          {/* Exams routes */}
+          <Route path="/exams" element={<Exams />} />
+          <Route path="/exams/:id" element={<Exam />} />
+
+          {/* Study sets routes */}
           <Route path="/study-sets" element={<StudySets />}></Route>
           <Route path="/study-sets/:id" element={<StudySet />}></Route>
+
+          {/* Documents route */}
           <Route path="/documents" element={<Documents />}></Route>
+
+          {/* Settings route */}
+          <Route path="/settings" element={<Settings />} />
         </Routes>
         <Toaster />
       </div>

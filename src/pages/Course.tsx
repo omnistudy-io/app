@@ -19,7 +19,7 @@ export default function Course() {
 
   useEffect(() => {
     get(setCourse, "course", `/courses/${id}`);
-  });
+  }, []);
 
   const day = new Date().toLocaleDateString();
   const time = new Date().getTime();
@@ -28,8 +28,8 @@ export default function Course() {
   return (
     <DashboardContainer
       dropDown={false}
-      subHeader={`${course?.subject} ${course?.number}:`}
-      header={course?.title}
+      subHeader={`${course?.subject} ${course?.number}: ${course?.title}`}
+      header={`${course?.title} Course`}
     >
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-4">

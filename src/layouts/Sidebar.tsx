@@ -20,6 +20,7 @@ import {
   LayoutDashboard as DashboardIcon,
   GraduationCap as CoursesIcon,
   Clipboard as AssignmentsIcon,
+  TimerIcon as ExamsIcon,
   FileText as DocumentsIcon,
   NotebookText as StudySetsIcon,
   Bell as NotificationsIcon,
@@ -77,6 +78,11 @@ export default function Sidebar({ className }: SidebarProps) {
               icon={<AssignmentsIcon className="w-5" />}
               href="/assignments"
               title="Assignments"
+            />
+            <SidebarLink
+              icon={<ExamsIcon className="w-5" />}
+              href="/exams"
+              title="Exams"
             />
             <SidebarLink
               icon={<DocumentsIcon className="w-5" />}
