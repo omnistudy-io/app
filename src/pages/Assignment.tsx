@@ -7,13 +7,29 @@ import { Calendar, NotebookPen, Star } from "lucide-react";
 import React from "react";
 import { useParams } from "react-router-dom";
 
+import { useState, useEffect } from "react";
+import get from "@/utils/get";
+import post from "@/utils/post";
+import { AssignmentSchema } from "@/schema";
+
+import { Skeleton } from "@/components/ui/Skeleton"
+
 export default function Assignment() {
   const { id } = useParams();
 
-  const { data } = useGet(`/assignments/${id}`);
-  const actualPoints = data?.assignment.actual_points;
-  const possiblePoints = data?.assignment.possible_points;
-  const score = (actualPoints / possiblePoints) * 100;
+  const [assignment, setAssignment] = useState<AssignmentSchema | null>(null);
+  const [videos, setVideos] = useState<any | null>(null);
+
+  const actualPoints = assignment?.actual_points;
+  const possiblePoints = assignment?.possible_points;
+  const score = (actualPoints && possiblePoints) ? (actualPoints / possiblePoints) * 100 : 0; 
+
+  useEffect(() => {
+    get((data: AssignmentSchema) => {
+      setAssignment(data);
+      post(setVideos, "/ai/videos", { description: data.description, assignmentId: id });
+    }, "assignment", `/assignments/${id}`,)
+  }, []);
 
   const handleOption1 = () => {
     console.log("Option 1");
@@ -35,7 +51,7 @@ export default function Assignment() {
       callToActionText="Options"
       doropDownOptions={dropDownOptions}
       subHeader="CourseTitle"
-      header={data?.assignment.title}
+      header={assignment?.title}
     >
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-4">
@@ -50,19 +66,19 @@ export default function Assignment() {
                 <h4 className="font-bold flex items-center gap-2">
                   <Calendar size={20} strokeWidth={2.5} /> Due:
                 </h4>
-                <p>{formatDate(data?.assignment.due_at)}</p>
+                <p>{formatDate(assignment ? assignment.due_at : "")}</p>
               </div>
               <div className="flex gap-1">
-                <h4 className="font-bold flex items-center gap-2">
+                <h4 className="font-bold flex items-start gap-2">
                   <NotebookPen size={20} strokeWidth={2.5} /> Description:
                 </h4>
-                <p>{data?.assignment.description}</p>
+                <p>{assignment?.description}</p>
               </div>
               <div className="flex gap-1">
                 <h4 className="font-bold flex items-center gap-2">
                   <Star size={20} strokeWidth={2.5} /> Possible Points:
                 </h4>
-                <p>{data?.assignment.possible_points}</p>
+                <p>{assignment?.possible_points}</p>
               </div>
             </div>
           </Card>
@@ -71,11 +87,22 @@ export default function Assignment() {
           </Card>
         </div>
         <Card className="flex flex-col bg-[#f5f5f5] p-4">
-          <h3 className="text-2xl mb-2">Helpful Videos:</h3>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-[#34354a] p-4 h-[200px] rounded-lg"></div>
-            <div className="bg-[#34354a] p-4 h-[200px] rounded-lg"></div>
-            <div className="bg-[#34354a] p-4 h-[200px] rounded-lg"></div>
+          <h3 className="text-2xl mb-2">Helpful Videos</h3>
+          <div className="flex flex-row gap-x-6">
+            {videos != null && videos.videos.map((video: any, index: number) => {
+              return <iframe 
+                src={`https://youtube.com/embed/${video.id}`}
+                className="w-[500px] h-[200px] rounded-lg"
+                allowFullScreen={true}
+              />
+            })}
+            {videos == null && 
+              <>
+                <Skeleton className="w-[500px] h-[200px] rounded-lg" />
+                <Skeleton className="w-[500px] h-[200px] rounded-lg" />
+                <Skeleton className="w-[500px] h-[200px] rounded-lg" />
+              </>
+            }
           </div>
         </Card>
       </section>
