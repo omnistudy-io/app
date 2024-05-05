@@ -1,27 +1,30 @@
+// Component imports
 import { Card } from "@/components/ui/Card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
-import { Progress } from "@/components/ui/Progress";
-import { useGet } from "@/hooks/useApi";
-import formatDate from "@/utils/formatDate";
-import { Calendar, NotebookPen, Star } from "lucide-react";
-import React from "react";
-import { useParams } from "react-router-dom";
-
-import { useState, useEffect } from "react";
-import get from "@/utils/get";
-import post from "@/utils/post";
-import put from "@/utils/put";
-
-import { AssignmentSchema } from "@/schema";
 import { Skeleton } from "@/components/ui/Skeleton"
 import { Slider } from "@/components/ui/Slider"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+// Hooks, utils, and schema imports
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import get from "@/utils/get";
+import post from "@/utils/post";
+import put from "@/utils/put";
+import formatDate from "@/utils/formatDate";
+import { AssignmentSchema, DocumentSchema } from "@/schema";
+
+// Icon imports
+import { Calendar, NotebookPen, Star } from "lucide-react";
+
+
 export default function Assignment() {
   const { id } = useParams();
 
   const [assignment, setAssignment] = useState<AssignmentSchema & CourseSnapshot | null>(null);
+  const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
   const [progress, setProgress] = useState<number[]>([0]);
 
@@ -34,6 +37,9 @@ export default function Assignment() {
       setAssignment(data);
       post(setVideos, "/ai/videos", { description: data.description, assignmentId: id });
       setProgress([data.progress]);
+
+      // Get documents
+      get(setDocuments, "docs", `/assignments/${id}/documents`);
     }, "assignment", `/assignments/${id}`);
   }, []);
 
@@ -73,10 +79,10 @@ export default function Assignment() {
           <h3 className="text-2xl mb-2">Assignment Progress: {progress[0]}%</h3>
           <Slider step={5} max={100} value={progress} onValueChange={displayProgressChange} onValueCommit={putProgressChange} />
         </Card>
-        <div className="flex gap-4">
-          <Card className="bg-[#f5f5f5] p-4 flex flex-row gap-x-12">
+        <div className="flex gap-4 w-full">
+          <Card className="bg-[#f5f5f5] p-4 flex flex-row gap-x-12 w-full max-w-[60%]">
             {/* Assignment information */}
-            <div>
+            <div className="mr-auto">
               <h3 className="text-2xl mb-2">Assignment Information</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-1">
@@ -111,8 +117,45 @@ export default function Assignment() {
               <h3 className="text-xl">Score</h3>
             </div>
           </Card>
-          <Card className="bg-[#f5f5f5] p-4 flex-1">
-            <h3 className="text-2xl mb-2">Documents</h3>
+          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[40%]">
+            <div>
+              <h3 className="text-2xl">Documents</h3>
+            </div>
+            <div className="w-full">
+              <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead className="text-right">Link</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {/* Documents found */}
+                    {documents && documents.map((document: DocumentSchema, index: number) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell>{document.title}</TableCell>
+                          <TableCell className="text-right">
+                            <a 
+                              className="text-[#00adb5] hover:underline"
+                              href={document.url} 
+                              target="_blank" 
+                              rel="noreferrer"
+                            >
+                                Link
+                            </a>
+                          </TableCell>
+                        </TableRow>
+                      )})}
+                      {/* If there are no documents or are loading */}
+                      {documents == null && 
+                        <TableRow>
+                          <TableCell>No documents</TableCell>
+                        </TableRow>
+                      }
+                  </TableBody>
+                </Table>
+            </div>
           </Card>
         </div>
         <Card className="flex flex-col bg-[#f5f5f5] p-4">

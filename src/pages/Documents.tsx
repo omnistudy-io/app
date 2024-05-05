@@ -257,14 +257,18 @@ export function DocumentTableRow(props: DocumentTableRowProps) {
         setCourse(course || null);
         
         // If the assignment is not for the selected course, reset the assignment
-        if(assignment && assignment.course_id !== course?.id)
+        if(assignment && assignment.course_id !== course?.id) {
             setAssignment(null);
+            put(() => {}, `/documents/${props.doc.id}`, { assignment_id: "null" });
+        }
         // Filter assignments for the selected course
         setAssignments(props.assignments.filter((a) => a.course_id === course?.id));
 
         // If the exam is not for the selected course, reset the exam
-        if(exam && exam.course_id !== course?.id)
+        if(exam && exam.course_id !== course?.id) {
             setExam(null);
+            put(() => {}, `/documents/${props.doc.id}`, { exam_id: "null" });
+        }
         // Filter exams for the selected course
         setExams(props.exams.filter((e) => e.course_id === course?.id));
 
