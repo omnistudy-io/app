@@ -10,7 +10,7 @@ import { useGet } from "@/hooks/useApi";
 export default function Assignments() {
   const [showForm, setShowForm] = useState(false);
 
-  const { data, loading, error } = useGet("/users/2/assignments");
+  const { data, loading, error } = useGet("/users/1/assignments");
 
   return (
     <DashboardContainer
