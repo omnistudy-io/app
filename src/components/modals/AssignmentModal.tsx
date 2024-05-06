@@ -5,21 +5,12 @@ import { usePost } from "@/hooks/useApi";
 import { DatePicker } from "../ui/DatePicker";
 
 export default function AssignmentsModal(props: AssignmentsModalProps) {
+
+  // State management
   const [assignmentNumber, setAssignmentNumber] = useState("");
   const [assignmentTitle, setAssignmentTitle] = useState("");
   const [dueDate, setDueDate] = useState(new Date());
   const [showDueDate, setShowDueDate] = useState(false);
-
-  const { data, loading, error } = usePost(
-    "/users/2/assignments",
-    {},
-    {
-      course_id: "2",
-      title: assignmentTitle,
-      description: "",
-      due_at: "2024-04-29T23:59:00",
-    }
-  );
 
   const handleSubmit = () => {
     if (!assignmentTitle) {

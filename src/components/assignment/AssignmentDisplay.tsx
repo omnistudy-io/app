@@ -1,108 +1,104 @@
-import { useEffect, useState } from "react";
+// Component imports
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
+import { Link } from "react-router-dom";
 import { Card } from "../ui/Card";
-import { useGet } from "@/hooks/useApi";
+
+// Hook, util, and schema imports
+import { useEffect, useState } from "react";
+import get from "@/utils/get";
 import formatDate from "@/utils/formatDate";
 import { AssignmentSchema } from "@/schema";
-import { Check, Clock } from "lucide-react";
-import { toast } from "@/hooks/useToast";
-import { Link } from "react-router-dom";
 
+// Icon imports
+import { MessageSquareWarningIcon as OverdueIcon } from "lucide-react";
+
+
+/**
+ * Assignment display component
+ * @param props Props to send
+ * @returns JSX.Element
+ */
 export default function AssignmentDisplay(props: AssignmentDisplayProps) {
-  const [assignmentStatus, setAssignmentStatus] = useState<any[]>([]);
 
-  const endpoint = props.endpoint || "/users/{userId}/assignments";
+	// Endpoint for the API call
+	const endpoint = props.endpoint || "/users/{uid}/assignments";
 
-  const { data } = useGet(endpoint);
+	// State management
+	const [assignments, setAssignments] = useState<(AssignmentSchema & CourseSnapshot)[] | null>(null);
 
-  useEffect(() => {
-    if (data) {
-      setAssignmentStatus(data.assignments.map(() => false));
-    }
-  }, [data]);
+	// Get initial data
+	useEffect(() => {
+		get(setAssignments, "assignments", endpoint);
+	}, []);
 
-  const handleAssignmentStatus = (index: number) => {
-    setAssignmentStatus((prevStatus: any) => {
-      const newStatus = [...prevStatus];
-      newStatus[index] = !newStatus[index];
-      return newStatus;
-    });
-  };
+	// Return JSX
+	return (
+		<Card className={`${props.className} p-4 bg-[#f5f5f5] h-full`}>
+			<div>
+				<h3 className="text-2xl">
+					<Link to="/assignments">Assignments</Link>
+				</h3>
+			</div>
 
-  return (
-    <Card className={`${props.className} p-4 bg-[#f5f5f5] h-full`}>
-      <div className="mb-4">
-        <h3 className="text-2xl mb-2">
-          <Link to="/assignments">Assignments</Link>
-        </h3>
-        <div className="grid grid-cols-4 border-y border-[#34354a] text-sm">
-          <span className="flex items-center">Name</span>
-          <span className="flex items-center">Class</span>
-          <span className="py-2 pr-4">Status</span>
-          <span className="flex items-center justify-end">Due Date</span>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 text-left">
-        {data?.assignments.map(
-          (
-            assignment: AssignmentSchema & { courseTitle: string },
-            index: number
-          ) => (
-            <Link to={`/assignments/${assignment.id}`}>
-              <div className="grid grid-cols-4 text-sm gap-x-2" key={index}>
-                <div className="flex items-center">
-                  <span>{assignment.title}</span>
-                </div>
-                <div className="flex items-center whitespace-nowrap overflow-hidden">
-                  <span>{assignment.courseTitle}</span>
-                </div>
-                <div className="flex items-center">
-                  {/* Use assignmentStatus[index] to determine the status */}
-                  <span
-                    onClick={() => {
-                      handleAssignmentStatus(index);
-                      toast({
-                        title: `${assignment.title}`,
-                        description: !assignmentStatus[index]
-                          ? "Done"
-                          : "In Progress",
-                      });
-                    }}
-                    className={`py-1 px-3 rounded cursor-pointer hover:shadow ${
-                      assignmentStatus[index]
-                        ? "bg-[#00adb520]"
-                        : "bg-[#86868620]"
-                    }`}
-                  >
-                    {assignmentStatus[index] ? (
-                      <div className="flex items-center gap-x-2">
-                        <Check
-                          strokeWidth={3}
-                          className="w-[20px] h-[20px] border-[1.9px] border-[#00adb5] p-[.125rem] rounded-full text-[#00adb5]"
-                        />
-                        Done
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-x-2">
-                        <Clock className="h-[20px] w-[20px]" /> In Progress
-                      </div>
-                    )}
-                  </span>
-                </div>
-                <div className="flex items-center justify-end">
-                  <span>{formatDate(assignment.due_at)}</span>
-                </div>
-              </div>
-            </Link>
-          )
-        )}
-      </div>
-    </Card>
-  );
+			<div className="py-2">
+				<Table>
+					<TableHeader>
+						<TableRow>
+							<TableHead>Title</TableHead>
+							<TableHead>Course</TableHead>
+							<TableHead className="w-[150px]">Progress</TableHead>
+							<TableHead className="text-right">Due Date</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{/* If assignments found */}
+						{assignments && assignments.map((assignment: AssignmentSchema & CourseSnapshot, i: number) => {
+							const fullCourseName = `${assignment.courseSubject} ${assignment.courseNumber}: ${assignment.courseTitle}`;
+							const courseName = fullCourseName.length > 24 ? fullCourseName.slice(0, 24) + "..." : fullCourseName;
+							return <TableRow>
+								<TableCell className="flex flex-col gap-y-1 hover:underline hover:text-[#00adb5] transition-all duration-150">
+									{window.location.href.includes("courses") ? <Link reloadDocument to={`/assignments/${assignment.id}`}>{assignment.title}</Link> : <Link to={`/assignments/${assignment.id}`}>{assignment.title}</Link>}
+								</TableCell>
+								<TableCell className="hover:underline hover:text-[#00adb5] transition-all duration-150">
+									<Link to={`/courses/${assignment.course_id}`}>{courseName}</Link>
+								</TableCell>
+								<TableCell className="flex flex-row gap-x-4">
+									<p>{assignment.progress}%</p>
+								</TableCell>
+								<TableCell className="text-right">
+									<div className="flex flex-row gap-x-2 items-center justify-end">
+										{/* Show a small badge if overdue */}
+										{new Date(assignment.due_at) < new Date() ?
+											<>
+												<OverdueIcon className="text-red-500" size={20} />
+												<p className="text-red-500">{formatDate(assignment.due_at)}</p>
+											</>
+										:
+											<p>{formatDate(assignment.due_at)}</p>
+										}
+									</div>
+								</TableCell>
+							</TableRow>
+						})}
+						{/* No assignments found */}
+						{!assignments && <TableRow>
+							<TableCell>No assignments</TableCell>
+						</TableRow>}
+					</TableBody>
+				</Table>
+			</div>
+		</Card>
+	);
 }
 
 // ---------- TYPE DEFINITIONS ---------- //
-
 type AssignmentDisplayProps = {
-  className?: string;
-  endpoint?: string;
+	className?: string;
+	endpoint?: string;
 };
+
+type CourseSnapshot = {
+	courseSubject: string;
+	courseNumber: string;
+	courseTitle: string;
+}

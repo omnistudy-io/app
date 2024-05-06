@@ -14,7 +14,7 @@ export default function Plan() {
 
     useEffect(() => {
         get(setPlans, "plans", "/plans");
-        get(setUserPlan, "user_plan", "/users/1/plan");
+        get(setUserPlan, "user_plan", "/users/{uid}/plan");
     });
 
     return (

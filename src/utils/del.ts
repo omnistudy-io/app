@@ -12,6 +12,9 @@ const base = "http://localhost:3001";
  * @returns 
  */
 export default function del(update: Function, path: string, headers: object = {}) {
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    headers = { ...headers, authorization: `Bearer ${token}` };
+    
     return new Promise((resolve, _) => {
         axios.delete(`${base}${path}`, { headers: headers }).then((res) => {
             resolve(res.data);

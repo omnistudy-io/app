@@ -12,12 +12,16 @@ const base = "http://localhost:3001";
  * @returns 
  */
 export default function get(update: Function, field: string, path: string, headers: object = {}) {
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    headers = { ...headers, authorization: `Bearer ${token}` };
+
     return new Promise((resolve, _) => {
         axios.get(`${base}${path}`, { headers: headers }).then((res) => {
             resolve(res.data);
             update(field === "" ? res.data : res.data[field]);
         }).catch((err) => {
             resolve(err);
+            update(null);
         });
     });
 }

@@ -4,44 +4,69 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Skeleton } from "@/components/ui/Skeleton"
 import { Slider } from "@/components/ui/Slider"
+import NotFound from "./NotFound";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 // Hooks, utils, and schema imports
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import get from "@/utils/get";
 import post from "@/utils/post";
 import put from "@/utils/put";
 import formatDate from "@/utils/formatDate";
-import { AssignmentSchema, DocumentSchema } from "@/schema";
+import { AssignmentSchema, CourseSchema, DocumentSchema } from "@/schema";
+import AuthContext from "@/context/AuthContext";
 
 // Icon imports
 import { Calendar, NotebookPen, Star } from "lucide-react";
 
 
 export default function Assignment() {
+  // Hooks
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
+  // State management
   const [assignment, setAssignment] = useState<AssignmentSchema & CourseSnapshot | null>(null);
+  const [course, setCourse] = useState<CourseSchema | null>(null);
   const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
   const [progress, setProgress] = useState<number[]>([0]);
 
+  // Calculate score from assignment
   const actualPoints = assignment?.actual_points;
   const possiblePoints = assignment?.possible_points;
   const score = (actualPoints && possiblePoints) ? (actualPoints / possiblePoints) * 100 : 0; 
 
+  // Get initial data
   useEffect(() => {
     get((data: AssignmentSchema & CourseSnapshot) => {
       setAssignment(data);
-      post(setVideos, "/ai/videos", { description: data.description, assignmentId: id });
-      setProgress([data.progress]);
+      if(data) {
+        post(setVideos, "/ai/videos", { description: data.description, assignmentId: id });
+        setProgress([data.progress]);
+        get(setCourse, "course", `/courses/${data.course_id}`);
+      }
 
       // Get documents
       get(setDocuments, "docs", `/assignments/${id}/documents`);
     }, "assignment", `/assignments/${id}`);
   }, []);
+
+  // If the assignment does not exist, return a 404 page
+  if (!assignment) {
+    return (
+      <NotFound />
+    );
+  }
+
+  // If user does not own assignment, return a 404 page
+  if(course?.user_id != user?.id) {
+    return(
+      <NotFound />
+    )
+  }
 
   const handleOption1 = () => {
     console.log("Option 1");
@@ -61,8 +86,9 @@ export default function Assignment() {
   }
 
   const dropDownOptions = [
-    { label: "Option 1", onClick: handleOption1 },
-    { label: "Option 2", onClick: handleOption2 },
+    { label: "Ask Questions", onClick: handleOption2 },
+    { label: "Summarization", onClick: handleOption2 },
+    { label: "Question Generator", onClick: handleOption1 },
   ];
 
   return (

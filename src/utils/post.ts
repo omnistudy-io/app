@@ -13,6 +13,9 @@ const base = "http://localhost:3001";
  * @returns 
  */
 export default function post(update: Function, path: string, data: object, headers: object = {}) {
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    headers = { ...headers, authorization: `Bearer ${token}` };
+    
     return new Promise((resolve, _) => {
         axios.post(`${base}${path}`, data, { headers: headers }).then((res) => {
             resolve(res.data);

@@ -1,94 +1,85 @@
-import { useGet } from "@/hooks/useApi";
-import { toast } from "@/hooks/useToast";
-import { ExamSchema } from "@/schema";
-import formatDate from "@/utils/formatDate";
-import { Check, Clock } from "lucide-react";
-import { useEffect, useState } from "react";
+// Component imports
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
+import { Link } from "react-router-dom";
 import { Card } from "../ui/Card";
 
+// Hook, util, and schema imports
+import { useEffect, useState } from "react";
+import get from "@/utils/get";
+import formatDate from "@/utils/formatDate";
+import { ExamSchema } from "@/schema";
+
+
+/**
+ * Exam display component
+ * @param props Props to send
+ * @returns JSX.Element
+ */
 export default function ExamDisplay(props: ExamDisplayProps) {
-  const [examStatus, setExamStatus] = useState<any[]>([]);
 
-  const endpoint = props.endpoint || "/users/{userId}/exams";
+	// Endpoint for the API call
+	const endpoint = props.endpoint || "/users/{uid}/exams";
 
-  const { data } = useGet(endpoint);
+	// State management
+	const [exams, setExams] = useState<(ExamSchema & CourseSnapshot)[] | null>(null);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setExamStatus(data.assignments.map(() => false));
-  //   }
-  // }, [data]);
+	// Get initial data
+	useEffect(() => {
+		get(setExams, "exams", endpoint);
+	}, []);
 
-  const handleExamStatus = (index: number) => {
-    setExamStatus((prevStatus: any) => {
-      const newStatus = [...prevStatus];
-      newStatus[index] = !newStatus[index];
-      return newStatus;
-    });
-  };
-  return (
-    <Card className={`${props.className} p-4 bg-[#f5f5f5] h-full`}>
-      <div className="mb-4">
-        <h3 className="text-2xl mb-2">Exams</h3>
-        <div className="grid grid-cols-3 border-y border-[#34354a] text-sm py-2">
-          <span className="flex items-center">Name</span>
-          <span className="flex items-center">Class</span>
-          {/* <span className="py-2 pr-4">Status</span> */}
-          <span className="flex items-center justify-end">Date</span>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 text-left">
-        {data?.exams.map(
-          (exam: ExamSchema & { courseTitle: string }, index: number) => (
-            <div className="grid grid-cols-3 text-sm gap-x-2 py-1" key={index}>
-              <div className="flex items-center">
-                <span>{exam.title}</span>
-              </div>
-              <div className="flex items-center whitespace-nowrap overflow-hidden">
-                <span>{exam.courseTitle}</span>
-              </div>
-              {/* <div className="flex items-center">
-                <span
-                  onClick={() => {
-                    handleExamStatus(index);
-                    toast({
-                      title: `${exam.title}`,
-                      description: !examStatus[index] ? "Done" : "In Progress",
-                    });
-                  }}
-                  className={`py-1 px-3 rounded cursor-pointer hover:shadow whitespace-nowrap overflow-hidden ${
-                    examStatus[index] ? "bg-[#00adb520]" : "bg-[#86868620]"
-                  }`}
-                >
-                  {examStatus[index] ? (
-                    <div className="flex items-center gap-x-2">
-                      <Check
-                        strokeWidth={3}
-                        className="w-[20px] h-[20px] border-[1.9px] border-[#00adb5] p-[.125rem] rounded-full text-[#00adb5]"
-                      />
-                      Done
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-x-2">
-                      <Clock className="h-[20px] w-[20px]" /> In Progress
-                    </div>
-                  )}
-                </span>
-              </div> */}
-              <div className="flex items-center justify-end">
-                <span>{formatDate(exam.date)}</span>
-              </div>
-            </div>
-          )
-        )}
-      </div>
-    </Card>
-  );
+	// Return JSX
+	return (
+		<Card className={`${props.className} p-4 bg-[#f5f5f5] h-full`}>
+			<div>
+				<h3 className="text-2xl">
+					<Link to="/exams">Exams</Link>
+				</h3>
+			</div>
+
+			<div className="py-2">
+				<Table>
+					<TableHeader>
+						<TableRow>
+							<TableHead>Name</TableHead>
+							<TableHead>Course</TableHead>
+							<TableHead className="text-right">Date</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{/* If assignments found */}
+						{exams && exams.map((exam: ExamSchema & CourseSnapshot, i: number) => {
+							const fullCourseName = `${exam.courseSubject} ${exam.courseNumber}: ${exam.courseTitle}`;
+							const courseName = fullCourseName.length > 24 ? fullCourseName.slice(0, 24) + "..." : fullCourseName;
+							return <TableRow>
+								<TableCell className="hover:underline hover:text-[#00adb5] transition-all duration-150">
+									{window.location.href.includes("courses") ? <a href={`/exams/${exam.id}`}>{exam.title}</a> : <Link to={`/exams/${exam.id}`}>{exam.title}</Link>}
+								</TableCell>
+								<TableCell className="hover:underline hover:text-[#00adb5] transition-all duration-150">
+									<Link to={`/courses/${exam.course_id}`}>{courseName}</Link>
+								</TableCell>
+								<TableCell className="text-right">{formatDate(exam.date)}</TableCell>
+							</TableRow>
+						})}
+						{/* No assignments found */}
+						{!exams && <TableRow>
+							<TableCell>No exams</TableCell>
+						</TableRow>}
+					</TableBody>
+				</Table>
+			</div>
+		</Card>
+	);
 }
 
 // ---------- TYPE DEFINITIONS ---------- //
-
 type ExamDisplayProps = {
-  className?: string;
-  endpoint?: string;
+	className?: string;
+	endpoint?: string;
 };
+
+type CourseSnapshot = {
+	courseSubject: string;
+	courseNumber: string;
+	courseTitle: string;
+}

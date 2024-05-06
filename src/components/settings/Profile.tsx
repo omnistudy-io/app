@@ -14,7 +14,7 @@ export default function Profile() {
     const [newProfile, setNewProfile] = useState<UserProfileSchema>(data?.user_profile);
 
     async function saveChangesHandler() {
-        const result = await put(`/users/1/profile`, {}, {
+        const result = await put(`/users/{uid}/profile`, {}, {
             address1: newProfile.address1
         });
         toast({ title: "Profile Update", description: "Your profile was updated succesfully" });

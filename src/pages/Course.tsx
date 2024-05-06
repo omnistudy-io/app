@@ -6,17 +6,23 @@ import { Progress } from "@/components/ui/Progress";
 import { useGet } from "@/hooks/useApi";
 import { FlaskConical, Laptop } from "lucide-react";
 import { useParams } from "react-router-dom";
-// import { GraduationCap as CoursesIcon } from "lucide-react";
+import AuthContext from "@/context/AuthContext";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import get from "@/utils/get";
 import { CourseSchema } from "@/schema";
+import NotFound from "./NotFound";
 
 export default function Course() {
-  const { id } = useParams();
 
+  // Hooks
+  const { id } = useParams();
+  const { user } = useContext(AuthContext);
+
+  // State management
   const [course, setCourse] = useState<CourseSchema | null>(null);
 
+  // Get initial data
   useEffect(() => {
     get(setCourse, "course", `/courses/${id}`);
   }, []);
@@ -24,6 +30,13 @@ export default function Course() {
   const day = new Date().toLocaleDateString();
   const time = new Date().getTime();
   const endDate = new Date(course ? course.end_date : "").getTime();
+
+  // If course does not exist or user is not the owner of the course, return a 404 page
+  if(course?.user_id != user?.id) {
+    return(
+      <NotFound />
+    )
+  }
 
   return (
     <DashboardContainer

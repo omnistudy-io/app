@@ -19,8 +19,8 @@ export default function StudySets() {
     console.log(sets);
 
     useEffect(() => {
-        get(setSets, "studySets", "/users/1/study-sets");
-        get(setFilterSets, "studySets", "/users/1/study-sets");
+        get(setSets, "studySets", "/users/{uid}/study-sets");
+        get(setFilterSets, "studySets", "/users/{uid}/study-sets");
     }, []);
 
     return (
@@ -32,6 +32,7 @@ export default function StudySets() {
                 // setShowForm(!showForm);
             }}
             callToActionText="Create New"
+            dropDown={false}
         >
             <div className="flex items-center gap-x-2">
                 <SearchBar 

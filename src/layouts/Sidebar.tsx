@@ -8,11 +8,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/Popover";
 
-// Hooks and utils
-import { useEffect, useState } from "react";
-import useAuth from "@/hooks/useAuth";
+// Hooks, utils, and schema imports
+import { useEffect, useState, useContext } from "react";
 import getInitials from "@/utils/getInitials";
 import { cn } from "@/lib/utils";
+import AuthContext from "@/context/AuthContext";
 
 // Images and icons
 import Logo from "@/assets/LogoVector.svg";
@@ -27,12 +27,13 @@ import {
   Calendar as ScheduleIcon,
   Settings as SettingsIcon,
 } from "lucide-react";
+import { UserSchema } from "@/schema";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function Sidebar({ className }: SidebarProps) {
-  // Get the user
-  const { user, loading } = useAuth();
+
+  const { user, setUser } = useContext(AuthContext);
 
   // Logout function
   function logout() {
@@ -151,14 +152,14 @@ export default function Sidebar({ className }: SidebarProps) {
                 alt="Anita Cruz"
                 src="/placeholder.svg?height=32&width=32"
               />
-              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+              <AvatarFallback>{getInitials(user ? user.name : "")}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
               <span className="text-sm text-white">
-                {loading ? "..." : user.name}
+                {user && user.name}
               </span>
               <span className="text-xs text-gray-400">
-                {loading ? "..." : user.email}
+                {user && user.email}
               </span>
             </div>
           </div>

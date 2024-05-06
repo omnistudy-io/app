@@ -20,7 +20,7 @@ export default function CoursesFilter() {
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
     useEffect(() => {
-        get(setData, "/users/1/courses");
+        get(setData, "courses", "/users/{uid}/courses");
     }, []);
 
     function handleCheckChange(item: CourseSchema) {

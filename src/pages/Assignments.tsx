@@ -1,16 +1,31 @@
-import { useState } from "react";
-import AssignmentTable from "@/components/assignment/AssignmentTable";
+// Component imports
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
-import { Clipboard as AssignmentsIcon } from "lucide-react";
-import AssignmentModal from "@/components/assignment/AssignmentModal";
+import AssignmentModal from "@/components/modals/AssignmentModal";
 import AssignmentDisplay from "@/components/assignment/AssignmentDisplay";
 import { Card } from "@/components/ui/Card";
-import { useGet } from "@/hooks/useApi";
+
+// Hook, util, and schema imports
+import { useEffect, useState } from "react";
+import get from "@/utils/get";
+import { AssignmentSchema } from "@/schema";
+
+// Icon imports
+import { Clipboard as AssignmentsIcon, PlusIcon } from "lucide-react";
 
 export default function Assignments() {
   const [showForm, setShowForm] = useState(false);
 
-  const { data, loading, error } = useGet("/users/1/assignments");
+  const [assignments, setAssignments] = useState<(AssignmentSchema & CourseSnapshot)[] | null>(null);
+  const [overdue, setOverdue] = useState<number>(0);
+
+  // Get initial data
+  useEffect(() => {
+    get((data: (AssignmentSchema & CourseSnapshot)[]) => {
+      setAssignments(data);
+      if(data)
+        setOverdue(data.filter((assignment) => new Date(assignment.due_at) < new Date()).length);
+    }, "assignments", "/users/{uid}/assignments");
+  }, []);
 
   return (
     <DashboardContainer
@@ -20,7 +35,8 @@ export default function Assignments() {
       callToAction={() => {
         setShowForm(!showForm);
       }}
-      callToActionText="Add New Assignment"
+      callToActionText="New Assignment"
+      callToActionIcon={<PlusIcon size={16} />}
       dropDown={false}
     >
       <AssignmentModal show={showForm} setShow={setShowForm} />
@@ -29,17 +45,23 @@ export default function Assignments() {
           <Card className="px-4 py-6 bg-[#f5f5f5] flex items-center justify-between basis-1/2">
             <h3 className="text-2xl">Total Assignments</h3>
             <span className="text-4xl">
-              {data ? data.assignments.length : "0"}
+              {assignments ? assignments.length : 0}
             </span>
           </Card>
           <Card className="px-4 py-6 bg-[#f5f5f5] flex items-center justify-between basis-1/2">
             <h3 className="text-2xl">Overdue Assignments</h3>
-            <span className="text-4xl">2</span>
+            <span className="text-4xl">{overdue}</span>
           </Card>
         </div>
-        {/* <AssignmentTable /> */}
         <AssignmentDisplay />
       </section>
     </DashboardContainer>
   );
 }
+
+// Type definitions
+type CourseSnapshot = {
+  courseTitle: string;
+  courseNumber: string;
+  courseSubject: string;
+};

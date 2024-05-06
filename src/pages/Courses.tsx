@@ -3,18 +3,23 @@ import { useGet } from "@/hooks/useApi";
 import { useToast } from "@/hooks/useToast";
 
 import AssignmentDisplay from "@/components/assignment/AssignmentDisplay";
-import CourseCard from "@/components/courses/CourseCard";
-import Grades from "@/components/Grades";
-import { DashboardContainer } from "@/components/ui/DashboardContainer";
-import { GraduationCap as CoursesIcon } from "lucide-react";
-import CoursesModal from "@/components/courses/CoursesModal";
 import ExamDisplay from "@/components/exams/ExamDisplay";
+import CourseCard from "@/components/courses/CourseCard";
+import { DashboardContainer } from "@/components/ui/DashboardContainer";
+import { GraduationCap as CoursesIcon, PlusIcon } from "lucide-react";
+import CoursesModal from "@/components/modals/CoursesModal";
+import { CourseSchema } from "@/schema";
+import get from "@/utils/get";
 
 export default function Courses() {
   const [showForm, setShowForm] = useState(false);
 
   const { toast } = useToast();
-  const { data } = useGet("/users/{userId}/courses");
+  const [courses, setCourses] = useState<CourseSchema[]>([]);
+
+  useEffect(() => {
+    get(setCourses, "courses", "/users/{uid}/courses");
+  }, []);
 
   return (
     <DashboardContainer
@@ -24,27 +29,24 @@ export default function Courses() {
       callToAction={() => {
         setShowForm(!showForm);
       }}
-      callToActionText="Add New Course"
+      callToActionText="New Course"
+      callToActionIcon={<PlusIcon size={16} />}
       dropDown={false}
     >
-      <CoursesModal show={showForm} setShow={setShowForm} />
+      <CoursesModal show={showForm} setShow={setShowForm} updateCourses={setCourses} />
       <section className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-4">
-          {data?.courses.length > 0 ? (
-            data?.courses.map((course: any, index: number) => (
+          {courses && courses.length > 0 ? (
+            courses.map((course: any, index: number) => (
               <CourseCard course={course} key={index} />
             ))
           ) : (
             <div>You have no courses</div>
           )}
         </div>
-        <div
-          className="flex gap-4"
-          // onClick={() => toast({ title: "Hey", description: "Wassup" })}
-        >
+        <div className="flex gap-4" >
           <AssignmentDisplay className="basis-3/5" />
-          {/* <Grades /> */}
-          <ExamDisplay className="basis-2/5" />
+          <ExamDisplay className="basis-2/5"></ExamDisplay>
         </div>
       </section>
     </DashboardContainer>

@@ -52,9 +52,10 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
-                className="py-2 px-6 rounded-md bg-[#00adb5] text-white shadow-lg"
+                className="py-2 px-6 rounded-md bg-[#00adb5] text-white shadow-lg flex flex-row items-center gap-x-1"
                 onClick={props.callToAction}
               >
+                {props.callToActionIcon}
                 {props.callToActionText}
               </motion.button>
             ))}
@@ -75,6 +76,7 @@ type DashboardContainerProps = {
   headerIcon?: ReactNode;
   callToAction?: any;
   callToActionText?: string;
+  callToActionIcon?: ReactNode;
   dropDown: boolean;
   doropDownOptions?: DropdownOption[];
   link?: string;

@@ -3,11 +3,13 @@ import { UserStudySetSchema, UserStudySetQuestionSchema } from "@/schema";
 import { NotebookIcon as StudySetIcon } from "lucide-react";
 
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/Pagination";
 
 import get from "@/utils/get";
+import AuthContext from "@/context/AuthContext";
+import NotFound from "./NotFound";
 
 type StudyQuestions = {
     questions: UserStudySetQuestionSchema[];
@@ -15,7 +17,11 @@ type StudyQuestions = {
 
 export default function StudySet() {
 
+    // Hooks
     const { id } = useParams<{ id: string }>();
+    const { user } = useContext(AuthContext);
+
+    // State management
     const [studySet, setStudySet] = useState<UserStudySetSchema & StudyQuestions | null>(null);
     const [currentQuestion, setCurrentQuestion] = useState<number>(1);
 
@@ -37,6 +43,13 @@ export default function StudySet() {
         }
     }
 
+    // If the study set does not exist or the user does not own it, return a 404 page
+    if (!studySet || studySet?.user_id != user?.id) {
+        return (
+            <NotFound />
+        )
+    }
+
     return (
         <DashboardContainer
             subHeader={"Study Set"}
@@ -46,6 +59,7 @@ export default function StudySet() {
                 // setShowForm(!showForm);
             }}
             callToActionText="Edit Study Set"
+            dropDown={false}
         >
             <div className="p-2 flex flex-row justify-center relative mb-4">
                 {studySet != null && studySet.questions.map((q, i) => {

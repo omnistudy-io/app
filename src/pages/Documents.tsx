@@ -8,11 +8,12 @@ import ConfirmModal from "@/components/modals/ConfirmModal";
 
 // Hook, utils, and schema import
 import { AssignmentSchema, CourseSchema, DocumentSchema, ExamSchema } from "@/schema";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import get from "@/utils/get";
 import post from "@/utils/post";
 import put from "@/utils/put";
 import del from "@/utils/del";
+import AuthContext from "@/context/AuthContext";
 
 // Icon imports
 import { FileText as DocumentsIcon } from "lucide-react";
@@ -23,6 +24,9 @@ import { FileWarningIcon } from "lucide-react";
  * @returns JSX.Element
  */
 export default function Documents() {
+
+    // Hooks
+    const { user } = useContext(AuthContext);
 
     // State management
     const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
@@ -45,12 +49,12 @@ export default function Documents() {
      */
     useEffect(() => {
         // Initial state management
-        get(setDocuments, "docs", "/users/1/documents");
-        get(setFilterDocuments, "docs", "/users/1/documents");
+        get(setDocuments, "docs", "/users/{uid}/documents");
+        get(setFilterDocuments, "docs", "/users/{uid}/documents");
         // Initial subcomponent state management
-        get(setCourses, "courses", "/users/1/courses");
-        get(setAssignments, "assignments", "/users/1/assignments");
-        get(setExams, "exams", "/users/1/exams");
+        get(setCourses, "courses", "/users/{uid}/courses");
+        get(setAssignments, "assignments", "/users/{uid}/assignments");
+        get(setExams, "exams", "/users/{uid}/exams");
     }, []);
 
     /**
@@ -67,13 +71,14 @@ export default function Documents() {
         // Create a new FormData
         const formData = new FormData();
         formData.append("document", file);
-        formData.append("user_id", "1");
+        if(user)
+            formData.append("user_id", `${user.id}`);
 
         // Post the file
         setShowLoadModal(true);
         post(() => {
-            get(setDocuments, "docs", "/users/1/documents");
-            get(setFilterDocuments, "docs", "/users/1/documents");
+            get(setDocuments, "docs", "/users/{uid}/documents");
+            get(setFilterDocuments, "docs", "/users/{uid}/documents");
             setShowLoadModal(false);
         }, "/documents", formData);
     }
