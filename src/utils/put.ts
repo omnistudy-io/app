@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL
-const base = "http://localhost:3001";
+const base = process.env.REACT_APP_API_BASE || "http://localhost:3001";
 
 /**
  * Make a PUT request to the API

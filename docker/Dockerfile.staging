@@ -17,5 +17,8 @@ COPY . .
 # Build the React app
 RUN npm run build
 
+# Environment variables
+ENV REACT_APP_API_BASE https://staging-api.omnistudy.io
+
 # Serve the build
 CMD ["npx", "serve", "-s", "build"]

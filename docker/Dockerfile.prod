@@ -1,0 +1,24 @@
+# Use Node.js as the base image
+FROM node:latest
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and yarn.lock to the container
+COPY package.json yarn.lock ./
+
+# Install dependencies
+RUN npm install
+RUN npm install -g serve
+
+# Copy the app's source code to the container
+COPY . .
+
+# Build the React app
+RUN npm run build
+
+# Environment variables
+ENV REACT_APP_API_BASE https://api.omnistudy.io
+
+# Serve the build
+CMD ["npx", "serve", "-s", "build"]
