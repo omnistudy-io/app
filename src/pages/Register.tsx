@@ -6,6 +6,7 @@ import axios from 'axios';
 // Asset imports
 import Logo from "../assets/Logo.png";
 import AuthArt from "../assets/AuthArt.png";
+import post from "@/utils/post";
 
 export default function Register() {
 
@@ -44,36 +45,37 @@ export default function Register() {
     
     async function register() {      
         console.log("Registering...");
-        // Attempt register      
-        axios.post("http://localhost:3001/auth/register", {
+
+        const data = {
             firstName: firstName,
             lastName: lastName,
             email: email,
             username: username,
             password: password
-        }).then((result) => {
-            // Register successful
-            if(result.data.ok) {
-                if(rememberMe)
-                    localStorage.setItem("token", result.data.rows[0]);
-                else
-                    sessionStorage.setItem("token", result.data.rows[0]);
+        };
 
-                navigate("/");
-            }
-
-            // Register failed
-            else {
-                if(result.data.code === 409) {
-                    result.data.message.includes("email") ? setErrorMessage("❌ Emaill address taken. Please <a href='/login' style='text-decoration:underline'>login</a> instead.") : setErrorMessage("❌ Username taken.");
-                    setErrorType(result.data.message);
-                }
-                setShowErrorMessage(true);
-            }
-        }).catch((err) => {
-            console.error(err); 
-        });
+        post(registerResultHandler, "/auth/register", data);
     };
+
+    async function registerResultHandler(data: any) {
+        if(data.ok) {
+            if(rememberMe)
+                localStorage.setItem("token", data.rows[0]);
+            else
+                sessionStorage.setItem("token", data.rows[0]);
+
+            navigate("/");
+        }
+
+        // Register failed
+        else {
+            if(data.code === 409) {
+                data.message.includes("email") ? setErrorMessage("❌ Emaill address taken. Please <a href='/login' style='text-decoration:underline'>login</a> instead.") : setErrorMessage("❌ Username taken.");
+                setErrorType(data.message);
+            }
+            setShowErrorMessage(true);
+        }
+    }
 
     return (
         <div className="h-full px-6 py-24 bg-slate-100">

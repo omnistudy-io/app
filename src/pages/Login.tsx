@@ -8,7 +8,7 @@ import Logo from "../assets/Logo.png";
 import AuthArt from "../assets/AuthArt.png";
 
 // Hooks and utils
-import { usePost } from "@/hooks/useApi";
+import post from "@/utils/post";
 
 export default function Login() {
 
@@ -30,32 +30,35 @@ export default function Login() {
     // Navigation hook
     const navigate = useNavigate();
     
-    async function login() {      
-        // Attempt login      
-        const result = await axios.post("http://localhost:3001/auth/login", {
+    async function login() {    
+        // Attempt login
+        post(loginResultHandler, "/auth/login", { 
             email: username,
             password: password
         });
+    };
 
+    async function loginResultHandler(data: any) {
+        console.log(data);
         // Login successful
-        if(result.data.ok) {
+        if(data.ok) {
             if(rememberMe)
-                localStorage.setItem("token", result.data.rows[0]);
+                localStorage.setItem("token", data.rows[0]);
             else
-                sessionStorage.setItem("token", result.data.rows[0]);
+                sessionStorage.setItem("token", data.rows[0]);
 
             navigate("/");
         }
         
         // Login failed
         else {
-            if(result.data.code === 401) 
+            if(data.code === 401) 
                 setErrorMessage("Incorrect username or password. Please try again.");
-            else if(result.data.code === 404)
+            else if(data.code === 404)
                 setErrorMessage("An account does not exist with that username. Please <a href='/register' style='text-decoration:underline;'>register</a> for an account.");
             setShowErrorMessage(true);
         }
-    };
+    }
 
     return (
         <div className="h-full px-6 py-24 bg-slate-100">

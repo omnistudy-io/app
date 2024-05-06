@@ -1,7 +1,5 @@
 import axios from "axios";
-
-// Base URL
-const base = process.env.REACT_APP_API_BASE;
+import getApiBase from "./getApiBase";
 
 /**
  * Make a GET request to the API
@@ -16,7 +14,7 @@ export default function get(update: Function, field: string, path: string, heade
     headers = { ...headers, authorization: `Bearer ${token}` };
 
     return new Promise((resolve, _) => {
-        axios.get(`${base}${path}`, { headers: headers }).then((res) => {
+        axios.get(`${getApiBase()}${path}`, { headers: headers }).then((res) => {
             resolve(res.data);
             update(field === "" ? res.data : res.data[field]);
         }).catch((err) => {

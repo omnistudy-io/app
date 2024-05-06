@@ -1,7 +1,5 @@
 import axios from "axios";
-
-// Base URL
-const base = process.env.REACT_APP_API_BASE;
+import getApiBase from "./getApiBase";
 
 /**
  * Make a DELETE request to the API
@@ -16,7 +14,7 @@ export default function del(update: Function, path: string, headers: object = {}
     headers = { ...headers, authorization: `Bearer ${token}` };
     
     return new Promise((resolve, _) => {
-        axios.delete(`${base}${path}`, { headers: headers }).then((res) => {
+        axios.delete(`${getApiBase()}${path}`, { headers: headers }).then((res) => {
             resolve(res.data);
             update(res.data);
         }).catch((err) => {

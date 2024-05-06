@@ -1,7 +1,5 @@
 import axios from "axios";
-
-// Base URL
-const base = process.env.REACT_APP_API_BASE;
+import getApiBase from "./getApiBase";
 
 /**
  * Make a POST request to the API
@@ -17,7 +15,7 @@ export default function post(update: Function, path: string, data: object, heade
     headers = { ...headers, authorization: `Bearer ${token}` };
     
     return new Promise((resolve, _) => {
-        axios.post(`${base}${path}`, data, { headers: headers }).then((res) => {
+        axios.post(`${getApiBase()}${path}`, data, { headers: headers }).then((res) => {
             resolve(res.data);
             update(res.data);
         }).catch((err) => {
