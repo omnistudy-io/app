@@ -15,7 +15,7 @@ export default function Plan() {
     useEffect(() => {
         get(setPlans, "plans", "/plans");
         get(setUserPlan, "user_plan", "/users/{uid}/plan");
-    });
+    }, []);
 
     return (
         <div className="flex flex-col gap-y-4">
