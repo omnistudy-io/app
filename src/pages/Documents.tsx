@@ -155,8 +155,8 @@ export default function Documents() {
             headerIcon={<DocumentsIcon />}
             callToAction={"Options"}
             callToActionText={"Options"}
-            dropDown={true}
-            doropDownOptions={menuOptions}
+            dropdown={true}
+            dropdownOptions={menuOptions}
         >
             {/* Loading modal */}
             <LoadModal 

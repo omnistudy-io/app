@@ -37,7 +37,7 @@ export default function Assignments() {
       }}
       callToActionText="New Assignment"
       callToActionIcon={<PlusIcon size={16} />}
-      dropDown={false}
+      dropdown={false}
     >
       <AssignmentModal show={showForm} setShow={setShowForm} />
       <section className="flex flex-col gap-4">

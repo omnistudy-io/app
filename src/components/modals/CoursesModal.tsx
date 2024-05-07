@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import get from "@/utils/get";
@@ -16,6 +17,7 @@ export default function CoursesModal(props: CoursesModalProps) {
 
   // Hooks
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // State management
   const [courseSubject, setCourseSubject] = useState("");
@@ -108,6 +110,7 @@ export default function CoursesModal(props: CoursesModalProps) {
     // Make the POST request
     post((data: any) => {
       get(props.updateCourses, "courses", "/users/{uid}/courses");
+      navigate(`/courses/${data.course.id}`);
     }, "/courses", data);
 
     props.setShow(false);
@@ -260,7 +263,7 @@ export default function CoursesModal(props: CoursesModalProps) {
               className="py-1.5 px-4 bg-[#00adb5] text-white rounded-md"
               onClick={handleSubmit}
             >
-              Save changes
+              Create
             </motion.button>
           </div>
         </Dialog.Content>

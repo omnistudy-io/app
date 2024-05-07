@@ -44,7 +44,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export (cat .env | xargs) && craco start",
+    "start": "export $(cat .env | xargs) && craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"
