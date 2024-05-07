@@ -141,10 +141,10 @@ export default function Assignment() {
 
   return (
     <DashboardContainer
-      dropDown={true}
+      dropdown={true}
+      dropdownOptions={dropDownOptions}
       callToAction="Options"
       callToActionText="Options"
-      doropDownOptions={dropDownOptions}
       subHeader={`${assignment?.courseSubject} ${assignment?.courseNumber}: ${assignment?.courseTitle}`}
       header={assignment?.title}
     >

@@ -25,7 +25,7 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
         <div className="flex w-full justify-between pb-0 p-4">
           <h2 className="text-4xl">{props.header}</h2>
           {props.callToAction &&
-            (props.dropDown ? (
+            (props.dropdown ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <motion.button
@@ -38,7 +38,7 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
                   </motion.button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  {props.doropDownOptions?.map((option) => (
+                  {props.dropdownOptions?.map((option) => (
                     <DropdownMenuItem
                       key={option.label}
                       onClick={option.onClick}
@@ -77,8 +77,8 @@ type DashboardContainerProps = {
   callToAction?: any;
   callToActionText?: string;
   callToActionIcon?: ReactNode;
-  dropDown: boolean;
-  doropDownOptions?: DropdownOption[];
+  dropdown: boolean;
+  dropdownOptions?: DropdownOption[];
   link?: string;
 };
 

@@ -79,8 +79,8 @@ export default function Course() {
 
   return (
     <DashboardContainer
-      dropDown={true}
-      doropDownOptions={dropdownOptions}
+      dropdown={true}
+      dropdownOptions={dropdownOptions}
       callToAction="Options"
       callToActionText="Options"
       subHeader={`${course?.subject} ${course?.number}: ${course?.title}`}
