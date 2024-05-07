@@ -25,6 +25,7 @@ export default function Plan() {
                     Pick a plan that suits your needs.
                 </p>
             </div>
+
             <div className="flex flex-col gap-4">
                 {userPlan && plans?.map((plan: PlanSchema, index: number) => (
                   <PlanCard key={index} plan={plan} userPlan={userPlan} />

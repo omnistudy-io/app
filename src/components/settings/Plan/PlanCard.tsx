@@ -14,7 +14,7 @@ export default function PlanCard(props: PlanProps) {
         <h3 className="text-sm font-bold">{props.plan.name} Plan</h3>
         <span>
           <b className="text-3xl">${props.plan.price}</b>
-          /mth
+          /mo
         </span>
         <p className="text-sm">{props.plan.description}</p>
       </div>

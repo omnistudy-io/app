@@ -7,9 +7,10 @@ import { UserSchema } from "@/schema";
 import get from "@/utils/get";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { Login, Register } from "./pages";
 import Sidebar from "@/layouts/Sidebar";
 
+// Page imports
+import { Login, Register } from "./pages";
 import Dashboard from "@/pages/Dashboard";
 import Settings from "@/pages/Settings";
 import Courses from "./pages/Courses";
@@ -21,6 +22,7 @@ import Exam from "./pages/Exam";
 import StudySets from "./pages/StudySets";
 import StudySet from "./pages/StudySet";
 import Documents from "./pages/Documents";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -85,6 +87,9 @@ function MainRouter() {
 
             {/* Settings route */}
             <Route path="/settings" element={<Settings />} />
+
+            {/* Checkout page */}
+            <Route path="/checkout" element={<Checkout />} />
 
             {/* Catch all 404 page */}
             <Route path="/*" element={<NotFound />} />
