@@ -22,7 +22,7 @@ import { AssignmentSchema, CourseSchema, DocumentSchema } from "@/schema";
 import AuthContext from "@/context/AuthContext";
 
 // Icon imports
-import { Calendar, NotebookPen, Star } from "lucide-react";
+import { Calendar, NotebookPen, Star, Weight } from "lucide-react";
 
 
 export default function Assignment() {
@@ -97,12 +97,12 @@ export default function Assignment() {
   }
 
   // TODO: Implement the following functionality
-  function askQuestionsHandler() {
+  function chatHandler() {
     console.log("Option 1");
   };
 
   // TODO: Implement summarization functionality
-  function summarizationHandler() {
+  function summarizeHandler() {
     console.log("Option 2");
   };
 
@@ -132,8 +132,8 @@ export default function Assignment() {
    * Dropwdown options for the assignment
    */
   const dropDownOptions = [
-    { label: "Ask Questions", onClick: askQuestionsHandler },
-    { label: "Summarization", onClick: summarizationHandler },
+    { label: "Chat", onClick: () => navigate(`/assignments/${id}/chats`) },
+    { label: "Summarize", onClick: summarizeHandler },
     { label: "Question Generator", onClick: questionGeneratorHandler },
     { label: "Edit Assignment", onClick: editHandler },
     { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true) }, isDelete: true },
@@ -192,6 +192,12 @@ export default function Assignment() {
                     <Star size={20} strokeWidth={2.5} /> Possible Points:
                   </h4>
                   <p>{assignment?.possible_points}</p>
+                </div>
+                <div className="flex gap-1">
+                  <h4 className="font-bold flex items-center gap-2">
+                    <Weight size={20} strokeWidth={2.5} /> Weight:
+                  </h4>
+                  <p>{assignment?.weight * 100}%</p>
                 </div>
               </div>
             </div>

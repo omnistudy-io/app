@@ -42,7 +42,7 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
                     <DropdownMenuItem
                       key={option.label}
                       onClick={option.onClick}
-                      className={`${option.isDelete ? `text-red-500` : ``}`}
+                      className={`${option.isDelete ? `text-red-500` : ``} cursor-pointer`}
                     >
                       <span className={`${option.isDelete ? 'cursor-pointer hover:text-red-500' : ''}`}>{option.label}</span>
                     </DropdownMenuItem>

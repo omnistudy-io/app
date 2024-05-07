@@ -7,9 +7,10 @@ export interface PlanSchema {
     features: PlanFeature[]
 }
 
-interface PlanFeature {
+export interface PlanFeature {
     id: number;
     description: string;
+    tags: string;
     included: boolean;
 }
 
