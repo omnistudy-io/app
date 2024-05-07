@@ -22,6 +22,7 @@ export function DatePicker(props: DatePickerProps) {
         <Button
           className={cn(
             " justify-start text-left font-normal text-sm border bg-stone-100 rounded-md outline-none hover:bg-[#34354a] p-2 shadow-none h-auto text-black hover:text-white",
+            props.className,
             !props.value && "text-muted-foreground"
           )}
         >
@@ -43,6 +44,7 @@ export function DatePicker(props: DatePickerProps) {
 
 // Props
 type DatePickerProps = {
+  className?: string;
   value: Date;
   onChange: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }

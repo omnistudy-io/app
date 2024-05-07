@@ -63,8 +63,6 @@ export default function AssignmentsModal(props: AssignmentsModalProps) {
       toast({ title: "Success!", description: "Assignment created successfully." });
       navigate(`/assignments/${data.assignment.id}`)
     }, "/assignments", data);
-
-    props.setShow(false);
   };
 
   /**

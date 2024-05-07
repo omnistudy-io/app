@@ -2,6 +2,7 @@
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Card } from "@/components/ui/Card";
 import ExamDisplay from "@/components/exams/ExamDisplay";
+import ExamModal from "@/components/modals/ExamModal";
 
 // Hook, util, and schema imports
 import { useState, useEffect } from "react";
@@ -14,26 +15,35 @@ import {
     TimerIcon as ExamsIcon,
     GraduationCap as CoursesIcon,
     Calendar,
+    PlusIcon,
 } from "lucide-react";
 
 export default function Exams() {
 
     // State management
     const [exams, setExams] = useState<(ExamSchema & CourseSnapshot)[] | null>(null);
+    const [showNewForm, setShowNewForm] = useState<boolean>(false);
 
+    // Get initial data
     useEffect(() => {
         get(setExams, "exams", "/users/{uid}/exams");
-    }, [])
+    }, []);
+
 
     return(
         <DashboardContainer
             subHeader={"Exams"}
             header="Exams"
             headerIcon={<ExamsIcon />}
-            callToAction={() => {}}
-            callToActionText={"Create New"}
-            dropDown={false}
+            callToAction={() => setShowNewForm(true)}
+            callToActionText={"New Exam"}
+            callToActionIcon={<PlusIcon />}
+            dropdown={false}
         >
+
+            {/* Create new exam modal */}
+            <ExamModal show={showNewForm} setShow={setShowNewForm} />
+
             <div className="flex flex-row gap-x-6">
                 {/* Upcoming exams card */}
                 <Card className="p-4 basis-1/3 bg-[#f5f5f5]">

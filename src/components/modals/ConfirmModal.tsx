@@ -17,7 +17,7 @@ export default function ConfirmModal(props: ConfirmModalProps) {
                         {/* Header, title and X button */}
                         <div className="w-full flex flex-row border-b border-stone-200 px-4 py-3">
                             <div className="mr-auto">
-                                <h1 className="text-lg text-stone-600">{props.title}</h1>
+                                <h1 className="text-xl text-bold text-stone-600">{props.title}</h1>
                             </div>
                             <XIcon className="text-stone-600 cursor-pointer hover:text-red-500 transition-all duration-200" onClick={() => props.setShow(false)}></XIcon>
                         </div>
