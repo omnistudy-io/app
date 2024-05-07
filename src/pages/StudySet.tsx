@@ -1,27 +1,32 @@
+// Component imports
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/Pagination";
+import NotFound from "./NotFound";
+import ConfirmModal from "@/components/modals/ConfirmModal";
+
+// Hook, util, and schema imports
+import { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/useToast";
 import { UserStudySetSchema, UserStudySetQuestionSchema } from "@/schema";
+import get from "@/utils/get";
+import del from "@/utils/del";
+import AuthContext from "@/context/AuthContext";
+
+// Icon imports
 import { NotebookIcon as StudySetIcon } from "lucide-react";
 
-import { useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/Pagination";
-
-import get from "@/utils/get";
-import AuthContext from "@/context/AuthContext";
-import NotFound from "./NotFound";
-
-type StudyQuestions = {
-    questions: UserStudySetQuestionSchema[];
-}
 
 export default function StudySet() {
 
     // Hooks
     const { id } = useParams<{ id: string }>();
     const { user } = useContext(AuthContext);
+    const { toast } = useToast();
+    const navigate = useNavigate();
 
     // State management
+    const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [studySet, setStudySet] = useState<UserStudySetSchema & StudyQuestions | null>(null);
     const [currentQuestion, setCurrentQuestion] = useState<number>(1);
 
@@ -50,17 +55,58 @@ export default function StudySet() {
         )
     }
 
+    // TODO: Implement edit study set functionality
+    async function handleEdit() {
+
+    }
+
+    /**
+     * Delete a study set handler
+     */
+    async function handleDelete() {
+        del((data: any) => { 
+            // If the request was not successful, show an error toast
+            if(data.code !== 200) {
+              toast({ title: "Failed to delete study set", description: "An error occured while deleting the study set, please try again later." });
+            }
+            // If the request was successful, show a success toast and navigate to the courses page
+            else {
+              toast({ title: "Success", description: `Study set ${studySet?.title} deleted successfully.` });
+              navigate("/study-sets");
+            }
+          }, `/study-sets/${id}`); 
+    }
+
+    /**
+     * Dropdown options for the study set
+     */
+    const dropdownOptions = [
+        { label: "Edit Study Set", onClick: () => { } },
+        { label: "Delete Study Set", onClick: () => { setShowConfirmDelete(true) } },
+    ]
+
     return (
         <DashboardContainer
             subHeader={"Study Set"}
             header={studySet?.title || "Study Set"}
             headerIcon={<StudySetIcon />}
-            callToAction={() => {
-                // setShowForm(!showForm);
-            }}
-            callToActionText="Edit Study Set"
-            dropDown={false}
+            callToAction="Options"
+            callToActionText="Options"
+            dropdown={true}
+            dropdownOptions={dropdownOptions}
         >
+
+            {/* Confirm deletion modal */}
+            <ConfirmModal
+                title="Delete Study Set"
+                message="Are you sure you want to delete this study set? This action cannot be undone."
+                show={showConfirmDelete}
+                setShow={setShowConfirmDelete}
+                confirmText="Delete"
+                confirmCallback={handleDelete}
+            />
+
+            {/* Page content */}
             <div className="p-2 flex flex-row justify-center relative mb-4">
                 {studySet != null && studySet.questions.map((q, i) => {
                     return <div 
@@ -110,4 +156,10 @@ export default function StudySet() {
 
         </DashboardContainer>
     );
+}
+
+
+// Type definitions
+type StudyQuestions = {
+    questions: UserStudySetQuestionSchema[];
 }
