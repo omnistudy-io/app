@@ -12,8 +12,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/useToast";
 import get from "@/utils/get";
 import del from "@/utils/del";
-import { CourseSchema } from "@/schema";
+import { CourseEventSchema, CourseSchema } from "@/schema";
 import AuthContext from "@/context/AuthContext";
+import getTimeFromDate from "@/utils/getTimeFromDate";
 
 // Icon imports
 import { FlaskConical, Laptop } from "lucide-react";
@@ -29,11 +30,15 @@ export default function Course() {
 
   // State management
   const [course, setCourse] = useState<CourseSchema | null>(null);
+  const [events, setEvents] = useState<CourseEventSchema[] | null>(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
 
   // Get initial data
   useEffect(() => {
-    get(setCourse, "course", `/courses/${id}`);
+    get((data: CourseSchema) => {
+      setCourse(data);
+      get(setEvents, "course_events", `/courses/${id}/events`);
+    }, "course", `/courses/${id}`);
   }, []);
 
   const day = new Date().toLocaleDateString();
@@ -117,32 +122,29 @@ export default function Course() {
         </div>
         <div className="flex gap-4">
           <Card className="bg-[#f5f5f5] p-4 basis-3/5">
-            <h3 className="text-2xl mb-2">Next Scheduled Events - {day}</h3>
+            <h3 className="text-2xl mb-2">Upcoming Events</h3>
             <div className="flex flex-col gap-2">
-              <div className="bg-[#fff] p-4 border rounded-md">
-                <h4 className="font-bold flex gap-2 items-center">
-                  <Laptop size={20} strokeWidth={2.5} /> Class{" "}
-                  <span className="text-sm font-normal">(1hr)</span>
-                </h4>
-                <div>
-                  <span>
-                    10:00 AM - 11:00 AM &#x2022; {course?.building} -{" "}
-                    {course?.room}
-                  </span>
+              {events && events.slice(0, 3).map((event: CourseEventSchema, i) => {
+                return <div key={`course_event_${i}`}>
+                  <div className="bg-[#fff] p-4 border rounded-md">
+                    <h4 className="font-bold flex gap-2 items-center">
+                      <Laptop size={20} strokeWidth={2.5} /> {event.title}{" "}
+                      <span className="text-sm font-normal">(1hr)</span>
+                    </h4>
+                    <div>
+                      <span>
+                        {getTimeFromDate(event.start_time)} - {getTimeFromDate(event.end_time)} &#x2022; {course?.building} -{" "}
+                        {course?.room}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-[#fff] p-4 border rounded-md">
-                <h4 className="font-bold flex gap-2 items-center">
-                  <FlaskConical size={20} strokeWidth={2.5} /> Lab{" "}
-                  <span className="text-sm font-normal">(3hr)</span>
-                </h4>
-                <div>
-                  <span>
-                    1:00 PM - 4:00 PM &#x2022; {course?.building} -{" "}
-                    {course?.room}
-                  </span>
-                </div>
-              </div>
+              })}
+              {events && events.length === 0 && (
+                <p className="text-left text-sm text-gray-500 mt-1">
+                  No upcoming events scheduled.
+                </p>
+              )}
             </div>
           </Card>
           <Card className="bg-[#f5f5f5] p-4 basis-2/5 flex flex-col justify-between">
