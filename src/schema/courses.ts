@@ -2,6 +2,7 @@ export interface CourseSchema {
     id: number;
     user_id: number;
     title: string;
+    description: string;
     subject: string;
     number: string;
     professor: string;

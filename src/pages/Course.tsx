@@ -103,13 +103,6 @@ export default function Course() {
       />
 
       <section className="flex flex-col gap-4">
-        <Card className="bg-[#f5f5f5] p-4">
-          <h3 className="text-2xl mb-2">
-            Course Progress -{" "}
-            {Math.min(Math.round((time / endDate) * 100), 100)}%
-          </h3>
-          <Progress value={Math.min((time / endDate) * 100, 100)} />
-        </Card>
         <div className="flex gap-4">
           <AssignmentDisplay
             endpoint={`/courses/${id}/assignments`}
@@ -151,10 +144,7 @@ export default function Course() {
             <h3 className="text-2xl mb-2">Course Information</h3>
             <div className="flex flex-col gap-2">
               <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Dolorum enim eveniet laboriosam adipisci quo fugiat soluta,
-                dolorem minima! Quas magnam esse tenetur natus dolore molestias
-                eum veritatis aspernatur. Officiis, quos.
+                {course?.description}
               </p>
               <div className="flex gap-2">
                 <img

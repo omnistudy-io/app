@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import get from "@/utils/get";
 import post from "@/utils/post";
+import { Textarea } from "@/components/ui/Textarea";
 
 import { CourseSchema } from "@/schema";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -26,6 +27,7 @@ export default function CoursesModal(props: CoursesModalProps) {
   const [professor, setProfessor] = useState("");
   const [building, setBuilding] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
+  const [description, setDescription] = useState<string>("");
 
   // Keep track of start date and datepicker visibility
   const [startDate, setStartDate] = useState<Date | undefined>(new Date());
@@ -76,7 +78,7 @@ export default function CoursesModal(props: CoursesModalProps) {
   };
 
   const handleSubmit = () => {
-    if (!courseNumber || !courseTitle || !professor || !roomNumber) {
+    if (!courseNumber || !description || !courseTitle || !professor || !roomNumber) {
       alert("Please fill out all fields");
       return;
     }
@@ -92,6 +94,7 @@ export default function CoursesModal(props: CoursesModalProps) {
       course: {
         user_id: user?.id,
         title: courseTitle,
+        description: description,
         subject: courseSubject,
         number: courseNumber,
         professor: professor,
@@ -195,6 +198,16 @@ export default function CoursesModal(props: CoursesModalProps) {
                   onChange={setEndDate}
                 />
               </div>
+            </div>
+
+            {/* Description field */}
+            <div className="mb-2">
+              <label className="text-sm ml-1">Description</label>
+              <Textarea 
+                className="bg-[#f5f5f5] border-gray-300"
+                placeholder="Be as descriptive as possible, our AI will help you with the rest!"
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
 
             {/* Schedule body */}
