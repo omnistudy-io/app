@@ -3,24 +3,32 @@ import ExamDisplay from "@/components/exams/ExamDisplay";
 import { Card } from "@/components/ui/Card";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Progress } from "@/components/ui/Progress";
-import { useGet } from "@/hooks/useApi";
-import { FlaskConical, Laptop } from "lucide-react";
+import NotFound from "./NotFound";
+import ConfirmModal from "@/components/modals/ConfirmModal";
+
+// Hooks, util, and schema imports
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { useToast } from "@/hooks/useToast";
+import get from "@/utils/get";
+import del from "@/utils/del";
+import { CourseSchema } from "@/schema";
 import AuthContext from "@/context/AuthContext";
 
-import { useState, useEffect, useContext } from "react";
-import get from "@/utils/get";
-import { CourseSchema } from "@/schema";
-import NotFound from "./NotFound";
+// Icon imports
+import { FlaskConical, Laptop } from "lucide-react";
+
 
 export default function Course() {
 
   // Hooks
+  const { toast } = useToast();
   const { id } = useParams();
   const { user } = useContext(AuthContext);
 
   // State management
   const [course, setCourse] = useState<CourseSchema | null>(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
 
   // Get initial data
   useEffect(() => {
@@ -38,12 +46,47 @@ export default function Course() {
     )
   }
 
+  // TODO: Implement edit course functionality
+  async function handleEdit() {
+
+  }
+
+  // Delete the current course
+  async function handleDelete() {
+    del((data: any) => { 
+      if(data.code !== 200) {
+        toast({ title: "Error", description: "An error occured while deleting the course. Please try again." });
+      }
+      else {
+        toast({ title: "Success", description: `Course ${course?.subject} ${course?.number}: ${course?.title} deleted successfully.` });
+        window.location.href = "/courses";
+      }
+    }, `/courses/${id}`); 
+  }
+
+  const dropdownOptions = [
+    { label: "Edit Course", onClick: handleEdit },
+    { label: "Delete Course", onClick: () => { setShowConfirmDelete(true) } }
+  ]
+
   return (
     <DashboardContainer
-      dropDown={false}
+      dropDown={true}
+      doropDownOptions={dropdownOptions}
+      callToAction="Options"
+      callToActionText="Options"
       subHeader={`${course?.subject} ${course?.number}: ${course?.title}`}
       header={`${course?.title} Course`}
     >
+
+      <ConfirmModal
+        show={showConfirmDelete}
+        setShow={setShowConfirmDelete}
+        title="Delete Course"
+        message="Are you sure you want to delete this course?"
+        confirmCallback={handleDelete}
+      />
+
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-4">
           <h3 className="text-2xl mb-2">
