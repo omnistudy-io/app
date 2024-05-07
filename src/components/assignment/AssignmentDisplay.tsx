@@ -1,5 +1,6 @@
 // Component imports
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/Tooltip";
 import { Link } from "react-router-dom";
 import { Card } from "../ui/Card";
 
@@ -70,8 +71,16 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
 										{/* Show a small badge if overdue */}
 										{new Date(assignment.due_at) < new Date() ?
 											<>
-												<OverdueIcon className="text-red-500" size={20} />
-												<p className="text-red-500">{formatDate(assignment.due_at)}</p>
+												{/* Create a tooltip that explains this icon */}
+												<TooltipProvider>
+													<Tooltip>
+														<TooltipTrigger className="flex flex-row gap-x-2 items-center justify-enc">
+															<OverdueIcon className="text-red-500" size={20} />
+															<p className="text-red-500">{formatDate(assignment.due_at)}</p>
+														</TooltipTrigger>
+														<TooltipContent>Assignment Overdue</TooltipContent>
+													</Tooltip>
+												</TooltipProvider>
 											</>
 										:
 											<p>{formatDate(assignment.due_at)}</p>
