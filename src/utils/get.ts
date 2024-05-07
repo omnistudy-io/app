@@ -19,7 +19,7 @@ export default function get(update: Function, field: string, path: string, heade
             update(field === "" ? res.data : res.data[field]);
         }).catch((err) => {
             resolve(err);
-            update(null);
+            update(field === "" ? err.response.data : err.response.data[field]);
         });
     });
 }

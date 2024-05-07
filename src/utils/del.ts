@@ -18,7 +18,8 @@ export default function del(update: Function, path: string, headers: object = {}
             resolve(res.data);
             update(res.data);
         }).catch((err) => {
-            resolve(err);
+            resolve(err.response.data);
+            update(err.response.data);
         });
     });
 }

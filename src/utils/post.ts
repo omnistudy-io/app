@@ -20,6 +20,7 @@ export default function post(update: Function, path: string, data: object, heade
             update(res.data);
         }).catch((err) => {
             resolve(err);
+            update(err.response.data);
         });
     });
 }

@@ -8,7 +8,7 @@ import ConfirmModal from "@/components/modals/ConfirmModal";
 
 // Hooks, util, and schema imports
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/useToast";
 import get from "@/utils/get";
 import del from "@/utils/del";
@@ -25,6 +25,7 @@ export default function Course() {
   const { toast } = useToast();
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // State management
   const [course, setCourse] = useState<CourseSchema | null>(null);
@@ -51,19 +52,26 @@ export default function Course() {
 
   }
 
-  // Delete the current course
+  /**
+   * Delete the course. Show a toast reflecting the success or error of the request.
+   */
   async function handleDelete() {
     del((data: any) => { 
+      // If the request was not successful, show an error toast
       if(data.code !== 200) {
-        toast({ title: "Error", description: "An error occured while deleting the course. Please try again." });
+        toast({ title: "Failed to delete course", description: "An error occured while deleting the course, please try again later." });
       }
+      // If the request was successful, show a success toast and navigate to the courses page
       else {
         toast({ title: "Success", description: `Course ${course?.subject} ${course?.number}: ${course?.title} deleted successfully.` });
-        window.location.href = "/courses";
+        navigate("/courses");
       }
     }, `/courses/${id}`); 
   }
 
+  /**
+   * Dropdown options for the course
+   */
   const dropdownOptions = [
     { label: "Edit Course", onClick: handleEdit },
     { label: "Delete Course", onClick: () => { setShowConfirmDelete(true) } }
