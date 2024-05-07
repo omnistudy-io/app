@@ -132,11 +132,11 @@ export default function Assignment() {
    * Dropwdown options for the assignment
    */
   const dropDownOptions = [
-    { label: "Edit Assignment", onClick: editHandler },
-    { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true) } },
     { label: "Ask Questions", onClick: askQuestionsHandler },
     { label: "Summarization", onClick: summarizationHandler },
     { label: "Question Generator", onClick: questionGeneratorHandler },
+    { label: "Edit Assignment", onClick: editHandler },
+    { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true) }, isDelete: true },
   ];
 
   return (

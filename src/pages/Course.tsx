@@ -79,7 +79,7 @@ export default function Course() {
    */
   const dropdownOptions = [
     { label: "Edit Course", onClick: handleEdit },
-    { label: "Delete Course", onClick: () => { setShowConfirmDelete(true) } }
+    { label: "Delete Course", onClick: () => { setShowConfirmDelete(true) }, isDelete: true }
   ]
 
   return (

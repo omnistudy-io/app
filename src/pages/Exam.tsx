@@ -76,7 +76,7 @@ export default function Exam() {
      */
     const options = [
         { label: "Edit Exam", onClick: handleEdit },
-        { label: "Delete Exam", onClick: () => { setShowConfirmDelete(true) } }
+        { label: "Delete Exam", onClick: () => { setShowConfirmDelete(true) }, isDelete: true }
     ];
 
     return(
