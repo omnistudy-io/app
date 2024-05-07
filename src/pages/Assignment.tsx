@@ -4,17 +4,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Skeleton } from "@/components/ui/Skeleton"
 import { Slider } from "@/components/ui/Slider"
+import ConfirmModal from "@/components/modals/ConfirmModal";
 import NotFound from "./NotFound";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 // Hooks, utils, and schema imports
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import get from "@/utils/get";
 import post from "@/utils/post";
 import put from "@/utils/put";
+import del from "@/utils/del";
 import formatDate from "@/utils/formatDate";
+import { useToast } from "@/hooks/useToast";
 import { AssignmentSchema, CourseSchema, DocumentSchema } from "@/schema";
 import AuthContext from "@/context/AuthContext";
 
@@ -26,6 +29,8 @@ export default function Assignment() {
   // Hooks
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   // State management
   const [assignment, setAssignment] = useState<AssignmentSchema & CourseSnapshot | null>(null);
@@ -33,6 +38,7 @@ export default function Assignment() {
   const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
   const [progress, setProgress] = useState<number[]>([0]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
   // Calculate score from assignment
   const actualPoints = assignment?.actual_points;
@@ -68,27 +74,69 @@ export default function Assignment() {
     )
   }
 
-  const handleOption1 = () => {
+  // TODO: Implement edit assignment functionality
+  function editHandler() {
+
+  }
+
+  /**
+   * Delete the assignment. Show a toast reflecting the success or error of the request.
+   */
+  function deleteHandler() {
+    del((data: any) => { 
+      // If the request was not successful, show an error toast
+      if(data.code !== 200) {
+        toast({ title: "Failed to delete assignmet", description: "An error occured while deleting the assignment, please try again later." });
+      }
+      // If the request was successful, show a success toast and navigate to the courses page
+      else {
+        toast({ title: "Success", description: `Assignment ${assignment?.title} deleted successfully.` });
+        navigate("/assignments");
+      }
+    }, `/assignments/${id}`); 
+  }
+
+  // TODO: Implement the following functionality
+  function askQuestionsHandler() {
     console.log("Option 1");
   };
 
-  const handleOption2 = () => {
+  // TODO: Implement summarization functionality
+  function summarizationHandler() {
     console.log("Option 2");
   };
 
+  // TODO: Implement question generator functionality
+  function questionGeneratorHandler() {
+    console.log("Option 3");
+  }
+
+  /**
+   * Update the current progress value of the assignment in the UI
+   * @param newProgress The new progress value
+   */
   function displayProgressChange(newProgress: number[]) {
     setProgress(newProgress); 
   }
 
+  /**
+   * Update the current progress value of the assignment in the database
+   * @param newProgress The new progress value
+   */
   function putProgressChange(newProgress: number[]) {
     setProgress(newProgress);
     put(() => {}, `/assignments/${id}`, { progress: newProgress[0] });
   }
 
+  /**
+   * Dropwdown options for the assignment
+   */
   const dropDownOptions = [
-    { label: "Ask Questions", onClick: handleOption2 },
-    { label: "Summarization", onClick: handleOption2 },
-    { label: "Question Generator", onClick: handleOption1 },
+    { label: "Edit Assignment", onClick: editHandler },
+    { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true) } },
+    { label: "Ask Questions", onClick: askQuestionsHandler },
+    { label: "Summarization", onClick: summarizationHandler },
+    { label: "Question Generator", onClick: questionGeneratorHandler },
   ];
 
   return (
@@ -100,6 +148,16 @@ export default function Assignment() {
       subHeader={`${assignment?.courseSubject} ${assignment?.courseNumber}: ${assignment?.courseTitle}`}
       header={assignment?.title}
     >
+      {/* Delete confirm modal */}
+      <ConfirmModal
+        show={showDeleteConfirm}
+        setShow={setShowDeleteConfirm}
+        title="Delete Assignment"
+        message={`Are you sure you want to delete assignment ${assignment?.title}?`}
+        confirmText="Delete"
+        confirmCallback={deleteHandler}
+      />
+
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-5 flex flex-col gap-y-4">
           <h3 className="text-2xl mb-2">Assignment Progress: {progress[0]}%</h3>

@@ -43,7 +43,7 @@ export default function ConfirmModal(props: ConfirmModalProps) {
                                 }}
                                 className="py-1 px-4 text-md rounded-md bg-[#00adb5] text-white shadow-lg"
                             >
-                                Confirm
+                                {props.confirmText ? props.confirmText : "Confirm"}
                             </button>
                         </div>
                     </div>
@@ -60,5 +60,6 @@ type ConfirmModalProps = {
     messageIcon?: ReactNode;
     show: boolean;
     setShow: (show: boolean) => void;
+    confirmText?: string;
     confirmCallback: () => void;
 }

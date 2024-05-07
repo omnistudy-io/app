@@ -87,11 +87,13 @@ export default function Course() {
       header={`${course?.title} Course`}
     >
 
+      {/* Delete Confirm Modal */}
       <ConfirmModal
         show={showConfirmDelete}
         setShow={setShowConfirmDelete}
         title="Delete Course"
         message="Are you sure you want to delete this course?"
+        confirmText="Delete"
         confirmCallback={handleDelete}
       />
 
