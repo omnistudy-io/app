@@ -96,11 +96,6 @@ export default function Assignment() {
     }, `/assignments/${id}`); 
   }
 
-  // TODO: Implement the following functionality
-  function chatHandler() {
-    console.log("Option 1");
-  };
-
   // TODO: Implement summarization functionality
   function summarizeHandler() {
     console.log("Option 2");
