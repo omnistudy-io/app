@@ -1,13 +1,20 @@
 // Component imports
 import { Card } from "@/components/ui/Card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/Table";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
-import { Skeleton } from "@/components/ui/Skeleton"
-import { Slider } from "@/components/ui/Slider"
+import { Skeleton } from "@/components/ui/Skeleton";
+import { Slider } from "@/components/ui/Slider";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import NotFound from "./NotFound";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 // Hooks, utils, and schema imports
 import { useState, useEffect, useContext } from "react";
@@ -24,7 +31,6 @@ import AuthContext from "@/context/AuthContext";
 // Icon imports
 import { Calendar, NotebookPen, Star, Weight } from "lucide-react";
 
-
 export default function Assignment() {
   // Hooks
   const { id } = useParams();
@@ -33,7 +39,9 @@ export default function Assignment() {
   const navigate = useNavigate();
 
   // State management
-  const [assignment, setAssignment] = useState<AssignmentSchema & CourseSnapshot | null>(null);
+  const [assignment, setAssignment] = useState<
+    (AssignmentSchema & CourseSnapshot) | null
+  >(null);
   const [course, setCourse] = useState<CourseSchema | null>(null);
   const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
@@ -43,63 +51,72 @@ export default function Assignment() {
   // Calculate score from assignment
   const actualPoints = assignment?.actual_points;
   const possiblePoints = assignment?.possible_points;
-  const score = (actualPoints && possiblePoints) ? (actualPoints / possiblePoints) * 100 : 0; 
+  const score =
+    actualPoints && possiblePoints ? (actualPoints / possiblePoints) * 100 : 0;
 
   // Get initial data
   useEffect(() => {
-    get((data: AssignmentSchema & CourseSnapshot) => {
-      setAssignment(data);
-      if(data) {
-        post(setVideos, "/ai/videos", { description: data.description, assignmentId: id });
-        setProgress([data.progress]);
-        get(setCourse, "course", `/courses/${data.course_id}`);
-      }
+    get(
+      (data: AssignmentSchema & CourseSnapshot) => {
+        setAssignment(data);
+        if (data) {
+          post(setVideos, "/ai/videos", {
+            description: data.description,
+            assignmentId: id,
+          });
+          setProgress([data.progress]);
+          get(setCourse, "course", `/courses/${data.course_id}`);
+        }
 
-      // Get documents
-      get(setDocuments, "docs", `/assignments/${id}/documents`);
-    }, "assignment", `/assignments/${id}`);
+        // Get documents
+        get(setDocuments, "docs", `/assignments/${id}/documents`);
+      },
+      "assignment",
+      `/assignments/${id}`
+    );
   }, []);
 
   // If the assignment does not exist, return a 404 page
   if (!assignment) {
-    return (
-      <NotFound />
-    );
+    return <NotFound />;
   }
 
   // If user does not own assignment, return a 404 page
-  if(course?.user_id != user?.id) {
-    return(
-      <NotFound />
-    )
+  if (course?.user_id != user?.id) {
+    return <NotFound />;
   }
 
   // TODO: Implement edit assignment functionality
-  function editHandler() {
-
-  }
+  function editHandler() {}
 
   /**
    * Delete the assignment. Show a toast reflecting the success or error of the request.
    */
   function deleteHandler() {
-    del((data: any) => { 
+    del((data: any) => {
       // If the request was not successful, show an error toast
-      if(data.code !== 200) {
-        toast({ title: "Failed to delete assignmet", description: "An error occured while deleting the assignment, please try again later." });
+      if (data.code !== 200) {
+        toast({
+          title: "Failed to delete assignmet",
+          description:
+            "An error occured while deleting the assignment, please try again later.",
+        });
       }
       // If the request was successful, show a success toast and navigate to the courses page
       else {
-        toast({ title: "Success", description: `Assignment ${assignment?.title} deleted successfully.` });
+        toast({
+          title: "Success",
+          description: `Assignment ${assignment?.title} deleted successfully.`,
+        });
         navigate("/assignments");
       }
-    }, `/assignments/${id}`); 
+    }, `/assignments/${id}`);
   }
 
   // TODO: Implement summarization functionality
   function summarizeHandler() {
     console.log("Option 2");
-  };
+  }
 
   // TODO: Implement question generator functionality
   function questionGeneratorHandler() {
@@ -111,7 +128,7 @@ export default function Assignment() {
    * @param newProgress The new progress value
    */
   function displayProgressChange(newProgress: number[]) {
-    setProgress(newProgress); 
+    setProgress(newProgress);
   }
 
   /**
@@ -131,7 +148,13 @@ export default function Assignment() {
     { label: "Summarize", onClick: summarizeHandler },
     { label: "Question Generator", onClick: questionGeneratorHandler },
     { label: "Edit Assignment", onClick: editHandler },
-    { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true) }, isDelete: true },
+    {
+      label: "Delete Assignment",
+      onClick: () => {
+        setShowDeleteConfirm(true);
+      },
+      isDelete: true,
+    },
   ];
 
   return (
@@ -156,41 +179,47 @@ export default function Assignment() {
       <section className="flex flex-col gap-4">
         <Card className="bg-[#f5f5f5] p-5 flex flex-col gap-y-4">
           <h3 className="text-2xl mb-2">Assignment Progress: {progress[0]}%</h3>
-          <Slider step={5} max={100} value={progress} onValueChange={displayProgressChange} onValueCommit={putProgressChange} />
+          <Slider
+            step={1}
+            max={100}
+            value={progress}
+            onValueChange={displayProgressChange}
+            onValueCommit={putProgressChange}
+          />
         </Card>
         <div className="flex gap-4 w-full">
-          <Card className="bg-[#f5f5f5] p-4 flex flex-row gap-x-12 w-full max-w-[60%]">
+          <Card className="bg-[#f5f5f5] p-4 flex justify-between basis-3/5">
             {/* Assignment information */}
-            <div className="mr-auto">
+            <div>
               <h3 className="text-2xl mb-2">Assignment Information</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-center gap-2">
-                    <Calendar size={20} strokeWidth={2.5} /> Due:
+                    <Calendar size={20} strokeWidth={2} /> Due:
                   </h4>
                   <p>{formatDate(assignment ? assignment.due_at : "")}</p>
                 </div>
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-start gap-2">
-                    <NotebookPen size={20} strokeWidth={2.5} /> Description:
+                    <NotebookPen size={20} strokeWidth={2} /> Description:
                   </h4>
                   <p>{assignment?.description}</p>
                 </div>
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-center gap-2">
-                    <Star size={20} strokeWidth={2.5} /> Earned Points:
+                    <Star size={20} strokeWidth={2} /> Earned Points:
                   </h4>
                   <p>{assignment?.actual_points}</p>
                 </div>
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-center gap-2">
-                    <Star size={20} strokeWidth={2.5} /> Possible Points:
+                    <Star size={20} strokeWidth={2} /> Possible Points:
                   </h4>
                   <p>{assignment?.possible_points}</p>
                 </div>
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-center gap-2">
-                    <Weight size={20} strokeWidth={2.5} /> Weight:
+                    <Weight size={20} strokeWidth={2} /> Weight:
                   </h4>
                   <p>{assignment?.weight * 100}%</p>
                 </div>
@@ -198,67 +227,80 @@ export default function Assignment() {
             </div>
             {/* Assignment Score */}
             <div className="w-[120px] flex flex-col items-center justify-center gap-y-2">
-              <CircularProgressbar value={score} text={`${score}%`} />
+              <CircularProgressbar
+                value={score}
+                text={`${score}%`}
+                styles={buildStyles({
+                  textColor: "#000",
+                  pathColor: "#00adb5",
+                })}
+              />
               <h3 className="text-xl">Score</h3>
             </div>
           </Card>
-          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[40%]">
+          <Card className="bg-[#f5f5f5] p-4 w-full basis-2/5">
             <div>
               <h3 className="text-2xl">Documents</h3>
             </div>
             <div className="w-full">
               <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead className="text-right">Link</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {/* Documents found */}
-                    {documents && documents.map((document: DocumentSchema, index: number) => {
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead className="text-right">Link</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {/* Documents found */}
+                  {documents &&
+                    documents.map((document: DocumentSchema, index: number) => {
                       return (
                         <TableRow key={index}>
                           <TableCell>{document.title}</TableCell>
                           <TableCell className="text-right">
-                            <a 
+                            <a
                               className="text-[#00adb5] hover:underline"
-                              href={document.url} 
-                              target="_blank" 
+                              href={document.url}
+                              target="_blank"
                               rel="noreferrer"
                             >
-                                Link
+                              Link
                             </a>
                           </TableCell>
                         </TableRow>
-                      )})}
-                      {/* If there are no documents or are loading */}
-                      {documents == null && 
-                        <TableRow>
-                          <TableCell>No documents</TableCell>
-                        </TableRow>
-                      }
-                  </TableBody>
-                </Table>
+                      );
+                    })}
+                  {/* If there are no documents or are loading */}
+                  {documents == null && (
+                    <TableRow>
+                      <TableCell>No documents</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
             </div>
           </Card>
         </div>
         <Card className="flex flex-col bg-[#f5f5f5] p-4">
           <h3 className="text-2xl mb-2">Helpful Videos</h3>
           <div className="flex flex-row gap-x-6">
-            {videos != null ? videos.videos.map((video: any, index: number) => {
-              return <iframe 
-                src={`https://youtube.com/embed/${video.id}`}
-                className="w-[500px] h-[200px] rounded-lg"
-                allowFullScreen={true}
-              />
-            }) : 
+            {videos != null ? (
+              videos.videos.map((video: any, index: number) => {
+                return (
+                  <iframe
+                    src={`https://youtube.com/embed/${video.id}`}
+                    className="w-[500px] h-[200px] rounded-lg"
+                    allowFullScreen={true}
+                  />
+                );
+              })
+            ) : (
               <>
                 <Skeleton className="w-[500px] h-[200px] rounded-lg" />
                 <Skeleton className="w-[500px] h-[200px] rounded-lg" />
                 <Skeleton className="w-[500px] h-[200px] rounded-lg" />
               </>
-            }
+            )}
           </div>
         </Card>
       </section>
@@ -271,4 +313,4 @@ type CourseSnapshot = {
   courseSubject: string;
   courseNumber: string;
   courseTitle: string;
-}
+};
