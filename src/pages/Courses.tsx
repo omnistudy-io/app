@@ -31,9 +31,13 @@ export default function Courses() {
       }}
       callToActionText="New Course"
       callToActionIcon={<PlusIcon size={16} />}
-      dropDown={false}
+      dropdown={false}
     >
-      <CoursesModal show={showForm} setShow={setShowForm} updateCourses={setCourses} />
+      <CoursesModal
+        show={showForm}
+        setShow={setShowForm}
+        updateCourses={setCourses}
+      />
       <section className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-4">
           {courses && courses.length > 0 ? (
@@ -44,7 +48,7 @@ export default function Courses() {
             <div>You have no courses</div>
           )}
         </div>
-        <div className="flex gap-4" >
+        <div className="flex gap-4">
           <AssignmentDisplay className="basis-3/5" />
           <ExamDisplay className="basis-2/5"></ExamDisplay>
         </div>
