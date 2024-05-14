@@ -169,7 +169,7 @@ export default function Assignment() {
           />
         </Card>
         <div className="flex gap-4 w-full">
-          <Card className="bg-[#f5f5f5] p-4 flex justify-between basis-3/5">
+          <Card className="bg-[#f5f5f5] p-4 flex justify-between w-full max-w-[40%]">
             {/* Assignment information */}
             <div>
               <h3 className="text-2xl mb-2">Assignment Information</h3>
@@ -221,7 +221,7 @@ export default function Assignment() {
           </Card>
 
           {/* Chats table */}
-          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[40%]">
+          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[30%]">
             <div>
               <Link className="text-2xl" to={`/assignments/${id}/chats`}>Chats</Link>
             </div>
@@ -249,7 +249,7 @@ export default function Assignment() {
           </Card>
 
           {/* Documents table */}
-          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[40%]">
+          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[30%]">
             <div>
               <h3 className="text-2xl">Documents</h3>
             </div>
