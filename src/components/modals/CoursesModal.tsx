@@ -15,7 +15,6 @@ import AuthContext from "@/context/AuthContext";
 import formatDate from "@/utils/formatDate";
 
 export default function CoursesModal(props: CoursesModalProps) {
-
   // Hooks
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -39,15 +38,18 @@ export default function CoursesModal(props: CoursesModalProps) {
   const [scheduleEvents, setScheduleEvents] = useState<Array<any>>([]);
 
   function newEventHandler(e: React.MouseEvent) {
-      setScheduleEvents([...scheduleEvents, { 
-          id: uuidv4(),
-          rule: "repeat",
-          days: [], 
-          date: new Date(),
-          startTime: "08:00", 
-          endTime: "09:00"
-      }]);
-    }
+    setScheduleEvents([
+      ...scheduleEvents,
+      {
+        id: uuidv4(),
+        rule: "repeat",
+        days: [],
+        date: new Date(),
+        startTime: "08:00",
+        endTime: "09:00",
+      },
+    ]);
+  }
 
   const handleCourseSubjectChange = (value: any) => {
     const parts = value.split(" ");
@@ -78,7 +80,13 @@ export default function CoursesModal(props: CoursesModalProps) {
   };
 
   const handleSubmit = () => {
-    if (!courseNumber || !description || !courseTitle || !professor || !roomNumber) {
+    if (
+      !courseNumber ||
+      !description ||
+      !courseTitle ||
+      !professor ||
+      !roomNumber
+    ) {
       alert("Please fill out all fields");
       return;
     }
@@ -87,7 +95,9 @@ export default function CoursesModal(props: CoursesModalProps) {
 
     // Modify schedule events days to be an array of booleans
     scheduleEvents.forEach((event) => {
-      event.days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => event.days.includes(day));
+      event.days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+        (day) => event.days.includes(day)
+      );
     });
 
     const data = {
@@ -104,17 +114,21 @@ export default function CoursesModal(props: CoursesModalProps) {
         thumbnail_url: "",
         start_date: startDate!.toISOString().split("T")[0],
         end_date: endDate!.toISOString().split("T")[0],
-      }, 
-      eventDefs: scheduleEvents
-    }
+      },
+      eventDefs: scheduleEvents,
+    };
 
     console.log(data);
 
     // Make the POST request
-    post((data: any) => {
-      get(props.updateCourses, "courses", "/users/{uid}/courses");
-      navigate(`/courses/${data.course.id}`);
-    }, "/courses", data);
+    post(
+      (data: any) => {
+        get(props.updateCourses, "courses", "/users/{uid}/courses");
+        navigate(`/courses/${data.course.id}`);
+      },
+      "/courses",
+      data
+    );
 
     props.setShow(false);
   };
@@ -186,14 +200,14 @@ export default function CoursesModal(props: CoursesModalProps) {
             <div className="flex w-full gap-x-4 justify-center">
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">Start Date:</label>
-                <DatePicker 
+                <DatePicker
                   value={startDate ? startDate : new Date()}
-                  onChange={setStartDate}  
+                  onChange={setStartDate}
                 />
               </div>
               <div className="flex flex-col text-left w-full">
                 <label className="text-sm ml-1">End Date:</label>
-                <DatePicker 
+                <DatePicker
                   value={endDate ? endDate : new Date()}
                   onChange={setEndDate}
                 />
@@ -203,7 +217,7 @@ export default function CoursesModal(props: CoursesModalProps) {
             {/* Description field */}
             <div className="mb-2">
               <label className="text-sm ml-1">Description</label>
-              <Textarea 
+              <Textarea
                 className="bg-[#f5f5f5] border-gray-300"
                 placeholder="Be as descriptive as possible, our AI will help you with the rest!"
                 onChange={(e) => setDescription(e.target.value)}
@@ -212,54 +226,81 @@ export default function CoursesModal(props: CoursesModalProps) {
 
             {/* Schedule body */}
             <div className={`rounded-lg border-gray-300 border`}>
-                    <div id="accordion-collapse" data-accordion="collapse">
-                        <h2 className="border-gray-300" id="accordion-collapse-heading-1" onClick={() => setShowScheduleDropdown(!showScheduleDropdown)}>
-                            <button 
-                                type="button" 
-                                className={`${showScheduleDropdown ? "rounded-t-lg" : "rounded-lg"} flex items-center justify-between w-full p-2 font-medium rtl:text-right text-stone-800 focus:ring-gray-200 dark:text-gray-400 hover:bg-gray-100 gap-3 !bg-stone-100 border-gray-300`}
-                                data-accordion-target="#accordion-collapse-body-1" 
-                                aria-expanded="true" 
-                                aria-controls="accordion-collapse-body-1"
-                            >
-                                <span>Schedule</span>
-                                <svg data-accordion-icon className={`w-3 h-3 shrink-0 ${showScheduleDropdown ? "" : "rotate-180"}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5"/>
-                                </svg>
-                            </button>
-                        </h2>
-                        {showScheduleDropdown && <div id="accordion-collapse-body-1" aria-labelledby="accordion-collapse-heading-1">
-                            <div className="p-2 border-gray-200 max-h-[400px] overflow-y-scroll">
+              <div id="accordion-collapse" data-accordion="collapse">
+                <h2
+                  className="border-gray-300"
+                  id="accordion-collapse-heading-1"
+                  onClick={() => setShowScheduleDropdown(!showScheduleDropdown)}
+                >
+                  <button
+                    type="button"
+                    className={`${
+                      showScheduleDropdown ? "rounded-t-lg" : "rounded-lg"
+                    } flex items-center justify-between w-full p-2 font-medium rtl:text-right text-stone-800 focus:ring-gray-200 dark:text-gray-400 hover:bg-gray-100 gap-3 !bg-stone-100 border-gray-300`}
+                    data-accordion-target="#accordion-collapse-body-1"
+                    aria-expanded="true"
+                    aria-controls="accordion-collapse-body-1"
+                  >
+                    <span>Schedule</span>
+                    <svg
+                      data-accordion-icon
+                      className={`w-3 h-3 shrink-0 ${
+                        showScheduleDropdown ? "" : "rotate-180"
+                      }`}
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 5 5 1 1 5"
+                      />
+                    </svg>
+                  </button>
+                </h2>
+                {showScheduleDropdown && (
+                  <div
+                    id="accordion-collapse-body-1"
+                    aria-labelledby="accordion-collapse-heading-1"
+                  >
+                    <div className="p-2 border-gray-200 max-h-[400px] overflow-y-scroll">
+                      {/* New event and clear buttons */}
+                      <div className="flex flex-row">
+                        <p
+                          className="mr-auto text-left text-sm text-cyan-600 cursor-pointer hover:underline"
+                          onClick={newEventHandler}
+                        >
+                          + New Event
+                        </p>
+                        <p
+                          className="text-left text-sm text-cyan-600 cursor-pointer hover:underline"
+                          onClick={() => setScheduleEvents([])}
+                        >
+                          Clear
+                        </p>
+                      </div>
 
-                                {/* New event and clear buttons */}
-                                <div className="flex flex-row">
-                                    <p
-                                      className="mr-auto text-left text-sm text-cyan-600 cursor-pointer hover:underline"
-                                      onClick={newEventHandler}
-                                    >
-                                      + New Event
-                                    </p>
-                                    <p
-                                      className="text-left text-sm text-cyan-600 cursor-pointer hover:underline"
-                                      onClick={() => setScheduleEvents([])}
-                                    >
-                                      Clear
-                                    </p>
-                                </div>
-
-                                {/* Render all events */}
-                                {scheduleEvents.map((event, i) => {
-                                    return <CourseModalEvent
-                                        key={event.id}
-                                        datepickerOptions={{}}
-                                        event={event}
-                                        scheduleEvents={scheduleEvents}
-                                        setScheduleEvents={setScheduleEvents}
-                                    />
-                                })}
-                            </div>
-                        </div>}
+                      {/* Render all events */}
+                      {scheduleEvents.map((event, i) => {
+                        return (
+                          <CourseModalEvent
+                            key={event.id}
+                            datepickerOptions={{}}
+                            event={event}
+                            scheduleEvents={scheduleEvents}
+                            setScheduleEvents={setScheduleEvents}
+                          />
+                        );
+                      })}
                     </div>
-                </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </fieldset>
           <div className="mt-[25px] flex justify-end gap-x-2">
             <motion.button
