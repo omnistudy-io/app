@@ -13,7 +13,8 @@ export { TextbookSectionSchema, TextbookSectionsRows } from './textbook_sections
 export { TextbookSubjectSchema, TextbookSubjectsRows } from './textbook_subjects';
 export { TextbookSchema, TextbooksRows } from './textbooks';
 export { UserAiDocSchema, UserAiDocsRows } from './user_ai_docs';
-export { UserChatSchema, UserChatsRows } from './user_chats';
+export { ChatSchema, ChatsRows } from './chats';
+export { ChatMessageSchema, ChatMessagesRows } from './chat_messages';
 export { UserPlanSchema, UserPlansRows } from './user_plans';
 export { UserProfileSchema, UserProfilesRows } from './user_profiles';
 export { UserStudySetQuestionSchema, UserStudySetQuestionsRows } from './user_study_set_questions';

@@ -18,6 +18,7 @@ import Course from "./pages/Course";
 import Assignments from "./pages/Assignments";
 import Assignment from "./pages/Assignment";
 import Chats from "./pages/Chats";
+import Chat from "./pages/Chat";
 import Exams from "./pages/Exams";
 import Exam from "./pages/Exam";
 import StudySets from "./pages/StudySets";
@@ -77,6 +78,7 @@ function MainRouter() {
 
             {/* AI Functions routes */}
             <Route path="/assignments/:id/chats" element={<Chats />} />
+            <Route path="/assignments/:id/chats/:chatId" element={<Chat />} />
 
             {/* Exams routes */}
             <Route path="/exams" element={<Exams />} />

@@ -3,7 +3,7 @@ export interface ChatSchema {
     user_id: number;
     title: string;
     assignment_id: number;
-    documents_used: string;
+    document_id: number;
     created_at: string;
     saved: boolean;
 }

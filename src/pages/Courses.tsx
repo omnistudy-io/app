@@ -31,7 +31,7 @@ export default function Courses() {
       }}
       callToActionText="New Course"
       callToActionIcon={<PlusIcon size={16} />}
-      dropDown={false}
+      dropdown={false}
     >
       <CoursesModal show={showForm} setShow={setShowForm} updateCourses={setCourses} />
       <section className="flex flex-col gap-4">

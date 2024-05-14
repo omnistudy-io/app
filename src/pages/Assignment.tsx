@@ -2,6 +2,7 @@
 import { Card } from "@/components/ui/Card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
+import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/Skeleton"
 import { Slider } from "@/components/ui/Slider"
 import ConfirmModal from "@/components/modals/ConfirmModal";
@@ -18,7 +19,7 @@ import put from "@/utils/put";
 import del from "@/utils/del";
 import formatDate from "@/utils/formatDate";
 import { useToast } from "@/hooks/useToast";
-import { AssignmentSchema, CourseSchema, DocumentSchema } from "@/schema";
+import { AssignmentSchema, ChatSchema, CourseSchema, DocumentSchema } from "@/schema";
 import AuthContext from "@/context/AuthContext";
 
 // Icon imports
@@ -35,6 +36,7 @@ export default function Assignment() {
   // State management
   const [assignment, setAssignment] = useState<AssignmentSchema & CourseSnapshot | null>(null);
   const [course, setCourse] = useState<CourseSchema | null>(null);
+  const [chats, setChats] = useState<ChatSchema[]>([])
   const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
   const [progress, setProgress] = useState<number[]>([0]);
@@ -57,6 +59,8 @@ export default function Assignment() {
 
       // Get documents
       get(setDocuments, "docs", `/assignments/${id}/documents`);
+      // Get chats
+      get(setChats, "chats", `/assignments/${id}/chats`);
     }, "assignment", `/assignments/${id}`);
   }, []);
 
@@ -96,11 +100,6 @@ export default function Assignment() {
     }, `/assignments/${id}`); 
   }
 
-  // TODO: Implement summarization functionality
-  function summarizeHandler() {
-    console.log("Option 2");
-  };
-
   // TODO: Implement question generator functionality
   function questionGeneratorHandler() {
     console.log("Option 3");
@@ -127,8 +126,6 @@ export default function Assignment() {
    * Dropwdown options for the assignment
    */
   const dropDownOptions = [
-    { label: "Chat", onClick: () => navigate(`/assignments/${id}/chats`) },
-    { label: "Summarize", onClick: summarizeHandler },
     { label: "Question Generator", onClick: questionGeneratorHandler },
     { label: "Edit Assignment", onClick: editHandler },
     { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true) }, isDelete: true },
@@ -202,6 +199,36 @@ export default function Assignment() {
               <h3 className="text-xl">Score</h3>
             </div>
           </Card>
+
+          {/* Chats table */}
+          <Card className="bg-[#f5f5f5] p-4 w-full max-w-[40%]">
+            <div>
+              <Link className="text-2xl" to={`/assignments/${id}/chats`}>Chats</Link>
+            </div>
+            <div className="w-full">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead className="text-right">Created At</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {/* Chats found, render them */}
+                  {chats && chats.map((chat: ChatSchema) => {
+                    return <TableRow className="cursor-pointer hover:bg-stone-200 transition-all duration-200" onClick={() => navigate(`/assignments/${id}/chats/${chat.id}`)}>
+                      <TableCell>{chat.title}</TableCell>
+                      <TableCell className="text-right">{formatDate(chat.created_at)}</TableCell>
+                    </TableRow>
+                  })}
+                  {/* No chats found, render text */}
+                  {chats == null && <TableRow><TableCell>No chats</TableCell></TableRow>}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+
+          {/* Documents table */}
           <Card className="bg-[#f5f5f5] p-4 w-full max-w-[40%]">
             <div>
               <h3 className="text-2xl">Documents</h3>

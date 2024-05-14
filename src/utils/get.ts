@@ -15,11 +15,16 @@ export default function get(update: Function, field: string, path: string, heade
 
     return new Promise((resolve, _) => {
         axios.get(`${getApiBase()}${path}`, { headers: headers }).then((res) => {
-            resolve(res.data);
+            resolve(field === "" ? res.data : res.data[field]);
             update(field === "" ? res.data : res.data[field]);
         }).catch((err) => {
-            resolve(err);
-            update(field === "" ? err.response.data : err.response.data[field]);
+            try {
+                resolve(field === "" ? err.response.data : err.response.data[field]);
+                update(field === "" ? err.response.data : err.response.data[field]);
+            } catch {
+                resolve({ code: 500, message: "An error occurred", data: null });
+                update({ code: 500, message: "An error occurred", data: null });
+            }
         });
     });
 }

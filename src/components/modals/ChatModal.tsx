@@ -123,11 +123,19 @@ export default function ChatModal(props: ChatModalProps) {
         });
     }
 
-    function commitTitleChange() {
-        put(() => {
+    async function commitTitleChange() {
+        // put(() => {
+        //     setEditTitle(false);
+        //     setChatTitle(chatTitle);
+        // }, `/chats/${currentChat?.id}`, { title: chatTitle });
+
+        const putRes: any = await put(() => {}, `/chats/${currentChat?.id}`, { 
+            title: chatTitle 
+        });
+        if(putRes.chat) {
             setEditTitle(false);
             setChatTitle(chatTitle);
-        }, `/chats/${currentChat?.id}`, { title: chatTitle });
+        }
     }
 
     return(

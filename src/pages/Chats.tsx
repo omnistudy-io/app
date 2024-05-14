@@ -4,10 +4,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import ChatModal from "@/components/modals/ChatModal";
 
 // Tools imports
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AssignmentSchema } from "@/schema";
 import get from "@/utils/get";
+import post from "@/utils/post";
+import AuthContext from "@/context/AuthContext";
 
 // Icon imports
 import { PlusIcon } from "lucide-react";
@@ -19,6 +21,7 @@ export default function Chats() {
     // Hooks
     const navigate = useNavigate();
     const { id: assignmentId } = useParams();
+    const { user } = useContext(AuthContext);
 
     const [chats, setChats] = useState<(ChatSchema & { documentTitle: string })[] | null>(null);
     const [openedChat, setOpenedChat] = useState<ChatSchema | null>(null);
@@ -31,8 +34,20 @@ export default function Chats() {
     }, [openedChat]); 
 
     function newChatHandler() {
-        setShowModal(true);
-        setOpenedChat(null);
+        // setShowModal(true);
+        // setOpenedChat(null);
+
+        post((data: any) => {
+            console.log(data);
+            navigate(`/assignments/${assignmentId}/chats/${data.chat.id}`);
+        }, "/chats", {
+            user_id: user?.id,
+            title: "New untitled chat",
+            assignment_id: assignmentId,
+            document_id: null,
+            created_at: new Date().toISOString().split(".")[0],
+            saved: true
+        });
     }
 
     // Handle the opening of a new chat
@@ -64,15 +79,15 @@ export default function Chats() {
                     <TableRow>
                         <TableHead className="w-1/3">Chat Name</TableHead>
                         <TableHead className="w-1/2">Document</TableHead>
-                        <TableHead>Last Used</TableHead>
+                        <TableHead className="text-right">Created At</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {chats && chats.map((chat: (ChatSchema & { documentTitle: string }), index: number) => {
-                        return <TableRow className="cursor-pointer" onClick={() => handleOpenChat(chat)}>
+                        return <TableRow className="cursor-pointer" onClick={() => navigate(`/assignments/${assignmentId}/chats/${chat.id}`)}>
                             <TableCell>{chat.title}</TableCell>
                             <TableCell>{chat.documentTitle}</TableCell>
-                            <TableCell>{new Date(chat.created_at).toLocaleDateString()}</TableCell>
+                            <TableCell className="text-right">{new Date(chat.created_at).toLocaleString()}</TableCell>
                         </TableRow>
                     })}
                     {!chats && <TableRow>

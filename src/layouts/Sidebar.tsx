@@ -2,11 +2,8 @@
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/Avatar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/Popover";
+import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/Popover";
+import { Link } from "react-router-dom";
 
 // Hooks, utils, and schema imports
 import { useEffect, useState, useContext } from "react";

@@ -23,7 +23,21 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
           </h1>
         </div>
         <div className="flex w-full justify-between pb-0 p-4">
-          <h2 className="text-4xl">{props.header}</h2>
+          
+          {/* Edit title */}
+          {props.editTitle ? 
+            <input 
+              type="text" 
+              className="text-4xl w-fit border-2 border-[#00adb5] focus:ring-0 focus:outline-none rounded-md" 
+              defaultValue={props.header as string} 
+              onBlur={(e) => props.dispatchTitleChange!(e.target.value)}
+              onKeyDown={(e) => { e.key === 'Enter' && e.currentTarget.blur() }}
+              autoFocus
+            /> 
+            : 
+            <h2 className="text-4xl">{props.header}</h2>
+          }
+
           {props.callToAction &&
             (props.dropdown ? (
               <DropdownMenu>
@@ -81,6 +95,8 @@ type DashboardContainerProps = {
   dropdown: boolean;
   dropdownOptions?: DropdownOption[];
   link?: string;
+  editTitle?: boolean;
+  dispatchTitleChange?: (title: string) => void;
 };
 
 type DropdownOption = {
