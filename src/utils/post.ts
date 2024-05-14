@@ -18,9 +18,11 @@ export default function post(update: Function, path: string, data: object, heade
         axios.post(`${getApiBase()}${path}`, data, { headers: headers }).then((res) => {
             resolve(res.data);
             update(res.data);
+            return;
         }).catch((err) => {
             resolve(err);
             update(err.response.data);
+            return;
         });
     });
 }

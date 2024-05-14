@@ -5,15 +5,7 @@ import { NotebookIcon as StudySetsIcon } from "lucide-react";
 import SearchBar from "@/components/filter/SearchBar";
 import CoursesFilter from "@/components/filter/CoursesFilter";
 import { DropdownCheckbox } from "@/components/ui/DropdownCheckbox";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/Table";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
 import { UserStudySetSchema } from "@/schema";
 import { UserStudySetQuestionSchema } from "@/schema";
 

@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/Skeleton"
 import { Slider } from "@/components/ui/Slider"
 import ConfirmModal from "@/components/modals/ConfirmModal";
+import QuestionGenerationModal from "@/components/modals/QuestionGenerationModal";
+import LoadModal from "@/components/modals/LoadModal";
 import NotFound from "./NotFound";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -33,15 +35,15 @@ export default function Assignment() {
   const navigate = useNavigate();
 
   // State management
-  const [assignment, setAssignment] = useState<
-    (AssignmentSchema & CourseSnapshot) | null
-  >(null);
+  const [assignment, setAssignment] = useState<(AssignmentSchema & CourseSnapshot) | null>(null);
   const [course, setCourse] = useState<CourseSchema | null>(null);
   const [chats, setChats] = useState<ChatSchema[]>([])
   const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
   const [progress, setProgress] = useState<number[]>([0]);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+  const [showQgenModal, setShowQgenModal] = useState<boolean>(false);
+  const [showLoadingModal, setShowLoadingModal] = useState<boolean>(false);
 
   // Calculate score from assignment
   const actualPoints = assignment?.actual_points;
@@ -109,7 +111,7 @@ export default function Assignment() {
 
   // TODO: Implement question generator functionality
   function questionGeneratorHandler() {
-    console.log("Option 3");
+    setShowQgenModal(true);
   }
 
   /**
@@ -155,6 +157,21 @@ export default function Assignment() {
         message={`Are you sure you want to delete assignment ${assignment?.title}?`}
         confirmText="Delete"
         confirmCallback={deleteHandler}
+      />
+
+      {/* Question generation modal */}
+      <QuestionGenerationModal 
+        show={showQgenModal} 
+        setShow={setShowQgenModal}
+        setShowLoading={setShowLoadingModal}
+        assignment={assignment}
+        documents={documents || []}
+      />
+      {/* Question generation loading modal */}
+      <LoadModal 
+        message="Generating questions..."
+        submessage="This may take a few minutes, please do not close or reload this tab."
+        show={showLoadingModal}
       />
 
       <section className="flex flex-col gap-4">

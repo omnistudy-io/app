@@ -18,7 +18,10 @@ export default function LoadModal(props: LoadModalProps) {
                             <span className="sr-only">Loading...</span>
                         </div>
 
-                        <h1 className="text-xl text-stone-500">{props.message}</h1>
+                        <div className="flex flex-col gap-y-2">
+                            <h1 className="text-xl text-stone-500 text-center">{props.message}</h1>
+                            {props.submessage && <p className="text-stone-400 text-center">{props.submessage}</p>}
+                        </div>
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>
@@ -29,5 +32,6 @@ export default function LoadModal(props: LoadModalProps) {
 // Props
 type LoadModalProps = {
     message: string;
+    submessage?: string;
     show: boolean;
 }
