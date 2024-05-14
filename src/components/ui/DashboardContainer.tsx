@@ -1,11 +1,6 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./DropDownMenu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, } from "./DropDownMenu";
 import { ChevronDownIcon } from "lucide-react";
 
 export const DashboardContainer = (props: DashboardContainerProps) => {
@@ -22,7 +17,7 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
             {props.subHeader}
           </h1>
         </div>
-        <div className="flex w-full justify-between pb-0 p-4">
+        <div className="flex w-full justify-between pb-0 p-4" onDoubleClick={() => props.setEditTitle ? props.setEditTitle!(true) : null}>
           
           {/* Edit title */}
           {props.editTitle ? 
@@ -96,6 +91,7 @@ type DashboardContainerProps = {
   dropdownOptions?: DropdownOption[];
   link?: string;
   editTitle?: boolean;
+  setEditTitle?: (edit: boolean) => void;
   dispatchTitleChange?: (title: string) => void;
 };
 

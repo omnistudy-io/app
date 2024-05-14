@@ -219,6 +219,7 @@ export default function Chat() {
             subHeader={`${assignment?.title} Assignment`}
             dropdown={true}
             editTitle={editTitle}
+            setEditTitle={setEditTitle}
             dispatchTitleChange={updateTitle}
             dropdownOptions={[
                 { label: "Edit Chat", onClick: () => setEditTitle(true) },

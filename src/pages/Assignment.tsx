@@ -1,13 +1,6 @@
 // Component imports
 import { Card } from "@/components/ui/Card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/Table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/Skeleton"
@@ -142,13 +135,7 @@ export default function Assignment() {
   const dropDownOptions = [
     { label: "Question Generator", onClick: questionGeneratorHandler },
     { label: "Edit Assignment", onClick: editHandler },
-    {
-      label: "Delete Assignment",
-      onClick: () => {
-        setShowDeleteConfirm(true);
-      },
-      isDelete: true,
-    },
+    { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true); }, isDelete: true, },
   ];
 
   return (
