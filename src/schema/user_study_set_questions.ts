@@ -4,6 +4,7 @@ export interface UserStudySetQuestionSchema {
     type: string;
     question: string;
     answer: string;
+    options: string | null;
 }
 
 export interface UserStudySetQuestionsRows extends Array<UserStudySetQuestionSchema> {};

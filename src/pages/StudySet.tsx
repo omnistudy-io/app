@@ -109,24 +109,12 @@ export default function StudySet() {
             {/* Page content */}
             <div className="p-2 flex flex-row justify-center relative mb-4">
                 {studySet != null && studySet.questions.map((q, i) => {
-                    return <div 
+                    return <StudySetQuestionCard 
                         key={q.id} 
-                        style={{ position: "relative", left: `${((i + 1) - currentQuestion) * 2000}px` }}
-                        className={`${(i + 1) - currentQuestion !== 0 ? "w-0 h-0 p-0 border-0" : "w-full p-4 border"} bg-white shadow-sm border-stone-200 rounded-lg`}
-                    >
-                        <div className="h-40 flex justify-center items-center">
-                            <div className="absolute top-5 left-5 text-stone-400">
-                                <h2>Question {i + 1}</h2>
-                            </div>
-
-                            <div className="text-center">
-                                <h1 className="text-3xl mb-6"><b>{q.question.replace("[FITB]", "_____________")}</b></h1>
-                                <h1 className="text-2xl text-[#00adb5] hover:underline cursor-pointer">
-                                    {q.answer}
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
+                        q={q} 
+                        i={i} 
+                        current={currentQuestion}
+                    />
                 })}
             </div>
 
@@ -159,7 +147,63 @@ export default function StudySet() {
 }
 
 
+/**
+ * Study Set Question Card
+ * 
+ * @returns JSX for a study set question card
+ */
+function StudySetQuestionCard(props: StudySetQuestionCardProps) {
+
+    const [showAnswer, setShowAnswer] = useState<boolean>(false);
+
+    // Hide answer when out of view
+    useEffect(() => {
+        if(props.i + 1 != props.current) 
+            setShowAnswer(false);
+    }, [props.current]);
+
+    return(
+        <div 
+            key={props.q.id} 
+            style={{ position: "relative", left: `${((props.i + 1) - props.current) * 2000}px` }}
+            className={`${(props.i + 1) - props.current !== 0 ? "w-0 h-0 p-0 border-0" : "w-full h-fit p-4 border"} bg-white shadow-sm border-stone-200 rounded-lg`}
+        >
+            <div className="h-80 flex justify-center items-center">
+                <div className="absolute top-5 left-5 text-stone-400">
+                    <h2>Question {props.i + 1}</h2>
+                </div>
+
+                <div className="text-center">
+                    {/* Question */}
+                    <h1 className="text-3xl mb-6 font-bold">
+                        {props.q.question.replace("[FITB]", "_____________")}
+                    </h1>
+                    {/* Optional choices */}
+                    <div className="text-left mb-6">
+                        {props.q.options && Object.keys(JSON.parse(props.q.options)).map((key: string, i) => {
+                            const options = JSON.parse(props.q.options!);
+                            return <p key={i} className="text-2xl text-stone-400 mb-2">{key}: {options[`${key}`]}</p>
+                        })}
+                    </div>
+                    {/* Answer */}
+                    <h1 className="text-2xl text-[#00adb5] hover:underline cursor-pointer" onClick={() => setShowAnswer(!showAnswer)}>
+                        {showAnswer ? 
+                            props.q.options ? `${props.q.answer}: ${JSON.parse(props.q.options)[`${props.q.answer}`]}` : props.q.answer
+                        : "Show Answer"}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
 // Type definitions
 type StudyQuestions = {
     questions: UserStudySetQuestionSchema[];
+}
+type StudySetQuestionCardProps = {
+    q: UserStudySetQuestionSchema;
+    i: number;
+    current: number;
 }
