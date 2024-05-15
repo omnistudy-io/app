@@ -2,14 +2,7 @@
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import NotFound from "./NotFound";
 import ConfirmModal from "@/components/modals/ConfirmModal";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/Table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
 
 // Hook, util, and schema imports
 import { useState, useEffect, useContext } from "react";
@@ -18,12 +11,7 @@ import { useToast } from "@/hooks/useToast";
 import get from "@/utils/get";
 import del from "@/utils/del";
 import AuthContext from "@/context/AuthContext";
-import {
-  CourseSchema,
-  DocumentSchema,
-  ExamSchema,
-  UserStudySetSchema,
-} from "@/schema";
+import { CourseSchema, DocumentSchema, ExamSchema, UserStudySetSchema } from "@/schema";
 import { Card } from "@/components/ui/Card";
 
 // Icon imports
@@ -54,16 +42,12 @@ export default function Exam() {
 
   // Get initial data
   useEffect(() => {
-    get(
-      (data: ExamSchema & CourseSnapshot) => {
-        setExam(data);
-        if (data) get(setCourse, "course", `/courses/${data.course_id}`);
+    get((data: ExamSchema & CourseSnapshot) => {
+      setExam(data);
+      if (data) get(setCourse, "course", `/courses/${data.course_id}`);
 
-        get(setDocuments, "docs", `/exams/${id}/documents`);
-      },
-      "exam",
-      `/exams/${id}`
-    );
+      get(setDocuments, "docs", `/exams/${id}/documents`);
+    }, "exam", `/exams/${id}`);
 
     get(setSets, "studySets", "/users/{uid}/study-sets");
     get(setFilterSets, "studySets", "/users/{uid}/study-sets");
@@ -109,13 +93,7 @@ export default function Exam() {
    */
   const options = [
     { label: "Edit Exam", onClick: handleEdit },
-    {
-      label: "Delete Exam",
-      onClick: () => {
-        setShowConfirmDelete(true);
-      },
-      isDelete: true,
-    },
+    { label: "Delete Exam", onClick: () => setShowConfirmDelete(true), isDelete: true, },
   ];
 
   return (
