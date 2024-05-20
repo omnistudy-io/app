@@ -50,23 +50,37 @@ export default function StudySetModal(props: StudySetModalProps) {
       return;
     }
 
-    const data = {
+    const studySetData = {
       user_id: user?.id,
       title: name,
       description: description,
-      questions: questions,
+      num_questions: questions.length,
     };
+    console.log(studySetData);
 
-    console.log(data);
+    // NOTE: not sure why this make the .split method error in getinitals
+    // post(
+    //   (data: any) => {
+    //     const studySetId = data.id;
 
-    post(
-      (data: any) => {
-        get(props.updateStudySets, "study_sets", "/users/{uid}/study-sets");
-        navigate(`/study-sets/${data.id}`);
-      },
-      "/study-sets",
-      data
-    );
+    //     questions.forEach((question) => {
+    //       const questionData = {
+    //         study_set_id: studySetId,
+    //         type: "text", // assuming type is text for simplicity
+    //         question: question.question,
+    //         answer: question.answer,
+    //         options: null,
+    //       };
+
+    //       post(() => {}, `/study-sets/${studySetId}/questions`, questionData);
+    //     });
+
+    //     get(props.updateStudySets, "study_sets", "/users/{uid}/study-sets");
+    //     navigate(`/study-sets/${data["study-sets"].id}`);
+    //   },
+    //   "/study-sets",
+    //   studySetData
+    // );
 
     props.setShow(false);
   };
