@@ -26,38 +26,41 @@ import StudySet from "./pages/StudySet";
 import Documents from "./pages/Documents";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
+import Schedule from "./pages/Schedule";
 
 function App() {
   return (
     <div id="app">
-        <Routes>
-          {/* Main aplication */}
-          <Route path="/*" element={<MainRouter />} />
-          {/* Auth pages */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+      <Routes>
+        {/* Main aplication */}
+        <Route path="/*" element={<MainRouter />} />
+        {/* Auth pages */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
 
 function MainRouter() {
-  
   const navigate = useNavigate();
   const [user, setUser] = useState<UserSchema | null>(null);
 
   useEffect(() => {
-    get((data: UserSchema | null) => {
-      if(data) 
-        setUser(data);
-      else {
-        setUser(null);
-        navigate("/login");
-      }
-    }, "user", "/users/current");
+    get(
+      (data: UserSchema | null) => {
+        if (data) setUser(data);
+        else {
+          setUser(null);
+          navigate("/login");
+        }
+      },
+      "user",
+      "/users/current"
+    );
   }, []);
 
-  if(!user) return null;
+  if (!user) return null;
 
   return (
     <div className="flex h-screen">
@@ -90,6 +93,9 @@ function MainRouter() {
 
             {/* Documents route */}
             <Route path="/documents" element={<Documents />}></Route>
+
+            {/* Schedule route */}
+            <Route path="/schedule" element={<Schedule />}></Route>
 
             {/* Settings route */}
             <Route path="/settings" element={<Settings />} />
