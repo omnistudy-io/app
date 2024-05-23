@@ -3,6 +3,7 @@ import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import NotFound from "./NotFound";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table";
+import EditExamModal from "@/components/modals/EditExamModal";
 
 // Hook, util, and schema imports
 import { useState, useEffect, useContext } from "react";
@@ -33,6 +34,7 @@ export default function Exam() {
   const [filterSets, setFilterSets] = useState<UserStudySetSchema[]>([]);
   const [course, setCourse] = useState<CourseSchema | null>(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   // Calculate score from assignment
   const actualPoints = exam?.actual_points;
@@ -92,7 +94,7 @@ export default function Exam() {
    * Dropdown options for the exam
    */
   const options = [
-    { label: "Edit Exam", onClick: handleEdit },
+    { label: "Edit Exam", onClick: () => setShowEditModal(true) },
     { label: "Delete Exam", onClick: () => setShowConfirmDelete(true), isDelete: true, },
   ];
 
@@ -113,6 +115,13 @@ export default function Exam() {
         setShow={setShowConfirmDelete}
         confirmText="Delete"
         confirmCallback={handleDelete}
+      />
+
+      {/* Edit exam modal */}
+      <EditExamModal 
+        show={showEditModal} 
+        setShow={setShowEditModal} 
+        exam={exam} 
       />
 
       <section>

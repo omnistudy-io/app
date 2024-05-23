@@ -2,7 +2,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/Textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/Select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select";
 import { DatePicker } from "@/components/ui/DatePicker";
 
 // Tools imports
@@ -63,10 +63,6 @@ export default function EditAssignmentModal(props: EditAssignmentModalProps) {
         }, `/assignments/${props.assignment!.id}`, data);
     }
 
-    function updateSelectedCourse(data: any) {
-        
-    }
-
     /**
      * Given the original course data, examine each data state object to see
      * if it differs from the original data. If any fields do, then changes exist.
@@ -76,7 +72,13 @@ export default function EditAssignmentModal(props: EditAssignmentModalProps) {
         if(props.assignment) {
             // If any states are not what the props are, then changes exist
             if(
-                props.assignment
+                courseId != props.assignment.course_id || 
+                title != props.assignment.title || 
+                description != props.assignment.description || 
+                (dueDate && dueDate?.toISOString() != props.assignment.due_at) ||
+                actualPoints != props.assignment.actual_points || 
+                possiblePoints != props.assignment.possible_points || 
+                weight != props.assignment.weight
             ) {
                 return true;
             }
@@ -88,7 +90,7 @@ export default function EditAssignmentModal(props: EditAssignmentModalProps) {
     }
 
     // On any value change, check for changes
-    const depends: any[] = [];
+    const depends = [courseId, title, description, dueDate, actualPoints, possiblePoints, weight];
     useEffect(() => {
         get(setCourses, "courses", "/courses");
         setIsEdited(newChangesExist());
@@ -184,7 +186,7 @@ export default function EditAssignmentModal(props: EditAssignmentModalProps) {
                                 min="1"
                                 max="100"
                                 className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
-                                placeholder="5%"
+                                placeholder="5"
                                 onChange={(e) => setWeight(parseInt(e.target.value) / 100)}
                                 defaultValue={`${weight * 100}`}
                             />

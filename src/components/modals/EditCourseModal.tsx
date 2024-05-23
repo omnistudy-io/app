@@ -4,9 +4,7 @@ import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/Textarea";
 
 // Tools imports
-import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthContext from "@/context/AuthContext";
+import { useState, useEffect } from "react";
 import put from "@/utils/put";
 import { CourseSchema } from "@/schema";
 import { useToast } from "@/hooks/useToast";
@@ -14,11 +12,8 @@ import { useToast } from "@/hooks/useToast";
 // Icon imports
 import { X } from "lucide-react";
 
-
 export default function EditCourseModal(props: EditCourseModalProps) {
     // Hooks
-    const { user } = useContext(AuthContext);
-    const navigate = useNavigate();
     const { toast } = useToast();
 
     // Data state management
