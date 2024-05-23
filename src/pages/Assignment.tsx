@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/Skeleton"
 import { Slider } from "@/components/ui/Slider"
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import QuestionGenerationModal from "@/components/modals/QuestionGenerationModal";
+import EditAssignmentModal from "@/components/modals/EditAssignmentModal";
 import LoadModal from "@/components/modals/LoadModal";
 import NotFound from "./NotFound";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
@@ -41,15 +42,18 @@ export default function Assignment() {
   const [documents, setDocuments] = useState<DocumentSchema[] | null>(null);
   const [videos, setVideos] = useState<any | null>(null);
   const [progress, setProgress] = useState<number[]>([0]);
+
+  // Logic state management
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [showQgenModal, setShowQgenModal] = useState<boolean>(false);
   const [showLoadingModal, setShowLoadingModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   // Calculate score from assignment
   const actualPoints = assignment?.actual_points;
   const possiblePoints = assignment?.possible_points;
-  const score =
-    actualPoints && possiblePoints ? (actualPoints / possiblePoints) * 100 : 0;
+  // Round to a single decimal place
+  const score = actualPoints && possiblePoints ? Math.round((actualPoints / possiblePoints) * 1000) / 10 : 0;
 
   // Get initial data
   useEffect(() => {
@@ -57,10 +61,10 @@ export default function Assignment() {
       (data: AssignmentSchema & CourseSnapshot) => {
         setAssignment(data);
         if (data) {
-          // post(setVideos, "/ai/videos", {
-          //   description: data.description,
-          //   assignmentId: id,
-          // });
+          post(setVideos, "/ai/videos", {
+            description: data.description,
+            assignmentId: id,
+          });
           setProgress([data.progress]);
           get(setCourse, "course", `/courses/${data.course_id}`);
         }
@@ -136,7 +140,7 @@ export default function Assignment() {
    */
   const dropDownOptions = [
     { label: "Question Generator", onClick: questionGeneratorHandler },
-    { label: "Edit Assignment", onClick: editHandler },
+    { label: "Edit Assignment", onClick: () => setShowEditModal(true) },
     { label: "Delete Assignment", onClick: () => { setShowDeleteConfirm(true); }, isDelete: true, },
   ];
 
@@ -157,6 +161,13 @@ export default function Assignment() {
         message={`Are you sure you want to delete assignment ${assignment?.title}?`}
         confirmText="Delete"
         confirmCallback={deleteHandler}
+      />
+
+      {/* Edit assignment modal */}
+      <EditAssignmentModal
+        show={showEditModal}
+        setShow={setShowEditModal}
+        assignment={assignment}
       />
 
       {/* Question generation modal */}
@@ -219,7 +230,7 @@ export default function Assignment() {
                   <h4 className="font-bold flex items-center gap-2">
                     <Weight size={20} strokeWidth={2} /> Weight:
                   </h4>
-                  <p>{assignment?.weight || "--"}%</p>
+                  <p>{assignment?.weight * 100 || "--"}%</p>
                 </div>
               </div>
             </div>
