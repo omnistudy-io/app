@@ -57,10 +57,10 @@ export default function Assignment() {
       (data: AssignmentSchema & CourseSnapshot) => {
         setAssignment(data);
         if (data) {
-          post(setVideos, "/ai/videos", {
-            description: data.description,
-            assignmentId: id,
-          });
+          // post(setVideos, "/ai/videos", {
+          //   description: data.description,
+          //   assignmentId: id,
+          // });
           setProgress([data.progress]);
           get(setCourse, "course", `/courses/${data.course_id}`);
         }
@@ -207,19 +207,19 @@ export default function Assignment() {
                   <h4 className="font-bold flex items-center gap-2">
                     <Star size={20} strokeWidth={2} /> Earned Points:
                   </h4>
-                  <p>{assignment?.actual_points}</p>
+                  <p>{assignment?.actual_points || "--"}</p>
                 </div>
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-center gap-2">
                     <Star size={20} strokeWidth={2} /> Possible Points:
                   </h4>
-                  <p>{assignment?.possible_points}</p>
+                  <p>{assignment?.possible_points || "--"}</p>
                 </div>
                 <div className="flex gap-1">
                   <h4 className="font-bold flex items-center gap-2">
                     <Weight size={20} strokeWidth={2} /> Weight:
                   </h4>
-                  <p>{assignment?.weight * 100}%</p>
+                  <p>{assignment?.weight || "--"}%</p>
                 </div>
               </div>
             </div>

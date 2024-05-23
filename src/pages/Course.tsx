@@ -1,3 +1,4 @@
+// Component imports
 import AssignmentDisplay from "@/components/assignment/AssignmentDisplay";
 import ExamDisplay from "@/components/exams/ExamDisplay";
 import { Card } from "@/components/ui/Card";
@@ -5,6 +6,7 @@ import { DashboardContainer } from "@/components/ui/DashboardContainer";
 import { Progress } from "@/components/ui/Progress";
 import NotFound from "./NotFound";
 import ConfirmModal from "@/components/modals/ConfirmModal";
+import EditCourseModal from "@/components/modals/EditCourseModal";
 
 // Hooks, util, and schema imports
 import { useState, useEffect, useContext } from "react";
@@ -32,6 +34,7 @@ export default function Course() {
   const [course, setCourse] = useState<CourseSchema | null>(null);
   const [events, setEvents] = useState<CourseEventSchema[] | null>(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   // Get initial data
   useEffect(() => {
@@ -78,7 +81,7 @@ export default function Course() {
    * Dropdown options for the course
    */
   const dropdownOptions = [
-    { label: "Edit Course", onClick: handleEdit },
+    { label: "Edit Course", onClick: () => { setShowEditModal(true) } },
     { label: "Delete Course", onClick: () => { setShowConfirmDelete(true) }, isDelete: true }
   ]
 
@@ -100,6 +103,13 @@ export default function Course() {
         message="Are you sure you want to delete this course?"
         confirmText="Delete"
         confirmCallback={handleDelete}
+      />
+
+      {/* Edit Course Modal */}
+      <EditCourseModal 
+        show={showEditModal}
+        setShow={setShowEditModal}
+        course={course}
       />
 
       <section className="flex flex-col gap-4">

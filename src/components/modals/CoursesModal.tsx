@@ -51,34 +51,6 @@ export default function CoursesModal(props: CoursesModalProps) {
     ]);
   }
 
-  const handleCourseSubjectChange = (value: any) => {
-    const parts = value.split(" ");
-
-    if (parts.length >= 2) {
-      setCourseNumber(parts[1]);
-      setCourseSubject(parts[0]);
-    } else {
-      setCourseNumber("");
-      setCourseSubject(value);
-    }
-  };
-
-  const handleRoomNumberChange = (value: any) => {
-    const parts = value.split(" ");
-
-    if (parts.length > 2) {
-      // If the value was something like "Owens Science 435" building would be set to "Owens Science"
-      setBuilding(parts.slice(0, 1).join(" "));
-      setRoomNumber(parts[2]);
-    } else if (parts.length === 2) {
-      setBuilding(parts[0]);
-      setRoomNumber(parts[1]);
-    } else {
-      setBuilding("");
-      setRoomNumber(value);
-    }
-  };
-
   const handleSubmit = () => {
     if (
       !courseNumber ||
@@ -153,17 +125,30 @@ export default function CoursesModal(props: CoursesModalProps) {
             </button>
           </div>
           <fieldset className="flex flex-col gap-y-4">
-            <div className="flex w-full gap-x-4">
-              <div className="flex flex-col text-left w-full">
-                <label className="text-sm ml-1">Course Number:</label>
-                <input
-                  type="text"
-                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
-                  placeholder="CSci 2021"
-                  onChange={(e) => handleCourseSubjectChange(e.target.value)}
-                />
+            <div className="flex flex-col w-full gap-y-4">
+              {/* Course subject and number */}
+              <div className="flex flex-row gap-x-4 basis-1/2">
+                <div className="flex flex-col text-left w-full">
+                  <label className="text-sm ml-1">Subject:</label>
+                  <input
+                    type="text"
+                    className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
+                    placeholder="CSCI"
+                    onChange={(e) => setCourseSubject(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col text-left w-full">
+                  <label className="text-sm ml-1">Number:</label>
+                  <input
+                    type="text"
+                    className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
+                    placeholder="4511W"
+                    onChange={(e) => setCourseNumber(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="flex flex-col text-left w-full">
+              {/* Course title */}
+              <div className="flex flex-col text-left basis-1/2">
                 <label className="text-sm ml-1">Course Title:</label>
                 <input
                   type="text"
@@ -186,12 +171,21 @@ export default function CoursesModal(props: CoursesModalProps) {
                 />
               </div>
               <div className="flex flex-col text-left w-full">
-                <label className="text-sm ml-1">Room Number:</label>
+                <label className="text-sm ml-1">Building:</label>
                 <input
                   type="text"
                   className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
-                  placeholder="Smith 331"
-                  onChange={(e) => handleRoomNumberChange(e.target.value)}
+                  placeholder="Keller Hall"
+                  onChange={(e) => setBuilding(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col text-left w-full">
+                <label className="text-sm ml-1">Room:</label>
+                <input
+                  type="text"
+                  className="text-sm border bg-stone-100 rounded-md outline-none focus:border-[#34354a] p-2"
+                  placeholder="325"
+                  onChange={(e) => setRoomNumber(e.target.value)}
                 />
               </div>
             </div>

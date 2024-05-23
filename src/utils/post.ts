@@ -21,7 +21,7 @@ export default function post(update: Function, path: string, data: object, heade
             return;
         }).catch((err) => {
             resolve(err);
-            update(err.response.data);
+            update(err && err.response ? err.response.data : err);
             return;
         });
     });
