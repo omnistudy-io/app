@@ -23,6 +23,7 @@ import {
   Bell as NotificationsIcon,
   Calendar as ScheduleIcon,
   Settings as SettingsIcon,
+  MessageCircle as FeedbackIcon
 } from "lucide-react";
 import { UserSchema } from "@/schema";
 
@@ -141,41 +142,51 @@ export default function Sidebar({ className }: SidebarProps) {
           </ul>
         </div>
 
-        {/* Sidebar footer - profile */}
-        <div className="flex items-center justify-between h-16 border-t border-[#34354A] p-4">
-          <div className="flex flex-row gap-2">
-            <Avatar>
-              <AvatarImage
-                alt="Anita Cruz"
-                src="/placeholder.svg?height=32&width=32"
-              />
-              <AvatarFallback>{getInitials(user ? user.name : "")}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm text-white">
-                {user && user.name}
-              </span>
-              <span className="text-xs text-gray-400">
-                {user && user.email}
-              </span>
-            </div>
+        {/* Sidebar footer - profile and feedback link */}
+        <div>
+          <div className="pl-2">
+            <SidebarLink
+              icon={<FeedbackIcon className="w-5" />}
+              href="https://insigh.to/b/omnistudy"
+              target="_blank"
+              title="Feedback"
+            />
           </div>
-          <Popover>
-            <PopoverTrigger>
-              <DotsIcon className="text-white h-4 w-4" />
-            </PopoverTrigger>
-            <PopoverContent className="w-fit p-1">
-              <div className="flex flex-col w-fit">
-                <Button
-                  variant="ghost"
-                  className="px-2 py-1 justify-between text-left text-stone-500 hover:text-[#00adb5]"
-                  onClick={logout}
-                >
-                  Logout
-                </Button>
+          <div className="flex items-center justify-between h-16 border-t border-[#34354A] p-4">
+            <div className="flex flex-row gap-2">
+              <Avatar>
+                <AvatarImage
+                  alt="Anita Cruz"
+                  src="/placeholder.svg?height=32&width=32"
+                />
+                <AvatarFallback>{getInitials(user ? user.name : "")}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="text-sm text-white">
+                  {user && user.name}
+                </span>
+                <span className="text-xs text-gray-400">
+                  {user && user.email}
+                </span>
               </div>
-            </PopoverContent>
-          </Popover>
+            </div>
+            <Popover>
+              <PopoverTrigger>
+                <DotsIcon className="text-white h-4 w-4" />
+              </PopoverTrigger>
+              <PopoverContent className="w-fit p-1">
+                <div className="flex flex-col w-fit">
+                  <Button
+                    variant="ghost"
+                    className="px-2 py-1 justify-between text-left text-stone-500 hover:text-[#00adb5]"
+                    onClick={logout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </aside>
     </div>
@@ -183,7 +194,7 @@ export default function Sidebar({ className }: SidebarProps) {
 }
 
 // Represents a link in the sidebar
-function SidebarLink(props: { icon: any; href: string; title: string }) {
+function SidebarLink(props: { icon: any; href: string; title: string, target?: string }) {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -192,7 +203,7 @@ function SidebarLink(props: { icon: any; href: string; title: string }) {
 
   return (
     <li className="mb-2">
-      <a href={props.href}>
+      <a href={props.href} target={props.target || ""}>
         <Button
           className={`${
             active ? "bg-[#00adb5] hover:bg-[#00adb5]/80" : "bg-[#1F202F]"

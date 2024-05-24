@@ -16,7 +16,7 @@ import del from "@/utils/del";
 import AuthContext from "@/context/AuthContext";
 
 // Icon imports
-import { PencilLineIcon } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import { AssignmentSchema, ChatMessageSchema, ChatSchema, CourseSchema, DocumentSchema } from "@/schema";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 
@@ -36,6 +36,7 @@ export default function Chat() {
     const [selectedDocument, setSelectedDocument] = useState<DocumentSchema | null>(null);
     const [chat, setChat] = useState<ChatSchema | null>(null);
     const [chatMessages, setChatMessages] = useState<ChatMessageSchema[] | null>(null);
+    const [todayMessageCount, setTodayMessageCount] = useState<number>(0);
 
     // Page logic state management
     const [chatTitle, setChatTitle] = useState<string>(chat?.title || "New untitled chat");
@@ -48,6 +49,7 @@ export default function Chat() {
     // Get initial data
     useEffect(() => {
         initData();
+        get(setTodayMessageCount, "count", `/users/{uid}/cmtoday`);
     }, []);
 
     async function initData() {
@@ -125,6 +127,12 @@ export default function Chat() {
      * Handle a new chat send from the user: send the chat and get a response
      */
     async function handleChatSend() {
+        // Check if there is more than 25 messages sent today
+        if(todayMessageCount >= 25) {
+            toast({ title: "Error", description: "You have reached the maximum number of messages for today. Upgrade your plan to increase your limit." });
+            return;
+        }
+
         if(currentMessage.trim() === "") {
             toast({ title: "Error", description: "Please enter a message to send." });
         }
@@ -162,10 +170,14 @@ export default function Chat() {
                         content: content,
                         created_at: new Date().toISOString().split(".")[0]
                     }];
+                    if(fromUser)
+                        setTodayMessageCount(todayMessageCount + 1);
                     setChatMessages([...newMsgs]);
                     resolve(newMsgs);
                 }
                 else {
+                    if(!fromUser) 
+                        setTodayMessageCount(todayMessageCount - 1);
                     toast({ title: "Error", description: "Failed to create new message." });
                     resolve(chats || []);
                 }
@@ -300,6 +312,12 @@ export default function Chat() {
 
                     {/* Chat message box */}
                     <div className="mt-4 justify-self-end w-full">
+                        
+                        <div className={`mb-2 text-md flex flex-row gap-x-1 justify-end items-center ${todayMessageCount >= 25 ? "text-red-500" : "text-stone-400"}`}>
+                            {todayMessageCount >= 25 && <TriangleAlert className="h-4 w-4" />}
+                            {todayMessageCount}/25 messages used today
+                        </div>
+
                         <div className="flex flex-row gap-x-2">
                             <input
                                 type="text"

@@ -5,14 +5,15 @@ import { Textarea } from "@/components/ui/Textarea";
 import { motion } from "framer-motion";
 
 // Tools imports
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import get from "@/utils/get";
 import post from "@/utils/post";
 import { useToast } from "@/hooks/useToast";
 import AuthContext from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 // Icon imports
-import { X } from "lucide-react";
+import { X, TriangleAlert } from "lucide-react";
 import { AssignmentSchema, DocumentSchema } from "@/schema";
 
 export default function QuestionGenerationModal(props: QuestionGenerationModalProps) {
@@ -28,6 +29,7 @@ export default function QuestionGenerationModal(props: QuestionGenerationModalPr
     const [questionTypes, setQuestionTypes] = useState<string[]>([]); // ["MCQ", "SA", "TF", "FITB"]
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [todayGenSets, setTodayGenSets] = useState<number>(0);
 
     function updateSelectedDocument(value: string) {
         const doc = props.documents.find((doc) => `${doc.id}` == value);
@@ -45,6 +47,12 @@ export default function QuestionGenerationModal(props: QuestionGenerationModalPr
     }
 
     function handleSubmit() {
+        // Check if daily limit has been reached
+        if(todayGenSets >= 3) {
+            toast({ title: "Daily limit reached!", description: "You can only generate 3 sets per day. Upgrade your plan to increase your limit." });
+            return;
+        }
+
         if(!selectedDocument || !numQuestions || questionTypes.length == 0 || !title || !description) {
             toast({ title: "Oops!", description: "Please make sure to fill out all fields to generate questions." })
             return;
@@ -89,6 +97,10 @@ export default function QuestionGenerationModal(props: QuestionGenerationModalPr
             question_types: questionTypes
         });
     }
+
+    useEffect(() => {
+        get(setTodayGenSets, "count", "/users/{uid}/sstoday");
+    }, []);
 
     return(
         <Dialog.Root open={props.show}>
@@ -204,10 +216,17 @@ export default function QuestionGenerationModal(props: QuestionGenerationModalPr
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
+
+                        {/* Show number of sets generated today */}
+                        <div className={`text-md flex flex-row gap-x-1 items-center ${todayGenSets >= 3 ? "text-red-500" : "text-stone-400"}`}>
+                            {todayGenSets >= 3 && <TriangleAlert className="h-4 w-4" />}
+                            {todayGenSets}/3 sets generated today
+                        </div>
+
                     </div>
 
                     {/* Footer buttons */}
-                    <div className="mt-[25px] flex justify-end gap-x-2">
+                    <div className="mt-[25px] flex justify-end gap-x-1">
                         <motion.button
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.95 }}
