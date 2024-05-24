@@ -121,7 +121,10 @@ export default function EditAssignmentModal(props: EditAssignmentModalProps) {
                     <div className="flex flex-row gap-x-4 w-full">
                         <div className="flex flex-col text-left w-full">
                             <label className="text-sm ml-1">Course</label>
-                            <Select value={courseId ? `${courseId}` : "None"} onValueChange={(value: string) => setCourseId(value == "None" ? null : parseInt(value))}>
+                            <Select 
+                                value={courseId ? `${courseId}` : "None"} 
+                                onValueChange={(value: string) => setCourseId(value == "None" ? null : parseInt(value))}
+                            >
                                 <SelectTrigger className="bg-stone-100">
                                     <SelectValue placeholder="None" />
                                 </SelectTrigger>

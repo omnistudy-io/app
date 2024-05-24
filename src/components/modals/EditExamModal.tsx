@@ -8,6 +8,7 @@ import { DatePicker } from "@/components/ui/DatePicker";
 // Tools imports
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/useToast";
+import get from "@/utils/get";
 import put from "@/utils/put";
 import { ExamSchema, CourseSchema } from "@/schema";
 
@@ -21,7 +22,7 @@ export default function EditExamModal(props: EditExamModalProps) {
 
     // Data state management
     const [courses, setCourses] = useState<CourseSchema[] | null>(null);
-    const [selectedCourse, setSelectedCourse] = useState<CourseSchema | null>(null);
+    const [courseId, setCourseId] = useState<number | null>(props.exam ? props.exam.course_id : null);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [building, setBuilding] = useState<string>("");
@@ -31,15 +32,65 @@ export default function EditExamModal(props: EditExamModalProps) {
     const [actualPoints, setActualPoints] = useState<number>(0);
     const [possiblePoints, setPossiblePoints] = useState<number>(0);
     const [weight, setWeight] = useState<number>(0);
-    const [startTime, setStartTime] = useState<string >("08:00");
+    const [startTime, setStartTime] = useState<string>("08:00");
     const [endTime, setEndTime] = useState<string>("10:00");
 
     // Logic state management
     const [isEdited, setIsEdited] = useState<boolean>(false);
 
     function handleSave() {
+        console.log("Handling save...");
+        const data = {
+            course_id: courseId,
+            title,
+            date: date?.toISOString().split("T")[0],
+            description,
+            start_time: `${date?.toISOString().split("T")[0]} ${startTime}`,
+            end_time: `${date?.toISOString().split("T")[0]} ${endTime}`,
+            building,
+            room,
+            seat,
+            actual_points: actualPoints,
+            possible_points: possiblePoints,
+            weight,
+        }
 
+        put((data: any) => {
+            if(data.code < 300) {
+                toast({ title: "Success!", description: `Exam ${props.exam!.title} was updated successfully.` });
+                window.location.reload();
+            }
+            else {  
+                toast({ title: "An error occurred!", description: `An unexpected error occured while trying to update ${props.exam!.title} exam. Please try again.` })
+            }
+        }, `/exams/${props.exam!.id}`, data);
     }
+
+    /**
+     * Given the original course data, examine each data state object to see
+     * if it differs from the original data. If any fields do, then changes exist.
+     * @returns boolean indicating whether changes exist to the original data
+     */
+    function newChangesExist() {
+        if(props.exam) {
+            // If any states are not what the props are, then changes exist
+            if(
+                true
+            ) {
+                return true;
+            }
+            else 
+                return false;
+        }
+        else
+            return false;
+    }
+
+    const depends: any[] = [];
+    useEffect(() => {
+        get(setCourses, "courses", "/courses");
+        setIsEdited(newChangesExist())
+    }, depends);
 
     return(
         <Dialog.Root open={props.show}>
@@ -53,7 +104,7 @@ export default function EditExamModal(props: EditExamModalProps) {
                     {/* Modal header */}
                     <div className="flex justify-between items-center mb-6 px-1 pb-2 border-b border-[#34354a]">
                         <Dialog.Title className="m-0 text-[17px] font-medium">
-                            Add new exam
+                            Edit {props.exam.title} exam
                         </Dialog.Title>
                         {/* Only show close button when not loading */}
                         <button
@@ -72,8 +123,8 @@ export default function EditExamModal(props: EditExamModalProps) {
                             <div className="flex flex-col text-left w-full">
                                 <label className="text-sm ml-1">Course</label>
                                 <Select 
-                                    value={selectedCourse ? `${selectedCourse.id}` : "None"} 
-                                    onValueChange={() => {}}
+                                    value={courseId ? `${courseId}` : "None"} 
+                                    onValueChange={(value: string) => setCourseId(value == "None" ? null : parseInt(value))}
                                 >
                                     <SelectTrigger className="bg-[#f5f5f5] border-gray-300">
                                         <SelectValue placeholder="None" />
@@ -97,6 +148,7 @@ export default function EditExamModal(props: EditExamModalProps) {
                                     type="text"
                                     className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-2 border"
                                     placeholder="Enter title here"
+                                    defaultValue={props.exam.title}
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
                             </div>
@@ -110,6 +162,7 @@ export default function EditExamModal(props: EditExamModalProps) {
                                     type="text"
                                     className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-2 border"
                                     placeholder="Optional building"
+                                    defaultValue={props.exam.building || "-"}
                                     onChange={(e) => setBuilding(e.target.value)}
                                 />
                             </div>
@@ -119,6 +172,7 @@ export default function EditExamModal(props: EditExamModalProps) {
                                     type="text"
                                     className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-2 border"
                                     placeholder="Optional room"
+                                    defaultValue={props.exam.room || "-"}
                                     onChange={(e) => setRoom(e.target.value)}
                                 />
                             </div>
@@ -132,6 +186,7 @@ export default function EditExamModal(props: EditExamModalProps) {
                                     type="text"
                                     className="text-sm border-1 border-gray-300 bg-stone-100 rounded-md focus:outline-[#34354a] p-2 border"
                                     placeholder="Optional seat"
+                                    defaultValue={props.exam.seat || "-"}
                                     onChange={(e) => setSeat(e.target.value)}
                                 />
                             </div>
@@ -140,10 +195,10 @@ export default function EditExamModal(props: EditExamModalProps) {
                                 <input 
                                     className="p-2 text-sm border-1 border-gray-300 ring-1 ring-gray-300 bg-stone-100 rounded-md focus:border-gray-500 focus:ring-0"
                                     type="time" 
-                                    min="08:00" 
+                                    min="08:00"
                                     max="18:00"  
-                                    defaultValue="08:00"
                                     step="60"
+                                    defaultValue={props.exam.start_time.split("T")[1].replace(":00.000Z", "")}
                                     onChange={(e) => setStartTime(e.target.value)}
                                 />
                             </div>
@@ -152,10 +207,10 @@ export default function EditExamModal(props: EditExamModalProps) {
                                 <input 
                                     className="p-2 text-sm border-1 border-gray-300 ring-1 ring-gray-300 bg-stone-100 rounded-md focus:border-gray-500 focus:ring-0"
                                     type="time" 
-                                    min="08:00" 
+                                    min="08:00"
                                     max="18:00"  
-                                    defaultValue="10:00"
                                     step="60"
+                                    defaultValue={props.exam.end_time.split("T")[1].replace(":00.000Z", "")}
                                     onChange={(e) => setEndTime(e.target.value)}
                                 />
                             </div>
@@ -214,6 +269,7 @@ export default function EditExamModal(props: EditExamModalProps) {
                             <Textarea 
                                 className="bg-[#f5f5f5] border-gray-300"
                                 placeholder="Be as descriptive as possible, our AI will help you with the rest!"
+                                defaultValue={props.exam.description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>

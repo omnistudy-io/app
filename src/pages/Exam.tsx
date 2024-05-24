@@ -39,8 +39,7 @@ export default function Exam() {
   // Calculate score from assignment
   const actualPoints = exam?.actual_points;
   const possiblePoints = exam?.possible_points;
-  const score =
-    actualPoints && possiblePoints ? (actualPoints / possiblePoints) * 100 : 0;
+  const score = actualPoints && possiblePoints ? Math.round((actualPoints / possiblePoints) * 1000) / 10 : 0;
 
   // Get initial data
   useEffect(() => {
