@@ -50,7 +50,7 @@ export default function Courses() {
         </div>
         <div className="flex gap-4">
           <AssignmentDisplay className="basis-3/5" />
-          <ExamDisplay className="basis-2/5"></ExamDisplay>
+          <ExamDisplay className="basis-2/5" />
         </div>
       </section>
     </DashboardContainer>
