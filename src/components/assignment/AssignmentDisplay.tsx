@@ -75,7 +75,7 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
                       : fullCourseName;
                   return (
                     <TableRow key={i}>
-                      <TableCell className="flex flex-col gap-y-1 hover:underline hover:text-[#00adb5] transition-all duration-150">
+                      <TableCell className="flex flex-col gap-y-1 hover:underline hover:text-[#00adb5] transition-all duration-150 whitespace-nowrap">
                         {window.location.href.includes("courses") ? (
                           <Link
                             reloadDocument
@@ -89,7 +89,7 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
                           </Link>
                         )}
                       </TableCell>
-                      <TableCell className="hover:underline hover:text-[#00adb5] transition-all duration-150">
+                      <TableCell className="hover:underline hover:text-[#00adb5] transition-all duration-150 whitespace-nowrap">
                         <Link to={`/courses/${assignment.course_id}`}>
                           {courseName}
                         </Link>
@@ -97,7 +97,7 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
                       <TableCell className="flex flex-row gap-x-4">
                         <p>{assignment.progress}%</p>
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right whitespace-nowrap">
                         <div className="flex flex-row gap-x-2 items-center justify-end">
                           {/* Show a small badge if overdue */}
                           {new Date(assignment.due_at) < new Date() ? (
@@ -105,7 +105,7 @@ export default function AssignmentDisplay(props: AssignmentDisplayProps) {
                               {/* Create a tooltip that explains this icon */}
                               <TooltipProvider>
                                 <Tooltip>
-                                  <TooltipTrigger className="flex flex-row gap-x-2 items-center justify-enc">
+                                  <TooltipTrigger className="flex flex-row gap-x-2 items-center justify-end">
                                     <OverdueIcon
                                       className="text-red-500"
                                       size={20}
