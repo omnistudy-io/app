@@ -55,7 +55,7 @@ export default function Login() {
             if(data.code === 401) 
                 setErrorMessage("Incorrect username or password. Please try again.");
             else if(data.code === 404)
-                setErrorMessage("An account does not exist with that username. Please <a href='/register' style='text-decoration:underline;'>register</a> for an account.");
+                setErrorMessage("An account does not exist with that username."); // Please <a href='/register' style='text-decoration:underline;'>register</a> for an account.");
             setShowErrorMessage(true);
         }
     }

@@ -81,7 +81,6 @@ export default function StudySet() {
      * Dropdown options for the study set
      */
     const dropdownOptions = [
-        { label: "Edit Study Set", onClick: () => { } },
         { label: "Delete Study Set", onClick: () => { setShowConfirmDelete(true) }, isDelete: true },
     ]
 

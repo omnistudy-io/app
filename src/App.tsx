@@ -10,7 +10,9 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Sidebar from "@/layouts/Sidebar";
 
 // Page imports
-import { Login, Register } from "./pages";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import Invite from "@/pages/Invite";
 import Dashboard from "@/pages/Dashboard";
 import Settings from "@/pages/Settings";
 import Courses from "./pages/Courses";
@@ -37,6 +39,7 @@ function App() {
         {/* Auth pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/invite" element={<Invite />} />
       </Routes>
     </div>
   );
