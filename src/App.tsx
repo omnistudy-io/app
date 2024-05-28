@@ -38,7 +38,7 @@ function App() {
         <Route path="/*" element={<MainRouter />} />
         {/* Auth pages */}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* <Route path="/register" element={<Register />} /> */}
         <Route path="/invite" element={<Invite />} />
       </Routes>
     </div>

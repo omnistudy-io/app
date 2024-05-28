@@ -93,7 +93,7 @@ export default function Sidebar({ className }: SidebarProps) {
               href="/study-sets"
               title="Study Sets"
             />
-            <SidebarLink
+            {/* <SidebarLink
               icon={<ScheduleIcon className="w-5" />}
               href="/schedule"
               title="Schedule"
@@ -138,7 +138,7 @@ export default function Sidebar({ className }: SidebarProps) {
               icon={<SettingsIcon className="w-5" />}
               href="/settings"
               title="Settings"
-            />
+            /> */}
           </ul>
         </div>
 

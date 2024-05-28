@@ -1,6 +1,6 @@
 import DueThisWeek from "@/components/assignment/DueThisWeek";
 import CourseDisplay from "@/components/courses/CourseDisplay";
-import DailyUsage from "@/components/Dashboard/DailyUsage";
+import DailyUsage from "@/components/dashboard/DailyUsage";
 import UpcomingExams from "@/components/exams/UpcomingExams";
 import { Card } from "@/components/ui/Card";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
