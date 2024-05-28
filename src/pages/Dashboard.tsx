@@ -1,6 +1,5 @@
 import DueThisWeek from "@/components/assignment/DueThisWeek";
 import CourseDisplay from "@/components/courses/CourseDisplay";
-import DailyUsage from "@/components/dashboard/DailyUsage";
 import UpcomingExams from "@/components/exams/UpcomingExams";
 import { Card } from "@/components/ui/Card";
 import { DashboardContainer } from "@/components/ui/DashboardContainer";
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DailyUsage from "@/components/dashboard/DailyUsage";
 
 export default function Dashboard() {
   const token =
