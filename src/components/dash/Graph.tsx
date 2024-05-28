@@ -8,10 +8,10 @@ import moment from 'moment';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function DailyUsage() {
+export default function Graph() {
 
     const [chartData, setChartData] = useState([0, 0, 0, 0, 0]);
-    const [chartLabels, setChartLabels] = useState([]);
+    const [chartLabels, setChartLabels] = useState(["", "", "", "", ""]);
 
     useEffect(() => {
         get((data: any) => {

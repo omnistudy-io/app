@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import DailyUsage from "@/components/dashboard/DailyUsage";
+import Graph from "@/components/dash/Graph";
 
 export default function Dashboard() {
   const token =
@@ -27,24 +27,20 @@ export default function Dashboard() {
     get(setExams, "exams", "/users/{uid}/exams");
   }, []);
 
-  const action = () => {
-    console.log("action");
-  };
-
   return (
     <DashboardContainer
       subHeader="Dashboard"
       header="Your Dashboard"
       headerIcon={<DashboardIcon />}
-      callToAction={action}
-      callToActionText="Dashboard"
+      callToAction={""}
+      callToActionText=""
       dropdown={false}
     >
       {/* <h1>Dashboard</h1> */}
       {/* <p>Welcome back, {!loading ? data.user.name : null}</p> */}
       <section className="flex gap-4">
         <div className="flex flex-col gap-4 basis-3/5">
-          <DailyUsage />
+          <Graph />
           <div className="flex gap-4">
             <div className="flex flex-col gap-4 basis-1/5">
               <Link to="/courses">

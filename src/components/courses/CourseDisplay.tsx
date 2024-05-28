@@ -23,25 +23,27 @@ export default function CourseDisplay(props: CourseDisplayProps) {
             key={i}
             className="p-4 flex gap-2 items-end bg-white rounded-lg border relative group cursor-pointer hover:bg-[#34354a] transition-all duration-300"
           >
-            <img
-              src={course?.thumbnail_url}
-              alt="Course thumbnail"
-              loading="lazy"
-              className="h-[50px] object-cover rounded-md"
-              width="50px"
-            />
-            <div className="flex flex-col">
-              <p className="text-sm group-hover:text-[#fff]">
-                {course.subject} {course.number}
-              </p>
-              <span className="text-xs text-[#868686] group-hover:text-[#ccc]">
-                {course.building} - {course.room}
-              </span>
-            </div>
-            <CornerRightUp
-              size={16}
-              className="absolute top-2 right-2 group-hover:text-[#fff] group-hover:animate-bounce"
-            />
+            <a href={`/courses/${course.id}`}>
+              <img
+                src={course?.thumbnail_url}
+                alt="Course thumbnail"
+                loading="lazy"
+                className="h-[50px] object-cover rounded-md"
+                width="50px"
+              />
+              <div className="flex flex-col">
+                <p className="text-sm group-hover:text-[#fff]">
+                  {course.subject} {course.number}
+                </p>
+                <span className="text-xs text-[#868686] group-hover:text-[#ccc]">
+                  {course.building} - {course.room}
+                </span>
+              </div>
+              <CornerRightUp
+                size={16}
+                className="absolute top-2 right-2 group-hover:text-[#fff] group-hover:animate-bounce"
+              />
+            </a>
           </div>
         ))}
       </div>
